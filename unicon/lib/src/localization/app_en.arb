@@ -1,0 +1,6 @@
+{
+  "appTitle": "unicon",
+  "@appTitle": {
+    "description": "The title of the application"
+  }
+}
