@@ -4,7 +4,8 @@ const mongoose = require("mongoose")
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -14,11 +15,16 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         required: true
     },
-    profileId: {
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
+    role: {
         type: String,
-        required: true
+        required: true,
+        default: 'user'
     }
-})
+}, { timestamps: true })
 
 // Create a model from the schema
 const User = mongoose.model("user", userSchema)
