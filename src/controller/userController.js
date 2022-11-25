@@ -1,14 +1,32 @@
 const User = require("../model/Users")
 const Profile = require("../model/Profiles")
 const bcrypt = require("bcrypt")
+const getDate = require("../log-func").getDate
 
 // Creates a new user
 async function createUser(req, res) {
 
+    // Check if the user already exist
+    const user = await User.findOne({ email: req.body.email }, "email")
+
+    if (user != null) {
+        throw new Error("Email already exists.")
+    }
+
+    // Validate password
+    const validate = function (v) {
+        let regex = /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{12,}$/g
+        return regex.test(v)
+    }
+
+    if (validate(req.body.password) === false) {
+        throw new Error("Password requirements are not met.")
+    }
+
     // Encrypt password
     const salt = await bcrypt.genSalt()
     const hashedPassword = await bcrypt.hash(req.body.password, salt)
-    
+
     // Create the user
     let userId
     await User.create({
@@ -29,7 +47,7 @@ async function createUser(req, res) {
         userId: userId
     })
 
-    console.log(`Adding ${req.body.firstName} to the database...`)
+    console.log(getDate(Date.now()), `Adding ${req.body.firstName} to the database...`)
 }
 
 async function getUser(email) {

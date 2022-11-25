@@ -1,6 +1,7 @@
 // Route for app.js
 const express = require("express")
 const router = express.Router()
+const getDate = require("../log-func").getDate
 
 // User controller
 const createUser = require("../controller/userController").createUser
@@ -9,7 +10,7 @@ const createUser = require("../controller/userController").createUser
 router.use((req, res, next) => {
     // Some code to log requests in the console
 
-    console.log(Date.now(), ` - `, `New Request: Registering ${req.body.email}`)
+    console.log(getDate(Date.now()), `Registering ${req.body.email}`)
 
     next()
 })
@@ -24,8 +25,8 @@ router.post('/', async (req, res) => {
         await createUser(req, res)
         res.sendStatus(201)
     } catch (err) {
-        console.log(`register.js Error: ${err}`)
-        res.status(400).send(err)
+        console.log(getDate(Date.now()), `register.js - ${err}`)
+        res.status(400).send({ message: err.message })
     }
 })
 

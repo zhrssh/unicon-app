@@ -1,15 +1,8 @@
-// Main app of the server
-const express = require("express")
-const helmet = require("helmet")
-const app = express()
-
-// Database.js
-const db = require("./db/database")
-
-// Config file
-if (process.env.NODE_ENV != "production") {
-    require("dotenv").config()
-}
+const express = require("express") // Express
+const helmet = require("helmet") // For added http security
+const app = express() // Express App
+const db = require("./db/database") // Database.js
+const getDate = require("./log-func").getDate
 
 // Routes
 const credentials = require("./routes/credentials")
@@ -20,12 +13,21 @@ const notifications = require("./routes/notifications")
 const profile = require("./routes/profile")
 const register = require("./routes/register")
 
+// Config file
+if (process.env.NODE_ENV != "production") {
+    require("dotenv").config()
+}
+
 // Default PORT
 const PORT = process.env.PORT || 3000
 
-// Default Use
+// App middlewares
 app.use(helmet()) // For improved http security (src: https://www.npmjs.com/package/helmet)
 app.use(express.json()) // Use JSON
+app.use((req, res, next) => { // Displays all requests
+    console.log(getDate(Date.now()), `New Request: ${req.method}`)
+    next()
+})
 
 // Connect to the database
 const DATABASE_URL = process.env.DATABASE_URL || "mongodb://127.0.0.1:27017/unicondb"
@@ -36,13 +38,13 @@ const DB_OPTIONS = {
 
 db.connectDb(DATABASE_URL, DB_OPTIONS)
     .then((result) => {
-
         // Listen to port
-        app.listen(PORT, () => { console.log(`Listening to port ${PORT}...`) })
-
+        app.listen(PORT, () => {
+            console.log(getDate(Date.now()), `Listening to port ${PORT}...`)
+        })
     })
     .catch((reason) => {
-        console.log(`Failed to connect to db: ${reason}`)
+        console.log(getDate(Date.now(), `Failed to connect to db: ${reason}`))
     })
 
 // Starting point of the server
