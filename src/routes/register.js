@@ -8,6 +8,9 @@ const createUser = require("../controller/userController").createUser
 // Middleware
 router.use((req, res, next) => {
     // Some code to log requests in the console
+
+    console.log(Date.now(), ` - `, `New Request: Registering ${req.body.email}`)
+
     next()
 })
 
@@ -18,14 +21,12 @@ router.get('/', (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        console.log(`Registering User ${req.body.firstName}`)
         await createUser(req, res)
-        res.sendStatus(200)
+        res.sendStatus(201)
     } catch (err) {
         console.log(`register.js Error: ${err}`)
-        res.status(409).send(err)
+        res.status(400).send(err)
     }
-
 })
 
 module.exports = router

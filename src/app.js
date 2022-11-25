@@ -7,7 +7,9 @@ const app = express()
 const db = require("./db/database")
 
 // Config file
-require("dotenv").config()
+if (process.env.NODE_ENV != "production") {
+    require("dotenv").config()
+}
 
 // Routes
 const credentials = require("./routes/credentials")
