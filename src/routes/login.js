@@ -15,7 +15,7 @@ router.get('/', auth.verifyAccessToken, (req, res) => {
 // Requests access token for user who wants to login
 router.post('/', auth.requestAccessToken)
 
-// Refreshes access token
+// Refreshes access token by passing in the refresh token to the POST
 router.post('/token', auth.refreshAccessToken)
 
 module.exports = router

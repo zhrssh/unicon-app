@@ -1,5 +1,9 @@
+require("dotenv").config()
+
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+
+const tokenController = require("./controller/tokenController")
 
 // Get User By Email
 const getUserByEmail = require("./controller/userController").getUserByEmail
@@ -31,6 +35,7 @@ function verifyAccessToken(req, res, next) {
  */
 async function requestAccessToken(req, res) {
 
+    // Authorization Grant
     try {
         const user = await getUserByEmail(req.body.email)
         if (user == null) { return res.status(400).send({ message: "User does not exists." }) }
@@ -38,13 +43,19 @@ async function requestAccessToken(req, res) {
         const chk = user.email.toString() === req.body.email && await bcrypt.compare(req.body.password, user.password)
         if (chk === false) { return res.status(401).send({ message: "Incorrect email/password." }) }
     } catch (err) {
-        return res.status(500).send()
+        return res.sendStatus(500)
     }
 
     // Generates a refresh token and stores it in the database
-    // TODO : STORE REFRESH TOKEN IN DATABASE
     const refreshToken = jwt.sign({ email: req.body.email }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "30d" })
 
+    // Store the token in the database
+    try {
+        await tokenController.storeToken(refreshToken)
+    } catch (err) {
+        res.sendStatus(500)
+    }
+    
     // Provide access token when the user is authenticated
     const accessToken = generateAccessToken(req.body.email)
     res.json({ accessToken: accessToken, refreshToken: refreshToken })
@@ -64,18 +75,24 @@ function generateAccessToken(email) {
  * @param {*} token 
  * @returns 
  */
-function verifyRefreshToken(token) {
-    // TODO: Implementation
+async function verifyRefreshToken(token) {
+    const tokenInDb = await tokenController.getToken(token)
+    if (tokenInDb == null) return false
     return true
 }
 
 /**
  * Deletes a refresh token from the database
  * @param {*} token 
+ * @returns
  */
-function deleteRefreshToken(token) {
-    // TODO: Implementation
-    return
+async function deleteRefreshToken(token) {
+    try {
+        await tokenController.deleteToken(token)
+        return true
+    } catch (err) {
+        throw err
+    }
 }
 
 /**
