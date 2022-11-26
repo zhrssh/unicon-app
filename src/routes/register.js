@@ -2,6 +2,7 @@
 const express = require("express")
 const router = express.Router()
 const getDate = require("../log-func").getDate
+const auth = require("../auth-config")
 
 // User controller
 const createUser = require("../controller/userController").createUser
@@ -15,8 +16,8 @@ router.use((req, res, next) => {
     next()
 })
 
-router.get('/', (req, res) => {
-    // Starting point of the /register route
+// Checks if the user is already logged in
+router.get('/', auth.verifyAccessToken, (req, res) => {
     res.sendStatus(200)
 })
 

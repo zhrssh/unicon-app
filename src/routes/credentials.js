@@ -10,6 +10,7 @@ router.use((req, res, next) => {
 
 router.get('/', (req, res) => {
     // Starting point of the /credentials route
+    res.sendStatus(200)
 })
 
 module.exports = router

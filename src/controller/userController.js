@@ -50,7 +50,7 @@ async function createUser(req, res) {
     console.log(getDate(Date.now()), `Adding ${req.body.firstName} to the database...`)
 }
 
-async function getUser(email) {
+async function getUserByEmail(email) {
     try {
         const user = await User.findOne({ email: email })
         return user
@@ -61,4 +61,4 @@ async function getUser(email) {
 
 // Exports
 module.exports.createUser = createUser
-module.exports.getUser = getUser
+module.exports.getUserByEmail = getUserByEmail
