@@ -99,24 +99,8 @@ async function requestRefreshToken(req, res) {
         throw error
     }
 
-    // Checks if a refresh token already exists
-    let payload
-    try {
-        const token = tokenController.getToken(req.body.refreshToken)
-        payload = jwt.decode(token.refreshToken)
-    } catch (err) {
-        payload = null
-    }
-
-    // User Data
-    const data = {
-        uuid: uuid,
-        email: email,
-        firstName: (payload) ? payload.data.firstName : req.body.firstName,
-        lastName: (payload) ? payload.data.lastName : req.body.lastName,
-        birthDate: (payload) ? payload.data.birthDate : req.body.birthDate,
-        contactNumber: (payload) ? payload.data.contactNumber : req.body.contactNumber
-    }
+    // User Unique Identifier
+    const data = uuid
 
     // Generates the tokens
     const refreshToken = _generateRefreshToken(data)
@@ -124,7 +108,7 @@ async function requestRefreshToken(req, res) {
 
     // Stores or updates the refresh token in database
     try {
-        await tokenController.storeToken(uuid, refreshToken)
+        tokenController.storeToken(uuid, refreshToken)
     } catch (err) {
         const error = new Error(err.message)
         error.code = "500"
@@ -169,7 +153,7 @@ function verifyAccessToken(req, res, next) {
     try {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, result) => {
             if (err) throw err
-            req.body.data = result.data
+            req.body.uuid = result.data
             return next()
         })
     } catch (err) {
