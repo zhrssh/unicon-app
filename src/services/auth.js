@@ -55,7 +55,7 @@ async function requestAccessToken(req, res) {
             throw error
         }
 
-        const accessToken = _generateAccessToken(result.data)
+        const accessToken = _generateAccessToken(result.azp)
         res.json({ accessToken: accessToken })
     })
 }
