@@ -31,7 +31,7 @@ async function createOrUpdateProfile(req, res) {
     if (profile == null) {
         _createProfile(req, res)
     } else {
-        Profile.findOneAndUpdate({ uuid: req.body.uuid }, {
+        await Profile.findOneAndUpdate({ uuid: req.body.uuid }, {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             birthDate: new Date(req.body.birthDate),
