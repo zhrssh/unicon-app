@@ -4,24 +4,23 @@ const mongoose = require("mongoose")
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
-        required: [true, "Email is required."],
+        required: true,
         unique: true
     },
     password: {
         type: String,
-        required: [true, "Password is required."],
+        required: true,
     },
     hasAcceptedTerms: {
         type: Boolean,
-        required: [true, "Must accept terms."]
+        default: true
     },
-    isVerified: {
+    active: {
         type: Boolean,
         default: false
     },
     role: {
         type: String,
-        required: true,
         default: 'user'
     }
 }, { timestamps: true })

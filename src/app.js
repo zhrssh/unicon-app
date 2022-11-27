@@ -2,31 +2,26 @@ require("dotenv").config()
 
 const express = require("express") // Express
 const helmet = require("helmet") // For added http security
+const morgan = require("morgan") // For logging
 const app = express() // Express App
 const db = require("./db/database") // Database.js
-const getDate = require("./log-func").getDate
-const auth = require("./auth-config")
+const getDate = require("./utils/logs").getDate
+const auth = require("./services/auth")
 
 // Routes
-const credentials = require("./routes/credentials")
-const feed = require("./routes/feed")
-const jobs = require("./routes/jobs")
-const login = require("./routes/login")
-const notifications = require("./routes/notifications")
-const profile = require("./routes/profile")
-const register = require("./routes/register")
-const logout = require("./routes/logout")
+const credentials = require("./routes/main/credentials")
+const feed = require("./routes/main/feed")
+const jobs = require("./routes/main/jobs")
+const notifications = require("./routes/main/notifications")
+const profile = require("./routes/main/profile")
 
 // Default PORT
 const PORT = process.env.PORT || 3000
 
 // App middlewares
+app.use(morgan("dev"))
 app.use(helmet()) // For improved http security (src: https://www.npmjs.com/package/helmet)
 app.use(express.json()) // Use JSON
-app.use((req, res, next) => { // Displays all requests
-    console.log(getDate(Date.now()), `New Request: ${req.method} @ ${req.url}`)
-    next()
-})
 
 // Connect to the database
 const DATABASE_URL = process.env.DATABASE_URL || "mongodb://127.0.0.1:27017/unicondb"
@@ -56,13 +51,10 @@ app.get('/', (req, res) => {
 app.use("/api/credentials", auth.verifyAccessToken, credentials)
 app.use("/api/feed", auth.verifyAccessToken, feed)
 app.use("/api/jobs", auth.verifyAccessToken, jobs)
-app.use("/api/login", login) // Login
 app.use("/api/notifications", auth.verifyAccessToken, notifications)
 app.use("/api/profile", auth.verifyAccessToken, profile)
-app.use("/api/register", register)
-app.use("/api/logout", auth.verifyAccessToken, logout)
 
 // When accessing non-existing routes
-app.all('*', (req, res, next) => {
+app.all('*', (req, res) => {
     res.sendStatus(404)
 })

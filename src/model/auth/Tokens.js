@@ -1,10 +1,18 @@
 const mongoose = require("mongoose")
 
 const tokenSchema = new mongoose.Schema({
-    refreshToken : {
+    uuid: {
         type: String,
         required: true,
         unique: true
+    },
+    refreshToken: {
+        type: String,
+        unique: true
+    },
+    tokenType: {
+        type: String,
+        default: "Bearer"
     }
 })
 

@@ -1,16 +1,23 @@
-const User = require("../model/Users")
-const Profile = require("../model/Profiles")
 const bcrypt = require("bcrypt")
-const getDate = require("../log-func").getDate
 
-// Creates a new user
+const User = require("../model/auth/Users")
+const getDate = require("../utils/logs").getDate
+
+/**
+ * Creates a new user and store it in the database
+ * @param {*} req 
+ * @param {*} res 
+ * @returns UUID
+ */
 async function createUser(req, res) {
 
     // Check if the user already exist
     const user = await User.findOne({ email: req.body.email }, "email")
 
     if (user != null) {
-        throw new Error("Email already exists.")
+        const error = new Error("Email already exists.")
+        error.code = "409"
+        throw error
     }
 
     // Validate password
@@ -20,7 +27,9 @@ async function createUser(req, res) {
     }
 
     if (validate(req.body.password) === false) {
-        throw new Error("Password requirements are not met.")
+        const error = new Error("Password does not met requirements.")
+        error.code = "403"
+        throw error
     }
 
     // Encrypt password
@@ -28,28 +37,27 @@ async function createUser(req, res) {
     const hashedPassword = await bcrypt.hash(req.body.password, salt)
 
     // Create the user
-    let userId
+    let _userId
     await User.create({
         email: req.body.email,
         password: hashedPassword,
-        hasAcceptedTerms: req.body.hasAcceptedTerms
-    })
-        .then(user => {
-            userId = user._id
-        })
-
-    // Create a new profile
-    await Profile.create({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        birthDate: req.body.birthDate,
-        contactNumber: req.body.contactNumber,
-        userId: userId
+    }).then((user) => {
+        _userId = user._id
+    }).catch((err) => {
+        const error = new Error("Internal server error.")
+        error.code = "500"
+        throw error
     })
 
-    console.log(getDate(Date.now()), `Adding ${req.body.firstName} to the database...`)
+    console.log(getDate(Date.now()), `Adding ${req.body.email} to the database...`)
+    return _userId
 }
 
+/**
+ * Finds a user from the database using email
+ * @param {String} email 
+ * @returns 
+ */
 async function getUserByEmail(email) {
     try {
         const user = await User.findOne({ email: email })
@@ -59,6 +67,21 @@ async function getUserByEmail(email) {
     }
 }
 
+/**
+ * Finds a user from the database using uuid
+ * @param {String} uuid
+ * @returns User
+ */
+async function getUserByUUID(uuid) {
+    try {
+        const user = await User.findById({ id: uuid })
+        return user
+    } catch (err) {
+        return null
+    }
+}
+
 // Exports
 module.exports.createUser = createUser
 module.exports.getUserByEmail = getUserByEmail
+module.exports.getUserByUUID = getUserByUUID

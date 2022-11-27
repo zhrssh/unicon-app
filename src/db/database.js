@@ -1,6 +1,6 @@
 // Used to connect the app to the database
 const mongoose = require("mongoose")
-const getDate = require("../log-func").getDate
+const getDate = require("../utils/logs").getDate
 
 // Functions
 async function connectDb(DATABASE_URL, DB_OPTIONS) {
