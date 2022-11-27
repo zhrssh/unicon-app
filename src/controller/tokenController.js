@@ -23,8 +23,6 @@ async function storeToken(uuid, myToken) {
 
         console.log(getDate(Date.now()), "Adding refresh token to the database.")
     }
-
-
 }
 
 /**

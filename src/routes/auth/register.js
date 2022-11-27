@@ -6,6 +6,7 @@ const auth = require("../../services/auth")
 
 // User controller
 const createUser = require("../../controller/userController").createUser
+const deleteUser = require("../../controller/userController").deleteUser
 
 // Middleware
 router.use((req, res, next) => {
@@ -25,8 +26,10 @@ router.post('/', async (req, res) => {
         req.body.uuid = await createUser(req, res)
 
         // TODO: Implement email verification
+        // If verification failed
+        // deleteUser(req.body.uuid)
 
-        // Requests for refresh and access token
+        // Requests for refresh and access token and sends them to client
         await auth.requestRefreshToken(req, res)
     } catch (err) {
         res.status(parseInt(err.code)).send({ err: err.message })

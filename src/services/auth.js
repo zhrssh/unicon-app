@@ -14,7 +14,7 @@ const getUserByEmail = require("../controller/userController").getUserByEmail
  * @returns Access Token
  */
 function _generateAccessToken(data) {
-    return jwt.sign({ data: data }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "24h" })
+    return jwt.sign({ azp: data }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "24h" })
 }
 
 /**
@@ -23,7 +23,7 @@ function _generateAccessToken(data) {
  * @returns Refresh Token
  */
 function _generateRefreshToken(data) {
-    return jwt.sign({ data: data }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" })
+    return jwt.sign({ azp: data }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" })
 }
 
 /**
@@ -153,7 +153,7 @@ function verifyAccessToken(req, res, next) {
     try {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, result) => {
             if (err) throw err
-            req.body.uuid = result.data
+            req.body.uuid = result.azp
             return next()
         })
     } catch (err) {
@@ -168,9 +168,9 @@ function verifyAccessToken(req, res, next) {
  * Deletes a refresh token from the database
  * @param {*} token 
  */
-async function deleteRefreshToken(token) {
+function deleteRefreshToken(token) {
     try {
-        await tokenController.deleteToken(token)
+        tokenController.deleteToken(token)
     } catch (err) {
         const error = new Error(err.message)
         error.code = "500"

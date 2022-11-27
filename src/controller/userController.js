@@ -74,10 +74,20 @@ async function getUserByEmail(email) {
  */
 async function getUserByUUID(uuid) {
     try {
-        const user = await User.findById({ id: uuid })
+        const user = await User.findById(uuid)
         return user
     } catch (err) {
         return null
+    }
+}
+
+async function deleteUser(uuid) {
+    try {
+        await User.deleteOne({ id: uuid })
+    } catch (err) {
+        const error = new Error(err.message)
+        error.code = "400"
+        throw error
     }
 }
 
@@ -85,3 +95,4 @@ async function getUserByUUID(uuid) {
 module.exports.createUser = createUser
 module.exports.getUserByEmail = getUserByEmail
 module.exports.getUserByUUID = getUserByUUID
+module.exports.deleteUser = deleteUser
