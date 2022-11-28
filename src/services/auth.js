@@ -14,7 +14,7 @@ const getUserByEmail = require("../controller/userController").getUserByEmail
  * @returns Access Token
  */
 function _generateAccessToken(data) {
-    return jwt.sign({ azp: data }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "24h" })
+    return jwt.sign({ data }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "24h" })
 }
 
 /**
@@ -23,7 +23,7 @@ function _generateAccessToken(data) {
  * @returns Refresh Token
  */
 function _generateRefreshToken(data) {
-    return jwt.sign({ azp: data }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" })
+    return jwt.sign({ data }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" })
 }
 
 /**
@@ -55,7 +55,7 @@ async function requestAccessToken(req, res) {
             throw error
         }
 
-        const accessToken = _generateAccessToken(result.azp)
+        const accessToken = _generateAccessToken(result.data)
         res.json({ accessToken: accessToken })
     })
 }
@@ -76,8 +76,9 @@ async function requestRefreshToken(req, res) {
     const email = req.body.email
     const password = req.body.password
 
+    let user
     try {
-        const user = await getUserByEmail(email)
+        user = await getUserByEmail(email)
         if (user == null) {
             const error = new Error("Email does not exists.")
             error.code = "404"
@@ -99,8 +100,12 @@ async function requestRefreshToken(req, res) {
         throw error
     }
 
-    // User Unique Identifier
-    const data = uuid
+    // JWT Payload
+    const data = {
+        iss: process.env.ISS,
+        uuid: uuid,
+        role: user.role
+    }
 
     // Generates the tokens
     const refreshToken = _generateRefreshToken(data)
@@ -153,7 +158,7 @@ function verifyAccessToken(req, res, next) {
     try {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, result) => {
             if (err) throw err
-            req.body.uuid = result.azp
+            req.body.uuid = result.uuid
             return next()
         })
     } catch (err) {
