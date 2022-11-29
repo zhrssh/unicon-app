@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
                 // Makes the directory and uploads the file
                 fs.mkdir(dir, { recursive: true }, (err) => {
                     if (err) return cb(err.message)
-                    cb(null, dir)
+                    return cb(null, dir)
                 })
             }
 
@@ -38,7 +38,7 @@ const storage = multer.diskStorage({
             })
 
             // Uploads the file to the directory
-            cb(null, dir)
+            return cb(null, dir)
         })
 
     },
@@ -47,7 +47,7 @@ const storage = multer.diskStorage({
         const fname = file.fieldname + "-" + uuid
         const extname = path.extname(file.originalname).toLocaleLowerCase()
 
-        cb(null, fname + extname)
+        return cb(null, fname + extname)
     }
 })
 
@@ -69,9 +69,9 @@ const fileFilter = (req, file, cb) => {
 
     // Do check
     if (extname && mimetype)
-        cb(null, true)
+        return cb(null, true)
     else
-        cb(new Error("Extension not allowed."), false)
+        return cb(new Error("Extension not allowed."), false)
 }
 
 /**
