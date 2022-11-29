@@ -9,7 +9,6 @@ const getDate = require("./utils/logs").getDate
 const auth = require("./services/auth")
 
 // Routes
-const credentials = require("./routes/resources/credentials")
 const feed = require("./routes/resources/feed")
 const jobs = require("./routes/resources/jobs")
 const notifications = require("./routes/resources/notifications")
@@ -48,7 +47,6 @@ app.get('/', (req, res) => {
 })
 
 // Routes
-app.use("/api/credentials", auth.verifyAccessToken, credentials)
 app.use("/api/feed", auth.verifyAccessToken, feed)
 app.use("/api/jobs", auth.verifyAccessToken, jobs)
 app.use("/api/notifications", auth.verifyAccessToken, notifications)

@@ -158,7 +158,7 @@ function verifyAccessToken(req, res, next) {
     try {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, result) => {
             if (err) throw err
-            req.body.uuid = result.uuid
+            req.body.uuid = result.data.uuid
             return next()
         })
     } catch (err) {
@@ -182,9 +182,35 @@ function deleteRefreshToken(token) {
         throw error
     }
 }
+
+/**
+ * Gets the UUID from token without verifying the token. Use this if you know that the token is already verified
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns Gets The UUID From Token
+ */
+function getUUIDFromToken(req) {
+    // Gets Token from Auth Header
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+
+    if (token == null) return null
+
+    try {
+        const decoded = jwt.decode(token)
+        return decoded.data.uuid
+    } catch (err) {
+        const error = new Error(err.message)
+        error.code = "403"
+        throw error
+    }
+}
+
 // Exports
 module.exports.verifyAccessToken = verifyAccessToken
 module.exports.requestAccessToken = requestAccessToken
 module.exports.deleteRefreshToken = deleteRefreshToken
 module.exports.requestRefreshToken = requestRefreshToken
+module.exports.getUUIDFromToken = getUUIDFromToken
 
