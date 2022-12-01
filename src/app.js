@@ -9,10 +9,10 @@ const getDate = require("./utils/logs").getDate
 const auth = require("./services/auth")
 
 // Routes
-const feed = require("./routes/resources/feed")
-const jobs = require("./routes/resources/jobs")
-const notifications = require("./routes/resources/notifications")
-const profile = require("./routes/resources/profile")
+const feed = require("./routes/feed")
+const jobs = require("./routes/jobs")
+const notifications = require("./routes/notifications")
+const profile = require("./routes/profile")
 
 // Default PORT
 const PORT = process.env.PORT || 3000

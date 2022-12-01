@@ -3,12 +3,13 @@ require("dotenv").config()
 const express = require("express") // Main app
 const morgan = require("morgan") // For logging
 const helmet = require("helmet")
+
 const getDate = require("./utils/logs").getDate // For logging
 const db = require("./db/database") // For database
 
 // Server configs
 const server = express()
-const PORT = process.env.AUTH_PORT || 3001
+const PORT = process.env.PORT || 3001
 
 // Connect to the database
 const DATABASE_URL = process.env.AUTH_DATABASE_URL || "mongodb://127.0.0.1:27017/uniconauth"
@@ -29,9 +30,9 @@ db.connectDb(DATABASE_URL, DB_OPTIONS)
     })
 
 // Routes
-const login = require("./routes/auth/login")
-const logout = require("./routes/auth/logout")
-const register = require("./routes/auth/register")
+const login = require("./routes/login")
+const logout = require("./routes/logout")
+const register = require("./routes/register")
 
 // Middlewares
 server.use(morgan("dev"))
