@@ -1,6 +1,6 @@
 require("dotenv").config()
 
-const Token = require("../model/auth/Tokens")
+const Token = require("../model/Tokens")
 const getDate = require("../utils/logs").getDate
 
 /**

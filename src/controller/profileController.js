@@ -1,4 +1,4 @@
-const Profile = require("../model/resources/Profiles")
+const Profile = require("../model/Profiles")
 const getDate = require("../utils/logs").getDate
 
 /**

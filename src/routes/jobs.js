@@ -5,7 +5,7 @@ const router = express.Router()
 // Middleware
 router.use((req, res, next) => {
     // Some code to log requests in the console
-    next()
+    return next()
 })
 
 router.get('/', (req, res) => {

@@ -1,14 +1,14 @@
 const express = require("express")
 const router = express.Router()
 
-const auth = require("../../services/auth")
+const auth = require("../services/auth")
 
 router.post('/', async (req, res) => {
     try {
         await auth.deleteRefreshToken(req.body.refreshToken)
-        res.sendStatus(204)
+        return res.sendStatus(204)
     } catch (err) {
-        res.sendStatus(400)
+        return res.sendStatus(400)
     }
 })
 

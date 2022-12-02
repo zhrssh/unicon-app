@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt")
 
-const User = require("../model/auth/Users")
+const User = require("../model/Users")
 const getDate = require("../utils/logs").getDate
 
 /**

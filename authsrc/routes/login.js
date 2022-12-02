@@ -4,12 +4,12 @@ require("dotenv").config()
 const express = require("express")
 const router = express.Router()
 
-const auth = require("../../services/auth")
+const auth = require("../services/auth")
 
 // Checks if the user is already logged in
 router.get('/', auth.verifyAccessToken, (req, res) => {
     // Sends an OK status if the user is alr logged in
-    res.sendStatus(200)
+    return res.sendStatus(200)
 })
 
 // Requests access and refresh token for user who wants to login
@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
         await auth.requestRefreshToken(req, res)
     }
     catch (err) {
-        res.status(parseInt(err.code)).send({ err: err.message })
+        return res.status(parseInt(err.code)).send({ err: err.message })
     }
 })
 
@@ -28,7 +28,7 @@ router.post('/token', async (req, res) => {
         await auth.requestAccessToken(req, res)
     }
     catch (err) {
-        res.status(parseInt(err.code)).send({ err: err.message })
+        return res.status(parseInt(err.code)).send({ err: err.message })
     }
 })
 
