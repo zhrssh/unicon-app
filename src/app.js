@@ -10,7 +10,7 @@ const auth = require("./services/auth")
 
 // Routes
 const feed = require("./routes/feed")
-const jobs = require("./routes/jobs")
+const projects = require("./routes/project")
 const notifications = require("./routes/notifications")
 const profile = require("./routes/profile")
 
@@ -48,7 +48,7 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use("/api/feed", auth.verifyAccessToken, feed)
-app.use("/api/jobs", auth.verifyAccessToken, jobs)
+app.use("/api/projects",auth.verifyAccessToken, projects)
 app.use("/api/notifications", auth.verifyAccessToken, notifications)
 app.use("/api/profile", auth.verifyAccessToken, profile)
 
