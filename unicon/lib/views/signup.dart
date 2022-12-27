@@ -1,20 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'login.dart';
-import 'verify.dart';
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Registration Page',
-      debugShowCheckedModeBanner: false,
-      home: SignUpPage(),
-    );
-  }
-}
+import '../constants/navigation_routes.dart';
+import '../constants/textfields.dart';
+import '../constants/top_bottom_clippings.dart';
 
 DateTime date = DateTime.now();
 TextEditingController dateset = TextEditingController();
@@ -30,7 +19,7 @@ class SignUpPage extends StatelessWidget {
           child: Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("images/SignupBG.png"),
+                image: AssetImage("assets/images/SignupBG.png"),
                 fit: BoxFit.cover,
               ),
             ),
@@ -60,7 +49,7 @@ class SignUpPage extends StatelessWidget {
                 Column(
                   children: [
                     Image.asset(
-                      'images/logo 1.png',
+                      'assets/images/logo 1.png',
                     ),
                     const Text(
                       'Construction? We got you!',
@@ -273,28 +262,9 @@ class SignUpPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 300,
-                      child: TextFormField(
-                        style: const TextStyle(
-                          color: Colors.black,
-                        ),
-                        decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(),
-                          hintText: 'Email',
-                          hintStyle: TextStyle(
-                            color: Colors.grey,
-                          ),
-                        ),
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
-                      ),
+                      child: Email(displayedText: 'Email'),
                     ),
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
@@ -309,30 +279,9 @@ class SignUpPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 300,
-                      child: TextFormField(
-                        style: const TextStyle(
-                          color: Colors.black,
-                        ),
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(),
-                          suffixIcon: Icon(Icons.visibility_off),
-                          hintText: 'Password',
-                          hintStyle: TextStyle(
-                            color: Colors.grey,
-                          ),
-                        ),
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
-                      ),
+                      child: Password(),
                     ),
                     const Padding(
                       padding:
@@ -409,64 +358,6 @@ class SignUpPage extends StatelessWidget {
       ),
     );
   }
-}
-
-class TopClipPath extends CustomClipper<Path> {
-  var radius = 5.0;
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.lineTo(0.0, size.height);
-    path.lineTo(size.width, 0.0);
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}
-
-class TranspBottomClipPath extends CustomClipper<Path> {
-  var radius = 5.0;
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.moveTo(0, size.height);
-    path.lineTo(0, size.height);
-    path.lineTo(size.width, size.height);
-    path.lineTo(size.width, 0);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}
-
-class BottomClipPath extends CustomClipper<Path> {
-  var radius = 5.0;
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.moveTo(0, size.height);
-    path.lineTo(0, size.height);
-    path.lineTo(size.width, size.height);
-    path.lineTo(size.width, size.height * 0.35);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}
-
-Future navigateToLoginPage(context) async {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const LoginPage()));
-}
-
-Future navigateToVerifyPage(context) async {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const VerifyPage()));
 }
 
 Future<void> _selectDate(BuildContext context) async {

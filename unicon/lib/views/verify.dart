@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
+import '../constants/top_bottom_clippings.dart';
 import 'signup.dart';
 
 class MyApp extends StatelessWidget {
@@ -24,7 +25,7 @@ class VerifyPage extends StatelessWidget {
         child: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("images/VerifyBG.png"),
+              image: AssetImage("assets/images/VerifyBG.png"),
               fit: BoxFit.cover,
             ),
           ),
@@ -179,54 +180,6 @@ class VerifyPage extends StatelessWidget {
       ),
     );
   }
-}
-
-class TopClipPath extends CustomClipper<Path> {
-  var radius = 5.0;
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.lineTo(0.0, size.height);
-    path.lineTo(size.width, 0.0);
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}
-
-class TranspBottomClipPath extends CustomClipper<Path> {
-  var radius = 5.0;
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.moveTo(0, size.height);
-    path.lineTo(0, size.height);
-    path.lineTo(size.width, size.height);
-    path.lineTo(size.width, 0);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}
-
-class BottomClipPath extends CustomClipper<Path> {
-  var radius = 5.0;
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.moveTo(0, size.height);
-    path.lineTo(0, size.height);
-    path.lineTo(size.width, size.height);
-    path.lineTo(size.width, size.height * 0.35);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
 Future navigateToLoginPage(context) async {
