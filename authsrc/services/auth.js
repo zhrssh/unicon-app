@@ -11,7 +11,7 @@ const getUserByEmail = require("../controller/userController").getUserByEmail
  * @param {*} data 
  * @returns Access Token
  */
-function _generateAccessToken(data) {
+function generateAccessToken(data) {
     return jwt.sign({ data }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "24h" })
 }
 
@@ -20,7 +20,7 @@ function _generateAccessToken(data) {
  * @param {*} data 
  * @returns Refresh Token
  */
-function _generateRefreshToken(data) {
+function generateRefreshToken(data) {
     return jwt.sign({ data }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" })
 }
 
@@ -53,7 +53,7 @@ async function requestAccessToken(req, res) {
             throw error
         }
 
-        const accessToken = _generateAccessToken(result.data)
+        const accessToken = generateAccessToken(result.data)
         return res.json({ accessToken: accessToken })
     })
 }
@@ -74,8 +74,9 @@ async function requestRefreshToken(req, res) {
     const email = req.body.email
     const password = req.body.password
 
-    let user
+    let user, chk
     try {
+        // Gets the user from the database
         user = await getUserByEmail(email)
         if (user == null) {
             const error = new Error("Email does not exists.")
@@ -83,9 +84,18 @@ async function requestRefreshToken(req, res) {
             throw error
         }
 
-        const chk = user && user.email === email && await bcrypt.compare(password, user.password)
+        // Checks email and password
+        chk = user && user.email === email && await bcrypt.compare(password, user.password)
         if (chk === false) {
             const error = new Error("Incorrect email/password.")
+            error.code = "401"
+            throw error
+        }
+
+        // Checks if the user is verified
+        chk = user && user.status === "Active"
+        if (chk === false) {
+            const error = new Error("Email not verified.")
             error.code = "401"
             throw error
         }
@@ -102,12 +112,13 @@ async function requestRefreshToken(req, res) {
     const data = {
         iss: process.env.ISS,
         uuid: uuid,
+        status: user.status,
         role: user.role
     }
 
     // Generates the tokens
-    const refreshToken = _generateRefreshToken(data)
-    const accessToken = _generateAccessToken(data)
+    const refreshToken = generateRefreshToken(data)
+    const accessToken = generateAccessToken(data)
 
     // Stores or updates the refresh token in database
     try {

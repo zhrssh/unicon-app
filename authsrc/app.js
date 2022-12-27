@@ -43,9 +43,6 @@ server.use(express.json())
 server.use("/login", login)
 server.use("/logout", logout)
 server.use("/register", register)
-server.use("/verify", (req, res) => {
-    console.log(getDate(Date.now()), "Verification not yet implemented")
-})
 
 // Respond to non-existing routes
 server.all("*", (req, res) => {

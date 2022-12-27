@@ -21,5 +21,3 @@
     - Run app.js using `pm2`
     - Run app.js using `dockerfile`
 4. **Download the apk file of the unicon application and run.**
-## Generate Random Key
-- Use command `node ./src/utils/generatekey.js`
