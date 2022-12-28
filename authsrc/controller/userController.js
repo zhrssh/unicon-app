@@ -38,7 +38,7 @@ async function createUser(req, res) {
     const hashedPassword = await bcrypt.hash(req.body.password, salt)
 
     // Create confirmation code
-    const code = generateKey(3)
+    const code = generateKey(3).toLowerCase()
 
     // Create the user
     let _userId

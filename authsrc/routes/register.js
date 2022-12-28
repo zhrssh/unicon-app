@@ -2,7 +2,6 @@
 const express = require("express")
 const router = express.Router()
 
-const getDate = require("../utils/logs").getDate
 const auth = require("../services/auth")
 const verify = require("../services/verify")
 
@@ -23,6 +22,16 @@ router.post('/', async (req, res) => {
         // Sends verification email
         verify.sendConfirmationEmail(req, res)
 
+    } catch (err) {
+        return res.status(parseInt(err.code)).send({ err: err.message })
+    }
+})
+
+// Resend confirmation email
+router.post('/verify/resend', async (req, res) => {
+    try {
+        // Resends the confirmation email
+        verify.resendConfirmationEmail(req, res)
     } catch (err) {
         return res.status(parseInt(err.code)).send({ err: err.message })
     }
