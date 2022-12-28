@@ -1,5 +1,4 @@
 const bcrypt = require("bcrypt")
-const { verify } = require("jsonwebtoken")
 
 const User = require("../model/Users")
 const getDate = require("../utils/logs").getDate

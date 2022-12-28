@@ -23,10 +23,6 @@ router.post('/', async (req, res) => {
         // Sends verification email
         verify.sendConfirmationEmail(req, res)
 
-        //#region REMOVED -> Moved to login
-        // Requests for refresh and access token and sends them to client
-        // await auth.requestRefreshToken(req, res)
-        //#endregion
     } catch (err) {
         return res.status(parseInt(err.code)).send({ err: err.message })
     }
