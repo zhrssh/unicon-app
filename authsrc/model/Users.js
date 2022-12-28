@@ -15,13 +15,20 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
-    active: {
-        type: Boolean,
-        default: false
+    status: {
+        type: String,
+        enum: ["Pending", "Active"],
+        default: "Pending"
+    },
+    confirmationCode: {
+        type: String,
+        unique: true,
+        default: null
     },
     role: {
         type: String,
-        default: 'user'
+        enum: ["Client", "Provider", "Admin"],
+        default: "Client"
     }
 }, { timestamps: true })
 

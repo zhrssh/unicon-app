@@ -2,12 +2,13 @@ const bcrypt = require("bcrypt")
 
 const User = require("../model/Users")
 const getDate = require("../utils/logs").getDate
+const generateKey = require("../utils/generate").generateKey
 
 /**
  * Creates a new user and store it in the database
+ * Sets req.body.uuid and req.body.confirmationCode
  * @param {*} req 
  * @param {*} res 
- * @returns UUID
  */
 async function createUser(req, res) {
 
@@ -36,11 +37,15 @@ async function createUser(req, res) {
     const salt = await bcrypt.genSalt()
     const hashedPassword = await bcrypt.hash(req.body.password, salt)
 
+    // Create confirmation code
+    const code = generateKey(3)
+
     // Create the user
     let _userId
     await User.create({
         email: req.body.email,
         password: hashedPassword,
+        confirmationCode: code
     }).then((user) => {
         _userId = user._id
     }).catch((err) => {
@@ -50,7 +55,9 @@ async function createUser(req, res) {
     })
 
     console.log(getDate(Date.now()), `Adding ${req.body.email} to the database...`)
-    return _userId
+
+    req.body.uuid = _userId
+    req.body.confirmationCode = code
 }
 
 /**
