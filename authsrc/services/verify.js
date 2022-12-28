@@ -7,21 +7,27 @@ const User = require("../model/Users")
  * Sets the user to "Active", indicating the email is verified.
  * @param {*} confirmationCode 
  */
-async function verifyUser(confirmationCode) {
-    const user = await User.findOne({ confirmationCode: confirmationCode }, "confirmationCode")
+async function verifyUser(uuid, confirmationCode) {
+    const user = await User.findOne({ _id: uuid })
 
     // Checks if the user with the confirmation code exists
     if (user == null) {
-        const error = new Error("Confirmation code does not exist.")
+        const error = new Error("User does not exist.")
         error.code = "404"
+        throw error
+    }
+
+    // Checks if the correct code is sent
+    if (user.confirmationCode !== confirmationCode) {
+        const error = new Error("Incorrect confirmation code.")
+        error.code = "401"
         throw error
     }
 
     // Sets the user status to "Active"
     try {
-        user.set({
-            status: "Active"
-        })
+        user.status = "Active"
+        await user.save()
     } catch (err) {
         const error = new Error(err.message)
         error.code = "500"
@@ -35,7 +41,7 @@ async function verifyUser(confirmationCode) {
  * @param {*} res 
  */
 function _transport() {
-    return nodemailer.createTransport("SMTP",
+    return nodemailer.createTransport(
         {
             service: "Gmail",
             auth: {
@@ -59,8 +65,8 @@ function sendConfirmationEmail(req, res) {
                 subject: "RE: Account Verification",
                 html: `<h1>Email Confirmation</h1>
             <h2>Hello There!</h2>
-            <p>Thank you for registering. Please confirm your email by clicking on the following link</p>
-            <a href=http://localhost:${process.env.PORT}/register/verify/${req.body.confirmationCode}> Click here</a>
+            <p>Thank you for registering. Here is your code to activate your account: <b>${req.body.confirmationCode}</b></p>
+            <p>OR <a href=http://localhost:${process.env.PORT}/register/verify/${req.body.uuid}/${req.body.confirmationCode}> Click here</a></p>
             </div>`
             })
     } catch (err) {
@@ -69,7 +75,7 @@ function sendConfirmationEmail(req, res) {
         throw error
     }
 
-    res.sendStatus(200)
+    res.status(200).send({ uuid: req.body.uuid })
 }
 
 // Exports

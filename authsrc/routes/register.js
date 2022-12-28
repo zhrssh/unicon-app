@@ -9,13 +9,6 @@ const verify = require("../services/verify")
 // User controller
 const createUser = require("../controller/userController").createUser
 
-// Middleware
-router.use((req, res, next) => {
-    // Some code to log requests in the console
-    console.log(getDate(Date.now()), `Registering ${req.body.email}`)
-    return next()
-})
-
 // Checks if the user is already logged in
 router.get('/', auth.verifyAccessToken, (req, res) => {
     return res.sendStatus(200)
@@ -25,7 +18,7 @@ router.get('/', auth.verifyAccessToken, (req, res) => {
 router.post('/', async (req, res) => {
     try {
         // Creates a new user
-        req.body.uuid, req.body.confirmationCode = await createUser(req, res)
+        await createUser(req, res)
 
         // Sends verification email
         verify.sendConfirmationEmail(req, res)
@@ -40,10 +33,10 @@ router.post('/', async (req, res) => {
 })
 
 // Verifies the user
-router.get("/verify/:confirmationCode", async (req, res) => {
+router.get("/verify/:uuid/:confirmationCode", async (req, res) => {
     try {
         // Verifies the user
-        verify.verifyUser(req.params.confirmationCode)
+        await verify.verifyUser(req.params.uuid, req.params.confirmationCode)
         res.sendStatus(200)
     } catch (err) {
         return res.status(parseInt(err.code)).send({ err: err.message })

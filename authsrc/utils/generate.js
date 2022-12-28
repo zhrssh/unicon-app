@@ -8,7 +8,6 @@ const crypto = require("crypto")
  */
 function generateKey(bytes = 64) {
     const secret = crypto.randomBytes(parseInt(bytes)).toString('hex')
-    console.log("secret: ", secret)
     return secret
 }
 
