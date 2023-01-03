@@ -1,15 +1,14 @@
 require("dotenv").config()
 
-const fs = require("fs")
-const handlebars = require("handlebars")
-const nodemailer = require("nodemailer")
 const path = require("path")
 
 const User = require("../model/Users")
 const generateKey = require("../utils/generate").generateKey
+const send = require("./email").send
 
 /**
- * Sets the user to "Active", indicating the email is verified.
+ * Sets the user to "Active", indicating the email is verified. 
+ * Sends another email telling the user is verified.
  * @param {*} confirmationCode 
  */
 async function verifyUser(uuid, confirmationCode) {
@@ -38,23 +37,25 @@ async function verifyUser(uuid, confirmationCode) {
         error.code = "500"
         throw error
     }
-}
 
-/**
- * Sends an email verification to the user
- * @param {*} req 
- * @param {*} res 
- */
-function _transport() {
-    return nodemailer.createTransport(
-        {
-            service: "Gmail",
-            secure: true,
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.PASS
-            }
-        })
+    // Send success email to the user
+    let dir = "/../templates/success.html"
+
+    // Email config
+    let config = {
+        from: process.env.EMAIL,
+        to: user.email,
+        subject: "RE: Account Verification Successful"
+    }
+
+    // Replacements in the html
+    let replacements = {
+        email: user.email,
+        emailSupport: "support@uniconapp.com"
+    }
+
+    // Sends the email
+    send(config.from, config.to, config.subject, dir, replacements)
 }
 
 /**
@@ -62,50 +63,28 @@ function _transport() {
  * @param {*} req 
  * @param {*} res 
  */
-async function sendConfirmationEmail(req, res) {
-    // Read html file
-    let htmlToSend
+function sendConfirmationEmail(req, res) {
 
-    try {
-        fs.readFile(path.join(__dirname, "/../templates/verify.html"), { encoding: "utf-8" }, (err, html) => {
-            if (err) {
-                const error = new Error("Error reading file.")
-                error.code = "500"
-                throw error
-            }
+    // Path to html
+    let dir = "/../templates/verify.html"
 
-            // Prepares the template
-            let template = handlebars.compile(html)
-
-            let replacements = {
-                email: req.body.email,
-                confirmationCode: req.body.confirmationCode,
-                confirmationLink: `http://localhost:3001/register/verify/${req.body.uuid}/${req.body.confirmationCode}`,
-                emailSupport: "support@uniconapp.com"
-            }
-
-            htmlToSend = template(replacements)
-
-            // Sends email to the new user
-            try {
-                _transport().sendMail(
-                    {
-                        from: process.env.EMAIL,
-                        to: req.body.email,
-                        subject: "RE: Account Verification",
-                        html: htmlToSend
-                    })
-            } catch (err) {
-                const error = new Error(err.message)
-                error.code = "500"
-                throw error
-            }
-        })
-    } catch (err) {
-        const error = new Error(err.message)
-        error.code = "500"
-        throw error
+    // Email config
+    let config = {
+        from: process.env.EMAIL,
+        to: req.body.email,
+        subject: "RE: Account Verification"
     }
+
+    // Replacements to the html file
+    let replacements = {
+        email: req.body.email,
+        confirmationCode: req.body.confirmationCode,
+        confirmationLink: `http://localhost:3001/register/verify/${req.body.uuid}/${req.body.confirmationCode}`,
+        emailSupport: "support@uniconapp.com"
+    }
+
+    // Send email
+    send(config.from, config.to, config.subject, dir, replacements)
 
     res.status(200).send({ uuid: req.body.uuid })
 }
