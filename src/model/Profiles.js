@@ -1,11 +1,6 @@
 const mongoose = require("mongoose")
 
-const profileSchema = new mongoose.Schema({
-    uuid: {
-        type: String,
-        required: true,
-        unique: true
-    },
+const nameSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true
@@ -13,6 +8,20 @@ const profileSchema = new mongoose.Schema({
     lastName: {
         type: String,
         required: true
+    },
+    middleName: {
+        type: String
+    }
+})
+
+const profileSchema = new mongoose.Schema({
+    uuid: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        unique: true
+    },
+    name: {
+        type: nameSchema
     },
     birthDate: {
         type: Date,

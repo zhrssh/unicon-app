@@ -10,8 +10,10 @@ function _createProfile(req, res) {
     // Create a new profile
     Profile.create({
         uuid: req.body.uuid,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
+        name: {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName
+        },
         birthDate: new Date(req.body.birthDate),
         contactNumber: req.body.contactNumber,
     })
@@ -32,8 +34,10 @@ async function createOrUpdateProfile(req, res) {
         _createProfile(req, res)
     } else {
         await Profile.findOneAndUpdate({ uuid: req.body.uuid }, {
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
+            name: {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+            },
             birthDate: new Date(req.body.birthDate),
             contactNumber: req.body.contactNumber
         })

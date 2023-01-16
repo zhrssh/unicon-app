@@ -1,5 +1,5 @@
 const Profile = require("../model/Profiles")
-const Project = require("../model/Projects.Js")
+const Project = require("../model/Projects")
 const getDate = require("../utils/logs").getDate
 
 
@@ -8,17 +8,21 @@ const getDate = require("../utils/logs").getDate
  * @param {*} req 
  * @param {*} res 
  */
- async function createJob(req, res) {
-    const user = await Profile.findOne({uuid:req.body.uuid})
-    const name = `${user.firstName} ${user.lastName}`
+async function createJob(req, res) {
+    const user = await Profile.findOne({ uuid: req.body.uuid })
+    const name = `${user.name.firstName} ${user.name.lastName}`
     await Project.create({
-        uuid : user.uuid,
+        owner: user.uuid,
         postedBy: name,
         description: req.body.description,
         estSalary: req.body.estSalary,
         estDate: req.body.estDate,
-        location: req.body.location
-        })
+        location: {
+            address: req.body.location.address,
+            city: req.body.location.city,
+            province: req.body.location.province
+        }
+    })
 
     console.log(getDate(Date.now()), `Adding a Job to the database...`)
 }
@@ -28,17 +32,16 @@ const getDate = require("../utils/logs").getDate
  * @param {*} req 
  * @param {*} res 
  */
- async function deleteJob(req, res) {
-    const user = await Profile.findOne({uuid:req.body.uuid})
-    const post = await Project.findById(req.params.id);
-    if(post.uuid === user.uuid){
-        await post.delete();
+async function deleteJob(req, res) {
+    const user = await Profile.findOne({ uuid: req.body.uuid })
+    const project = await Project.findOne({ owner: req.params.id });
+    if (project.owner === user.uuid) {
+        project.delete();
         res.sendStatus(200)
-    }else{
+    } else {
         res.status(403).send("You can only delete your own post")
     }
 }
-
 
 /**
  * Show all available Jobs
@@ -55,27 +58,26 @@ async function getJobsFeed(req, res) {
  * @param {*} req 
  * @param {*} res 
  */
- async function getUserJobsFeed(req, res) {
-    const feed = await Project.find({uuid:req.params.uuid})
-    if (feed.length != 0){
+async function getUserJobsFeed(req, res) {
+    const feed = await Project.find({ owner: req.params.uuid }).populate('owner')
+    if (feed.length != 0) {
         res.json(feed)
-    }else{
+    } else {
         res.status(403).send("No Jobs available")
     }
 }
-
 
 /**
  * Show current wokers
  * @param {*} req 
  * @param {*} res 
  */
- async function showCurrentWorkers(req, res) {
+async function showCurrentWorkers(req, res) {
     const post = await Project.findById(req.params.id)
     const currentWorkers = post.currentWorkers
-    if (currentWorkers.length != 0){
+    if (currentWorkers.length != 0) {
         res.json(currentWorkers)
-    }else{
+    } else {
         res.status(403).send("No workers applied")
     }
 }
@@ -86,10 +88,10 @@ async function getJobsFeed(req, res) {
  * @param {*} res 
  */
 async function deleteWorker(req, res) {
-    await Project.findByIdAndUpdate( 
-        req.params.id, { 
-            $pull: { "currentWorkers" : {_id:req.body.id }}
-        },
+    await Project.findByIdAndUpdate(
+        req.params.id, {
+        $pull: { "currentWorkers": { _id: req.body.id } }
+    },
     )//not yet working
 }
 
@@ -99,7 +101,7 @@ async function deleteWorker(req, res) {
  * @param {*} req 
  * @param {*} res 
  */
- async function addContractor(req, res) {
+async function addContractor(req, res) {
 
 }
 
