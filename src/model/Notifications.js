@@ -1,8 +1,9 @@
 const mongoose = require("mongoose")
 
 const notificationSchema = mongoose.Schema({
-    uuid: {
-        type: String,
+    target: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "profile",
         required: true
     },
     content: {
@@ -12,7 +13,7 @@ const notificationSchema = mongoose.Schema({
         type: String,
         required: true
     }
-}, {timestamps: true})
+}, { timestamps: true })
 
 const Notification = mongoose.model("notification", notificationSchema)
 
