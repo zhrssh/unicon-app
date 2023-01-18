@@ -9,28 +9,37 @@ router.use((req, res, next) => {
     next()
 })
 
-router.get('/', (req, res) => {
-    // Show all available Jobs
+// Gets all projects
+router.get('/', async (req, res) => {
     try {
-        projectController.getJobsFeed(req, res)
+        const jobs = await projectController.getProjects()
+        if (jobs === null) return res.sendStatus(404)
+        return res.status(200).send(jobs)
+    } catch (err) {
+        console.log(getDate(Date.now()), err.message)
+        return res.sendStatus(500)
+    }
+})
+
+// Gets all projects of a user
+router.get("/userid=:userId", async (req, res) => {
+    try {
+        const projects = await projectController.getUserProjects(req.params.userId)
+        if (projects === null) return res.sendStatus(404)
+        return res.status(200).send(projects)
     } catch (err) {
         console.log(getDate(Date.now()), err.message)
         res.sendStatus(500)
     }
 })
 
-router.get("/:uuid", (req, res) => {
-    // Show user Jobs
-    try {
-        projectController.getUserJobsFeed(req, res)
-    } catch (err) {
-        console.log(getDate(Date.now()), err.message)
-        res.sendStatus(500)
-    }
+// Gets specific project of a user
+router.get("/userid=:userId/projectid=:projectId", async (req, res) => {
+
 })
 
-router.get("/workers/:id", (req, res) => {
-    // Show current workers
+// Gets all current workers of a project
+router.get("/:userId/:projectId/workers", async (req, res) => {
     try {
         projectController.showCurrentWorkers(req, res)
     } catch (err) {
