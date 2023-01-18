@@ -1,117 +1,118 @@
 const Profile = require("../model/Profiles")
 const Project = require("../model/Projects")
-const getDate = require("../utils/logs").getDate
-
 
 /**
- * Add a Job
+ * Create a new project for a user
  * @param {*} req 
  * @param {*} res 
  */
-async function createJob(req, res) {
-    const user = await Profile.findOne({ uuid: req.body.uuid })
-    const name = `${user.name.firstName} ${user.name.lastName}`
-    await Project.create({
-        owner: user.uuid,
-        postedBy: name,
-        description: req.body.description,
-        estSalary: req.body.estSalary,
-        estDate: req.body.estDate,
-        location: {
-            address: req.body.location.address,
-            city: req.body.location.city,
-            province: req.body.location.province
+function createProject(userId, info) {
+    return new Promise(async (resolve, reject) => {
+        const user = await Profile.findOne({ uuid: userId })
+
+        if (user === null) {
+            const error = new Error("User does not exists.")
+            error.code = "404"
+            reject(error)
         }
+
+        Project.create({
+            postedBy: user._id,
+            description: info.description,
+            estSalary: info.estSalary,
+            estDate: info.estDate,
+            location: {
+                address: info.location.address,
+                city: info.location.city,
+                province: info.location.province
+            }
+        })
+            .catch(err => reject(err))
+            .then(value => resolve(null))
     })
-
-    console.log(getDate(Date.now()), `Adding a Job to the database...`)
 }
 
 /**
- * Delete a Job
- * @param {*} req 
- * @param {*} res 
+ * Delete a project.
+ * @param {String} userId
+ * @param {String} projectId
  */
-async function deleteJob(req, res) {
-    const user = await Profile.findOne({ uuid: req.body.uuid })
-    const project = await Project.findOne({ owner: req.params.id });
-    if (project.owner === user.uuid) {
-        project.delete();
-        res.sendStatus(200)
-    } else {
-        res.status(403).send("You can only delete your own post")
-    }
+function deleteProject(userId, projectId) {
+    return new Promise(async (resolve, reject) => {
+        const user = await Profile.findOne({ uuid: userId })
+        if (user === null) {
+            const error = new Error("User does not exists.")
+            error.code = "404"
+            reject(error)
+        }
+
+        Project.findOneAndDelete({ postedBy: user._id, _id: projectId })
+            .catch(err => reject(err))
+            .then(value => resolve(null))
+    })
 }
 
 /**
- * Show all available Jobs
- * @param {*} req 
- * @param {*} res 
+ * Get all available jobs
+ * @returns projects | null 
  */
-async function getJobsFeed(req, res) {
-    const feed = await Project.find();
-    res.json(feed)
+function getProjects() {
+    return new Promise(async (resolve, reject) => {
+        const projects = await Project.find({ visibility: "Public", status: "Active" })
+            .catch(err => reject(err))
+
+        if (projects === null) return resolve(null)
+        return resolve(projects)
+    })
 }
 
 /**
- * Show user jobs
- * @param {*} req 
- * @param {*} res 
+ * Gets all user's project
+ * @param {String} userId
+ * @returns projects | null
  */
-async function getUserJobsFeed(req, res) {
-    const feed = await Project.find({ owner: req.params.uuid }).populate('owner')
-    if (feed.length != 0) {
-        res.json(feed)
-    } else {
-        res.status(403).send("No Jobs available")
-    }
+function getAllUserProjects(userId) {
+    return new Promise(async (resolve, reject) => {
+        const user = await Profile.findOne({ uuid: userId })
+            .catch(err => reject(err))
+        if (user === null) {
+            const error = new Error("User does not exists.")
+            error.code = "404"
+            reject(error)
+        }
+
+        const projects = await Project.find({ postedBy: user._id })
+            .catch(err => reject(err))
+
+        if (projects === null) return resolve(null)
+        return resolve(projects)
+    })
 }
 
 /**
- * Show current wokers
- * @param {*} req 
- * @param {*} res 
+ * Gets a specific project of a user
+ * @param {String} userId 
+ * @param {String} projectId 
+ * @returns project | null 
  */
-async function showCurrentWorkers(req, res) {
-    const post = await Project.findById(req.params.id)
-    const currentWorkers = post.currentWorkers
-    if (currentWorkers.length != 0) {
-        res.json(currentWorkers)
-    } else {
-        res.status(403).send("No workers applied")
-    }
+function getUserProject(userId, projectId) {
+    return new Promise(async (resolve, reject) => {
+        const user = await Profile.findOne({ uuid: userId })
+        if (user === null) {
+            const error = new Error("User does not exists.")
+            error.code = "404"
+            reject(error)
+        }
+
+        const project = await Project.findOne({ postedBy: user._id, _id: projectId })
+        if (project === null) return resolve(null)
+        return resolve(project)
+    })
 }
-
-/**
- * Remove a worker
- * @param {*} req 
- * @param {*} res 
- */
-async function deleteWorker(req, res) {
-    await Project.findByIdAndUpdate(
-        req.params.id, {
-        $pull: { "currentWorkers": { _id: req.body.id } }
-    },
-    )//not yet working
-}
-
-
-/**
- * Adding contractor to a job
- * @param {*} req 
- * @param {*} res 
- */
-async function addContractor(req, res) {
-
-}
-
-
 
 //Exports
-module.exports.createJob = createJob
-module.exports.deleteJob = deleteJob
-module.exports.getJobsFeed = getJobsFeed
-module.exports.getUserJobsFeed = getUserJobsFeed
-module.exports.showCurrentWorkers = showCurrentWorkers
-module.exports.deleteWorker = deleteWorker
-module.exports.addContractor = addContractor //not yet implemented
+module.exports.createProject = createProject
+module.exports.deleteProject = deleteProject
+module.exports.getProjects = getProjects
+module.exports.getUserProject = getUserProject
+module.exports.getAllUserProjects = getAllUserProjects

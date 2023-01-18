@@ -18,6 +18,16 @@ const currentWorkerSchema = new mongoose.Schema({
 })
 
 const projectSchema = new mongoose.Schema({
+    visibility: {
+        type: String,
+        enum: ["Public", "Private", "Unlisted"],
+        default: "Unlisted"
+    },
+    status: {
+        type: String,
+        enum: ["Active", "Inactive"],
+        default: "Active"
+    },
     postedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "profile",

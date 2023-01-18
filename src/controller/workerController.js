@@ -1,11 +1,26 @@
 const Worker = require("../model/Workers")
 
-// TODO: CRUD regarding worker profiles
-
-function createWorkerProfile(req, res) {
-    Worker.create({
-        profileId: req.body.uuid,
-        profession: req.body.profession,
-        about: req.body.about
+/**
+ * Creates a new worker profile
+ * @param {*} userId 
+ * @param {*} workerInfo 
+ * @returns 
+ */
+function createWorkerProfile(userId, workerInfo) {
+    return new Promise((resolve, reject) => {
+        Worker.create({
+            profileId: userId,
+            profession: workerInfo.profession,
+            about: workerInfo.about
+        })
+            .catch((err) => {
+                const error = new Error("Error creating worker profile.")
+                error.code = "500"
+                reject(error)
+            })
+            .then(resolve(null))
     })
 }
+
+// Exports
+module.exports.createWorkerProfile = createWorkerProfile
