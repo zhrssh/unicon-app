@@ -4,12 +4,16 @@ import 'package:intl/intl.dart';
 import '../constants/navigation_routes.dart';
 import '../constants/textfields.dart';
 import '../constants/top_bottom_clippings.dart';
+import 'package:http/http.dart' as http;
 
 DateTime date = DateTime.now();
 TextEditingController dateset = TextEditingController();
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
+
+  final String email = "";
+  final String password = "";
 
   @override
   Widget build(BuildContext context) {

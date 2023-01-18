@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import '../views/homepage.dart';
 import '../views/login.dart';
 import '../views/resetpw.dart';
-import '../views/signup.dart';
+import '../views/signup_v2.dart';
 import '../views/verify.dart';
 
 Future navigateToSignUpPage(context) async {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const SignUpPage()));
+      context, MaterialPageRoute(builder: (context) => const SignupPage()));
 }
 
 Future navigateToHomePage(context) async {
