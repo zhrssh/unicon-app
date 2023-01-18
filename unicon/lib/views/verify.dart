@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
+//import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
+import '../constants/textfields.dart';
 import '../constants/top_bottom_clippings.dart';
 import 'signup.dart';
 
@@ -71,7 +72,7 @@ class VerifyPage extends StatelessWidget {
                     style: TextStyle(color: Colors.white),
                   ),
                   Text(
-                    "+1 2620 0323 7631",
+                    "the email you registered.",
                     style: TextStyle(color: Colors.white),
                   ),
                 ],
@@ -79,7 +80,11 @@ class VerifyPage extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
               ),
-              PinCodeFields(
+              const SizedBox(
+                width: 300,
+                child: Email(displayedText: "6-pin Code"),
+              ),
+              /*PinCodeFields(
                 length: 4,
                 fieldBorderStyle: FieldBorderStyle.square,
                 responsive: true,
@@ -99,7 +104,7 @@ class VerifyPage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
                 onComplete: (output) {},
-              ),
+              ),*/
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 20),
               ),

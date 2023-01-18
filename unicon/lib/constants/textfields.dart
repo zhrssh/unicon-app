@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Email extends StatelessWidget {
   final String displayedText;
@@ -22,7 +23,7 @@ class Email extends StatelessWidget {
       ),
       validator: (String? value) {
         if (value == null || value.isEmpty) {
-          return 'Please enter your password';
+          return 'Please enter your email';
         }
         return null;
       },
@@ -61,6 +62,7 @@ class _PasswordState extends State<Password> {
           color: Colors.grey,
         ),
       ),
+      // controller: ,
       validator: (String? value) {
         if (value == null || value.isEmpty) {
           return 'Please enter your password';
