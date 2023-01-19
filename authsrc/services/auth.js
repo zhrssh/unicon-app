@@ -103,9 +103,7 @@ async function requestRefreshToken(req, res) {
         uuid = user._id
 
     } catch (err) {
-        const error = new Error(err.message)
-        error.code = "500"
-        throw error
+        throw err
     }
 
     // JWT Payload

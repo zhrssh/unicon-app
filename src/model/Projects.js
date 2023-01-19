@@ -1,5 +1,22 @@
 const mongoose = require("mongoose")
 
+// Creates a location with appropriate details
+const locationSchema = new mongoose.Schema({
+    address: { type: String, required: true },
+    city: { type: String, required: true },
+    province: { type: String, required: true }
+})
+
+// Creates a list of workers in the current project
+const currentWorkerSchema = new mongoose.Schema({
+    worker: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "worker",
+        unique: true,
+        sparse: true
+    }
+})
+
 // Project info
 const infoSchema = new mongoose.Schema({
     title: {
@@ -18,31 +35,13 @@ const infoSchema = new mongoose.Schema({
         type: Date
     },
     location: {
-        type: locationSchema,
-        required: true
+        type: locationSchema
     },
     currentWorkers: [{
         type: currentWorkerSchema
     }],
     contractor: {
         type: String
-    }
-})
-
-// Creates a location with appropriate details
-const locationSchema = new mongoose.Schema({
-    address: String,
-    city: String,
-    province: String
-})
-
-// Creates a list of workers in the current project
-const currentWorkerSchema = new mongoose.Schema({
-    worker: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "worker",
-        unique: true,
-        sparse: true
     }
 })
 

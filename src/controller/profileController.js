@@ -28,7 +28,6 @@ function createOrUpdateProfile(profile) {
             // Creates a new profile if the user does not exists
             createProfile(profile)
             return resolve(null)
-
         }
 
         // Updates an existing profile
@@ -67,7 +66,12 @@ function getUserProfile(uuid) {
     return new Promise(async (resolve, reject) => {
         const user = await Profile.findOne({ uuid: uuid })
 
-        if (user === null) return reject("User does not exists.")
+        if (user === null) {
+            const error = new Error("User does not exists.")
+            error.code = "404"
+            return reject(error)
+        }
+
         return resolve(user)
     })
 }
