@@ -51,8 +51,8 @@ class NavigationDrawer extends StatelessWidget {
                   children: [
                     const CircleAvatar(
                       radius: 40,
-                      backgroundImage: NetworkImage(
-                          'https://i.pinimg.com/originals/8a/63/04/8a6304985aa67c8133bf8881256d31be.jpg'),
+                      // backgroundImage: NetworkImage(
+                      //     'https://i.pinimg.com/originals/8a/63/04/8a6304985aa67c8133bf8881256d31be.jpg'),
                     ),
                     Column(
                       children: [
