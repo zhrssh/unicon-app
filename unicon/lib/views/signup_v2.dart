@@ -1,11 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:untitled/views/signup.dart';
-
 import '../constants/navigation_routes.dart';
-import '../constants/textfields.dart';
 import '../constants/top_bottom_clippings.dart';
+import 'package:http/http.dart' as http;
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -15,8 +13,18 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  // final bool emailValid = RegExp(
+  //         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+  //     .hasMatch(this);
+
   late final TextEditingController _email;
   late final TextEditingController _password;
+  late final TextEditingController _confirmPass;
+
+  final _formKeyEmail = GlobalKey<FormState>();
+  final _formKeyPassword = GlobalKey<FormState>();
+  final _formKeyConfirmPass = GlobalKey<FormState>();
+
   bool showPassword = true;
 
   // Setting initState function to control both
@@ -25,6 +33,7 @@ class _SignupPageState extends State<SignupPage> {
   void initState() {
     _email = TextEditingController();
     _password = TextEditingController();
+    _confirmPass = TextEditingController();
     super.initState();
   }
 
@@ -34,12 +43,14 @@ class _SignupPageState extends State<SignupPage> {
   void dispose() {
     _email.dispose();
     _password.dispose();
+    _confirmPass.dispose();
     super.dispose();
   }
 
   void clearText() {
     _email.clear();
     _password.clear();
+    _confirmPass.clear();
   }
 
   @override
@@ -103,191 +114,6 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     Column(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
-                              children: [
-                                const SizedBox(
-                                  width: 180,
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "First Name",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 180,
-                                  child: TextFormField(
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                    decoration: const InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      border: OutlineInputBorder(),
-                                      hintText: 'First Name',
-                                      hintStyle: TextStyle(
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    validator: (String? value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter your password';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 10),
-                            ),
-                            Column(
-                              children: [
-                                const SizedBox(
-                                  width: 180,
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "Last Name",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 180,
-                                  child: TextFormField(
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                    decoration: const InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      border: OutlineInputBorder(),
-                                      hintText: 'Last Name',
-                                      hintStyle: TextStyle(
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    validator: (String? value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter your password';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                        const Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
-                              children: [
-                                const SizedBox(
-                                  width: 180,
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "Birthdate",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 180,
-                                  child: TextFormField(
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                    decoration: const InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      border: OutlineInputBorder(),
-                                      hintText: 'Birthdate',
-                                      hintStyle: TextStyle(
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    controller: dateset,
-                                    onTap: () async {
-                                      // Below line stops keyboard from appearing
-                                      FocusScope.of(context)
-                                          .requestFocus(FocusNode());
-                                      // Show Date Picker Here
-                                      await _selectDate(context);
-                                      dateset.text =
-                                          DateFormat('yyyy/MM/dd').format(date);
-                                      //setState(() {});
-                                    },
-                                    validator: (String? value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter your password';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 10),
-                            ),
-                            Column(
-                              children: [
-                                const SizedBox(
-                                  width: 180,
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "Mobile Number",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 180,
-                                  child: TextFormField(
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                    decoration: const InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      border: OutlineInputBorder(),
-                                      hintText: 'Mobile Number',
-                                      hintStyle: TextStyle(
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    validator: (String? value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter your password';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                        ),
                         const SizedBox(
                           width: 300,
                           child: Align(
@@ -300,26 +126,32 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                         SizedBox(
                           width: 300,
-                          child: TextFormField(
-                            style: const TextStyle(
-                              color: Colors.black,
-                            ),
-                            decoration: const InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(),
-                              hintText: "Email",
-                              hintStyle: TextStyle(
-                                color: Colors.grey,
+                          child: Form(
+                            key: _formKeyEmail,
+                            child: TextFormField(
+                              style: const TextStyle(
+                                color: Colors.black,
                               ),
+                              decoration: const InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(),
+                                hintText: "Email",
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              controller: _email,
+                              validator: (String? value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your email address';
+                                }
+                                if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
+                                  return 'Please enter a valid email';
+                                }
+                                return null;
+                              },
                             ),
-                            controller: _email,
-                            validator: (String? value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your email';
-                              }
-                              return null;
-                            },
                           ),
                         ),
                         const SizedBox(
@@ -334,33 +166,93 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                         SizedBox(
                           width: 300,
-                          child: TextFormField(
-                            style: const TextStyle(
-                              color: Colors.black,
-                            ),
-                            obscureText: showPassword,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: const OutlineInputBorder(),
-                              hintText: "Password",
-                              hintStyle: const TextStyle(
-                                color: Colors.grey,
+                          child: Form(
+                            key: _formKeyPassword,
+                            child: TextFormField(
+                              style: const TextStyle(
+                                color: Colors.black,
                               ),
-                              suffixIcon: IconButton(
-                                icon: const Icon(Icons.visibility_off),
-                                color: Colors.black45,
-                                onPressed: () => setState(
-                                    () => showPassword = !showPassword),
+                              obscureText: showPassword,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                border: const OutlineInputBorder(),
+                                hintText: "Password",
+                                hintStyle: const TextStyle(
+                                  color: Colors.grey,
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    showPassword
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                  ),
+                                  color: Colors.black45,
+                                  onPressed: () => setState(
+                                      () => showPassword = !showPassword),
+                                ),
                               ),
+                              controller: _password,
+                              validator: (String? value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your password';
+                                }
+                                return null;
+                              },
                             ),
-                            controller: _password,
-                            validator: (String? value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your password';
-                              }
-                              return null;
-                            },
+                          ),
+                        ),
+
+                        // Confirm password placeholder
+                        const SizedBox(
+                          width: 300,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Confirm Password",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 300,
+                          child: Form(
+                            key: _formKeyConfirmPass,
+                            child: TextFormField(
+                              style: const TextStyle(
+                                color: Colors.black,
+                              ),
+                              obscureText: showPassword,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                border: const OutlineInputBorder(),
+                                hintText: "Confirm Password",
+                                hintStyle: const TextStyle(
+                                  color: Colors.grey,
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    showPassword
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                  ),
+                                  color: Colors.black45,
+                                  onPressed: () => setState(
+                                      () => showPassword = !showPassword),
+                                ),
+                              ),
+                              controller: _confirmPass,
+                              validator: (String? value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please confirm your password';
+                                }
+                                if (value != _password.text) {
+                                  return 'Password does not match';
+                                }
+                                return null;
+                              },
+                            ),
                           ),
                         ),
                         const Padding(
@@ -378,13 +270,21 @@ class _SignupPageState extends State<SignupPage> {
                           onPressed: () {
                             final email = _email.text;
                             final password = _password.text;
-                            // navigateToVerifyPage(context);
-                            if (kDebugMode) {
-                              print("Email: $email");
-                              print("Password: $password");
 
-                              clearText();
-                              navigateToVerifyPage(context);
+                            // Check whether inserted text for each form is valid.
+                            if (_formKeyEmail.currentState!.validate()) {
+                              if (_formKeyPassword.currentState!.validate()) {
+                                if (_formKeyConfirmPass.currentState!
+                                    .validate()) {
+                                  if (kDebugMode) {
+                                    print("Email: $email");
+                                    print("Password: $password");
+
+                                    clearText();
+                                    navigateToVerifyPage(context);
+                                  }
+                                }
+                              }
                             }
                           },
                           child: const Text(

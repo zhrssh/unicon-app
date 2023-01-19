@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 //import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
 import '../constants/textfields.dart';
 import '../constants/top_bottom_clippings.dart';
+import '../constants/navigation_routes.dart';
 import 'signup.dart';
 
 class MyApp extends StatelessWidget {
@@ -120,7 +121,9 @@ class VerifyPage extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           )),
-                      onPressed: () {},
+                      onPressed: () {
+                        navigateToLoginPage(context);
+                      },
                       icon: const Icon(Icons.arrow_back),
                       label: const Text(
                         'CONTINUE',
@@ -185,9 +188,4 @@ class VerifyPage extends StatelessWidget {
       ),
     );
   }
-}
-
-Future navigateToLoginPage(context) async {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const SignUpPage()));
 }
