@@ -13,8 +13,8 @@ router.get('/view?uuid=:uuid', async (req, res) => {
         const profile = await profileController.getUserProfile(req.params.uuid)
         return res.status(200).send(profile)
     } catch (err) {
-        console.log(getDate(Date.now()), err.message)
-        return res.sendStatus(500)
+        if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
+        return res.sendStatus(err.code)
     }
 })
 
@@ -30,8 +30,8 @@ router.post("/update", async (req, res) => {
             return res.sendStatus(401)
         }
     } catch (err) {
-        console.log(getDate(Date.now()), err.message)
-        return res.sendStatus(500)
+        if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
+        return res.sendStatus(400)
     }
 })
 
@@ -39,7 +39,8 @@ router.post("/update", async (req, res) => {
 router.post("/update/avatar", async (req, res) => {
     upload.single('avatar')(req, res, async (err) => {
         if (err) {
-            return res.status(400).send(err)
+            if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
+            return res.sendStatus(400)
         } else {
             if (req.file == undefined) return res.sendStatus(400)
 

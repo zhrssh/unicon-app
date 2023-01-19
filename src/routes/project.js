@@ -3,12 +3,6 @@ const express = require('express')
 const router = express.Router()
 const projectController = require("../controller/projectController")
 
-// Middleware
-router.use((req, res, next) => {
-    // Some code to log requests in the console
-    next()
-})
-
 // Gets all projects
 router.get('/', async (req, res) => {
     try {
@@ -16,8 +10,8 @@ router.get('/', async (req, res) => {
         if (jobs === null) return res.sendStatus(404)
         return res.status(200).send(jobs)
     } catch (err) {
-        console.log(getDate(Date.now()), err.message)
-        return res.sendStatus(500)
+        if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
+        return res.sendStatus(400)
     }
 })
 
@@ -28,65 +22,31 @@ router.get("/userid=:userId", async (req, res) => {
         if (projects === null) return res.sendStatus(404)
         return res.status(200).send(projects)
     } catch (err) {
-        console.log(getDate(Date.now()), err.message)
-        res.sendStatus(500)
+        if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
+        return res.sendStatus(500)
     }
 })
 
 // Gets specific project of a user
 router.get("/userid=:userId/projectid=:projectId", async (req, res) => {
-
-})
-
-// Gets all current workers of a project
-router.get("/:userId/:projectId/workers", async (req, res) => {
     try {
-        projectController.showCurrentWorkers(req, res)
+        const project = await projectController.getUserProject(req.params.userId, req.params.projectId)
+        if (project === null) return res.sendStatus(404)
+        return res.status(200).send(project)
     } catch (err) {
-        console.log(getDate(Date.now()), err.message)
-        res.sendStatus(500)
+        if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
+        return res.sendStatus(400)
     }
 })
 
-router.post("/", (req, res) => {
-    // Posting a Job
+// Creates a new project
+router.post("/create", async (req, res) => {
     try {
-        projectController.createJob(req, res)
-        res.sendStatus(200)
+        await projectController.createProject(req.body.uuid, req.body.info)
+        return res.sendStatus(200)
     } catch (err) {
-        console.log(getDate(Date.now()), err.message)
-        res.sendStatus(500)
-    }
-})
-
-router.post("/:id", (req, res) => {
-    // Applying to a job
-    try {
-        projectController.applyJob(req, res)
-        res.sendStatus(200)
-    } catch (err) {
-        console.log(getDate(Date.now()), err.message)
-        res.sendStatus(500)
-    }
-})
-
-router.delete("/:id", (req, res) => {
-    // Delete a Job
-    try {
-        projectController.deleteJob(req, res)
-    } catch (err) {
-        console.log(getDate(Date.now()), err.message)
-        res.sendStatus(500)
-    }
-})
-
-router.delete("/workers/:id", (req, res) => {
-    // Delete a worker
-    try {
-        projectController.deleteWorker(req, res)
-    } catch (err) {
-        console.log(getDate(Date.now()), err.message)
-        res.sendStatus(500)
+        if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
+        return res.sendStatus(400)
     }
 })
 
