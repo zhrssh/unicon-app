@@ -8,13 +8,15 @@ const nameSchema = new mongoose.Schema({
     lastName: {
         type: String,
         required: true
-    },
-    middleName: {
-        type: String
     }
 })
 
 const profileSchema = new mongoose.Schema({
+    accountType: {
+        type: String,
+        enum: ["Consumer", "Provider"],
+        required: true
+    },
     uuid: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -34,7 +36,10 @@ const profileSchema = new mongoose.Schema({
     avatar: {
         type: String,
         default: null
-    }
+    },
+    projects: [{
+        type: mongoose.Schema.Types.ObjectId,
+    }]
 })
 
 const Profile = mongoose.model("profile", profileSchema)

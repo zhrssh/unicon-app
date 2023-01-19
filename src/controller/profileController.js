@@ -1,49 +1,42 @@
 const Profile = require("../model/Profiles")
-const getDate = require("../utils/logs").getDate
 
 /**
  * Creates a new profile and store in the database
- * @param {*} req 
- * @param {*} res 
+ * @param {*} profile
+ * @returns Promise
  */
-function _createProfile(req, res) {
-    // Create a new profile
-    Profile.create({
-        uuid: req.body.uuid,
-        name: {
-            firstName: req.body.firstName,
-            lastName: req.body.lastName
-        },
-        birthDate: new Date(req.body.birthDate),
-        contactNumber: req.body.contactNumber,
+function createProfile(profile) {
+    return new Promise((resolve, reject) => {
+        Profile.create(profile)
+            .catch(err => reject(err))
+            .then(result => resolve(null))
     })
-
-    console.log(getDate(Date.now()), `Adding ${req.body.firstName} to the database...`)
 }
 
 /**
  * Creates or updates user profile from the database
- * @param {*} req 
- * @param {*} res 
+ * @param {*} profile
+ * @returns Promise
  */
-async function createOrUpdateProfile(req, res) {
-    // Checks if the user already exists
-    const profile = await Profile.findOne({ uuid: req.body.uuid })
+function createOrUpdateProfile(profile) {
+    return new Promise(async (resolve, reject) => {
+        // Checks if the user already exists
+        const user = await Profile.findOne({ uuid: profile.uuid })
 
-    if (profile == null) {
-        _createProfile(req, res)
-    } else {
-        await Profile.findOneAndUpdate({ uuid: req.body.uuid }, {
-            name: {
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-            },
-            birthDate: new Date(req.body.birthDate),
-            contactNumber: req.body.contactNumber
-        })
-    }
+        if (user == null) {
 
-    console.log(getDate(Date.now()), `Updating user: ${req.body.firstName}...`)
+            // Creates a new profile if the user does not exists
+            createProfile(profile)
+            return resolve(null)
+
+        }
+
+        // Updates an existing profile
+        user = profile
+        user.save()
+            .catch(err => reject(err))
+            .then(result => resolve(null))
+    })
 }
 
 /**
@@ -51,36 +44,35 @@ async function createOrUpdateProfile(req, res) {
  * @param {String} uuid 
  * @param {String} key 
  * @param {*} value 
+ * @returns Promise
  */
-async function updateSingle(uuid, key, value) {
-
-    await Profile.findOneAndUpdate({ uuid: uuid }, {
-        $set: {
-            [key]: value
-        }
+function updateProfileSingleKey(uuid, key, value) {
+    return new Promise((resolve, reject) => {
+        Profile.findOneAndUpdate({ uuid: uuid }, {
+            $set: {
+                [key]: value
+            }
+        })
+            .catch(err => reject(err))
+            .then(result => resolve(null))
     })
-
-    console.log(getDate(Date.now()), `Updating ${key} of ${uuid}.`)
 }
 
 /**
  * Returns the user profile of the uuid
- * @param {*} req 
- * @param {*} res 
+ * @param {*} uuid
  * @returns An object containing user profile
  */
-async function getUserProfile(req, res) {
-    try {
-        const profile = await Profile.findOne({ uuid: req.body.uuid })
-        return profile
-    } catch {
-        const error = new Error("Error finding user profle.")
-        error.code = "500"
-        throw error
-    }
+function getUserProfile(uuid) {
+    return new Promise(async (resolve, reject) => {
+        const user = await Profile.findOne({ uuid: uuid })
+
+        if (user === null) return reject("User does not exists.")
+        return resolve(user)
+    })
 }
 
 // Exports
 module.exports.createOrUpdateProfile = createOrUpdateProfile
 module.exports.getUserProfile = getUserProfile
-module.exports.updateSingle = updateSingle
+module.exports.updateProfileSingleKey = updateProfileSingleKey

@@ -7,17 +7,10 @@ const getDate = require("../utils/logs").getDate
 const upload = require("../services/upload")
 const auth = require("../services/auth")
 
-// Middleware
-router.use((req, res, next) => {
-    // Some code to log requests in the console
-    return next()
-})
-
-// Gets own profile including avatar
-router.get('/', async (req, res) => {
-    // Starting point of the /profile route
+// Gets user profile including avatar
+router.get('/view?uuid=:uuid', async (req, res) => {
     try {
-        const profile = await profileController.getUserProfile(req, res)
+        const profile = await profileController.getUserProfile(req.params.uuid)
         return res.status(200).send(profile)
     } catch (err) {
         console.log(getDate(Date.now()), err.message)
@@ -25,16 +18,17 @@ router.get('/', async (req, res) => {
     }
 })
 
-// Gets other users profile
-router.get("/view", (req, res) => {
-    return res.sendStatus(200)
-})
-
-router.post("/post", (req, res) => {
+// Updates user profile
+router.post("/update", async (req, res) => {
     // Stores or update user profile
     try {
-        profileController.createOrUpdateProfile(req, res)
-        return res.sendStatus(200)
+        // Req.body.uuid came from jwt token
+        if (req.body.uuid === req.params.uuid) {
+            await profileController.createOrUpdateProfile(req.body.profile)
+            return res.sendStatus(200)
+        } else {
+            return res.sendStatus(401)
+        }
     } catch (err) {
         console.log(getDate(Date.now()), err.message)
         return res.sendStatus(500)
@@ -42,8 +36,8 @@ router.post("/post", (req, res) => {
 })
 
 // Upload an avatar to the database
-router.post("/post/avatar", async (req, res) => {
-    upload.single('avatar')(req, res, (err) => {
+router.post("/update/avatar", async (req, res) => {
+    upload.single('avatar')(req, res, async (err) => {
         if (err) {
             return res.status(400).send(err)
         } else {
@@ -51,7 +45,7 @@ router.post("/post/avatar", async (req, res) => {
 
             // Update profile
             const uuid = auth.getUUIDFromToken(req)
-            profileController.updateSingle(uuid, "avatar", req.file.path)
+            await profileController.updateProfileSingleKey(uuid, "avatar", req.file.path)
 
             // Sends file details back to the uploader
             return res.status(200).send(req.file)

@@ -1,5 +1,34 @@
 const mongoose = require("mongoose")
 
+// Project info
+const infoSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    estSalary: {
+        type: Number,
+        required: true
+    },
+    estDate: {
+        type: Date
+    },
+    location: {
+        type: locationSchema,
+        required: true
+    },
+    currentWorkers: [{
+        type: currentWorkerSchema
+    }],
+    contractor: {
+        type: String
+    }
+})
+
 // Creates a location with appropriate details
 const locationSchema = new mongoose.Schema({
     address: String,
@@ -9,7 +38,7 @@ const locationSchema = new mongoose.Schema({
 
 // Creates a list of workers in the current project
 const currentWorkerSchema = new mongoose.Schema({
-    workerId: {
+    worker: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "worker",
         unique: true,
@@ -28,36 +57,14 @@ const projectSchema = new mongoose.Schema({
         enum: ["Active", "Inactive"],
         default: "Active"
     },
-    postedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "profile",
-        required: true
-    },
     datePosted: {
         type: Date,
         default: Date.now()
     },
-    description: {
-        type: String,
-        required: true
-    },
-    estSalary: {
-        type: Number,
-        required: true
-    },
-    estDate: {
-        type: Date
-    },
-    location: {
-        type: locationSchema,
-        required: true
-    },
-    currentWorkers: {
-        type: currentWorkerSchema
-    },
-    contractor: {
-        type: String
+    projectInfo: {
+        type: infoSchema,
     }
+    // Separate description or project info
 })
 
 const Project = mongoose.model("project", projectSchema)
