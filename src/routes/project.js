@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
         return res.status(200).send(jobs)
     } catch (err) {
         if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
-        return res.sendStatus(400)
+        return res.sendStatus(err.code)
     }
 })
 
@@ -23,7 +23,7 @@ router.get("/userid=:userId", async (req, res) => {
         return res.status(200).send(projects)
     } catch (err) {
         if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
-        return res.sendStatus(500)
+        return res.sendStatus(err.code)
     }
 })
 
@@ -35,7 +35,7 @@ router.get("/userid=:userId/projectid=:projectId", async (req, res) => {
         return res.status(200).send(project)
     } catch (err) {
         if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
-        return res.sendStatus(400)
+        return res.sendStatus(err.code)
     }
 })
 
@@ -46,7 +46,18 @@ router.post("/create", async (req, res) => {
         return res.sendStatus(200)
     } catch (err) {
         if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
-        return res.sendStatus(400)
+        return res.sendStatus(err.code)
+    }
+})
+
+// Deletes a project
+router.delete("/delete?projectid=:projectId", async (req, res) => {
+    try {
+        await projectController.deleteProject(req.body.uuid, req.params.projectId)
+        return res.sendStatus(200)
+    } catch (err) {
+        if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
+        return res.sendStatus(err.code)
     }
 })
 
