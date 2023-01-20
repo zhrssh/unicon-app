@@ -39,6 +39,7 @@ const profileSchema = new mongoose.Schema({
     },
     projects: [{
         type: mongoose.Schema.Types.ObjectId,
+        unique: true
     }]
 })
 

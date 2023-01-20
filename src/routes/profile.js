@@ -31,7 +31,11 @@ router.post("/update", async (req, res) => {
         }
     } catch (err) {
         if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
+<<<<<<< HEAD
         return res.sendStatus(400)
+=======
+        return res.sendStatus(err.code)
+>>>>>>> workers-and-projects
     }
 })
 
