@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
         print(response.statusCode);
       }
       // _loginChecker = 0;
-      print(response.body);
+      print(jsonDecode(response.body)["err"]);
     }
 
     return response.statusCode;

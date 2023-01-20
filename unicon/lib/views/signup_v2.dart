@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/views/signup.dart';
@@ -25,7 +27,38 @@ class _SignupPageState extends State<SignupPage> {
   final _formKeyPassword = GlobalKey<FormState>();
   final _formKeyConfirmPass = GlobalKey<FormState>();
 
-  bool showPassword = true;
+  bool showPassword_pw = true;
+  bool showPassword_cPW = true;
+
+  Future<int> signup(email, password) async {
+    // int _loginChecker;
+    final uri = Uri.parse('http://192.168.10.119:3000/login');
+    final response = await http.post(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, String>{
+          'email': email,
+          'password': password,
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      // _loginChecker = 1;
+    } else {
+      if (kDebugMode) {
+        print(response.statusCode);
+      }
+      // _loginChecker = 0;
+      print(response.body);
+    }
+
+    return response.statusCode;
+  }
 
   // Setting initState function to control both
   // late variables: _email, _password
@@ -172,7 +205,7 @@ class _SignupPageState extends State<SignupPage> {
                               style: const TextStyle(
                                 color: Colors.black,
                               ),
-                              obscureText: showPassword,
+                              obscureText: showPassword_pw,
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: Colors.white,
@@ -183,13 +216,13 @@ class _SignupPageState extends State<SignupPage> {
                                 ),
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    showPassword
+                                    showPassword_pw
                                         ? Icons.visibility
                                         : Icons.visibility_off,
                                   ),
                                   color: Colors.black45,
                                   onPressed: () => setState(
-                                      () => showPassword = !showPassword),
+                                      () => showPassword_pw = !showPassword_pw),
                                 ),
                               ),
                               controller: _password,
@@ -222,7 +255,7 @@ class _SignupPageState extends State<SignupPage> {
                               style: const TextStyle(
                                 color: Colors.black,
                               ),
-                              obscureText: showPassword,
+                              obscureText: showPassword_cPW,
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: Colors.white,
@@ -233,13 +266,13 @@ class _SignupPageState extends State<SignupPage> {
                                 ),
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    showPassword
+                                    showPassword_cPW
                                         ? Icons.visibility
                                         : Icons.visibility_off,
                                   ),
                                   color: Colors.black45,
-                                  onPressed: () => setState(
-                                      () => showPassword = !showPassword),
+                                  onPressed: () => setState(() =>
+                                      showPassword_cPW = !showPassword_cPW),
                                 ),
                               ),
                               controller: _confirmPass,
