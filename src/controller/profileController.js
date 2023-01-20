@@ -1,4 +1,5 @@
 const Profile = require("../model/Profiles")
+const raise = require("../utils/raise")
 
 /**
  * Creates a new profile and store in the database
@@ -8,7 +9,7 @@ const Profile = require("../model/Profiles")
 function createProfile(profile) {
     return new Promise((resolve, reject) => {
         Profile.create(profile)
-            .catch(err => reject(err))
+            .catch(err => reject(raise(err.message, 400)))
             .then(result => resolve(null))
     })
 }
@@ -31,9 +32,9 @@ function createOrUpdateProfile(profile) {
         }
 
         // Updates an existing profile
-        user = profile
+        user.update({ $set: { profile } })
         user.save()
-            .catch(err => reject(err))
+            .catch(err => reject(raise(err.message, 400)))
             .then(result => resolve(null))
     })
 }
@@ -52,7 +53,7 @@ function updateProfileSingleKey(uuid, key, value) {
                 [key]: value
             }
         })
-            .catch(err => reject(err))
+            .catch(err => reject(raise(err.message, 400)))
             .then(result => resolve(null))
     })
 }
@@ -65,13 +66,7 @@ function updateProfileSingleKey(uuid, key, value) {
 function getUserProfile(uuid) {
     return new Promise(async (resolve, reject) => {
         const user = await Profile.findOne({ uuid: uuid })
-
-        if (user === null) {
-            const error = new Error("User does not exists.")
-            error.code = "404"
-            return reject(error)
-        }
-
+        if (user === null) return reject(raise("User does not exists.", 404))
         return resolve(user)
     })
 }
