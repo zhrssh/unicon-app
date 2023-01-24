@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/constants/published_projects.dart';
+import 'package:untitled/views/calendar.dart';
+import 'package:untitled/views/location.dart';
+import 'package:untitled/views/profile.dart';
 import '../constants/navigation_drawer.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class Dashboard extends StatefulWidget {
+  const Dashboard({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<Dashboard> createState() => _DashboardState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     // final double height = MediaQuery.of(context).size.height;
