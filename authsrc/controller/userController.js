@@ -10,7 +10,7 @@ const raise = require("../utils/raise")
 
 /**
  * Creates a new user and store it in the database.
- * @param {*} userInfo
+ * @param {Object} userInfo
  * @returns {Promise<{ uuid : string, code : string }>}
  */
 function createUser(userInfo) {

@@ -15,20 +15,30 @@ router.get('/', auth.verifyAccessToken, (req, res) => {
 // Requests access and refresh token for user who wants to login
 router.post('/', async (req, res) => {
     try {
-        await auth.requestRefreshToken(req, res)
+        const userInfo = {
+            email: req.body.email,
+            password: req.body.password
+        }
+
+        const { refreshToken, accessToken } = await auth.requestRefreshToken(userInfo)
+        return res.status(200).send({
+            refreshToken: refreshToken,
+            accessToken: accessToken
+        })
     }
     catch (err) {
-        return res.status(parseInt(err.code)).send({ err: err.message })
+        return res.status(err.code).send({ err: err.message })
     }
 })
 
 // Refreshes access token by passing in the refresh token to the POST
 router.post('/token', async (req, res) => {
     try {
-        await auth.requestAccessToken(req, res)
+        const accessToken = await auth.requestAccessToken(req.body.refreshToken)
+        return res.status(200).send({ accessToken })
     }
     catch (err) {
-        return res.status(parseInt(err.code)).send({ err: err.message })
+        return res.status(err.code).send({ err: err.message })
     }
 })
 
