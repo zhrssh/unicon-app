@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../views/calendar.dart';
+import '../views/home.dart';
 import '../views/homepage.dart';
 import '../views/location.dart';
 import '../views/login.dart';
@@ -13,7 +14,12 @@ Future navigateToSignUpPage(context) async {
       context, MaterialPageRoute(builder: (context) => const SignupPage()));
 }
 
-Future navigateToHomePage(context) async {
+Future navigateToHome(context) async {
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const Home()));
+}
+
+Future navigateToDashboard(context) async {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => const Dashboard()));
 }

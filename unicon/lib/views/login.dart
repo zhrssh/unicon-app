@@ -257,7 +257,7 @@ class _LoginPageState extends State<LoginPage> {
                           print(statusCode);
                           if (statusCode == 200) {
                             clearText();
-                            navigateToHomePage(context);
+                            navigateToHome(context);
                           } else {
                             clearText();
                             // Error message (for users)
