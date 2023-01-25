@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/views/profile.dart';
 
 import 'calendar.dart';
 import 'homepage.dart';
 import 'location.dart';
+import 'profile.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

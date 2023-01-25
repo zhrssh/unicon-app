@@ -40,10 +40,10 @@ Future navigateToCalendarPage(context) async {
 
 Future navigateToLocationPage(context) async {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const LocationPage()));
+      context, MaterialPageRoute(builder: (context) => LocationPage()));
 }
 
 Future navigateToProfilePage(context) async {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const ProfilePage()));
+      context, MaterialPageRoute(builder: (context) => ProfilePage()));
 }
