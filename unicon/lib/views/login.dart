@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<int> login(email, password) async {
     // int _loginChecker;
-    final uri = Uri.parse('http://192.168.10.119:3000/login');
+    final uri = Uri.parse('http://192.168.75.119:3000/login');
     final response = await http.post(
       uri,
       headers: <String, String>{
