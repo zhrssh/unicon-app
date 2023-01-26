@@ -21,14 +21,12 @@ cd ../
 
 
 # Creates a run shell script after setup
-cd ../../scripts/linux
+cd ./scripts/linux
 touch run.sh
 echo -e "docker start mongodb
 \nwait
 \ncd ../../
-\npm2 start ecosystem.config.json
-\nwait
-\npm2 list" > run.sh
+\npm2 start ecosystem.config.json" > run.sh
 chmod +x ./run.sh
 
 # Creates a stop shell script after setup

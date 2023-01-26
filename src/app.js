@@ -15,7 +15,7 @@ const notifications = require("./routes/notifications")
 const profile = require("./routes/profile")
 
 // Default PORT
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3001
 
 // App middlewares
 app.use(morgan("dev"))
@@ -48,7 +48,7 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use("/api/feed", auth.verifyAccessToken, feed)
-app.use("/api/projects",auth.verifyAccessToken, projects)
+app.use("/api/projects", auth.verifyAccessToken, projects)
 app.use("/api/notifications", auth.verifyAccessToken, notifications)
 app.use("/api/profile", auth.verifyAccessToken, profile)
 
