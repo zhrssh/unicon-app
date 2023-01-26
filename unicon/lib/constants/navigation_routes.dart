@@ -34,9 +34,14 @@ Future navigateToLoginPage(context) async {
       context, MaterialPageRoute(builder: (context) => const LoginPage()));
 }
 
-Future navigateToVerifyPage(context) async {
+Future navigateToVerifyPage(context, String uuid) async {
+  print(uuid);
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const VerifyPage()));
+      context,
+      MaterialPageRoute(
+          builder: (context) => VerifyPage(
+                uuid: uuid,
+              )));
 }
 
 Future navigateToCalendarPage(context) async {
