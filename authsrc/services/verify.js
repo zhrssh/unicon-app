@@ -3,6 +3,8 @@ require("dotenv").config()
 const User = require("../model/Users")
 const generateKey = require("../utils/generate").generateKey
 const send = require("./email").send
+const raise = require("../utils/raise")
+const getDate = require("../utils/logs").getDate
 
 /**
  * Sets the user to "Active", indicating the email is verified. 
