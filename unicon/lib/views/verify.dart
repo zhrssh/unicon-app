@@ -1,24 +1,55 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
-import '../constants/textfields.dart';
 import '../constants/top_bottom_clippings.dart';
 import '../constants/navigation_routes.dart';
-import 'signup.dart';
+import 'package:http/http.dart' as http;
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class VerifyPage extends StatefulWidget {
+  final String uuid;
+  const VerifyPage({super.key, required this.uuid});
+
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Verification Page',
-      debugShowCheckedModeBanner: false,
-      home: VerifyPage(),
-    );
-  }
+  State<VerifyPage> createState() => _VerifyPageState(uuid);
 }
 
-class VerifyPage extends StatelessWidget {
-  const VerifyPage({super.key});
+class _VerifyPageState extends State<VerifyPage> {
+  final String _uuid;
+  _VerifyPageState(this._uuid);
+
+  late final TextEditingController _verification;
+  late final _formKeyVerification = GlobalKey<FormState>();
+  var statusCode;
+
+  @override
+  void initState() {
+    _verification = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _verification.dispose();
+    super.dispose();
+  }
+
+  void clearText() {
+    _verification.clear();
+  }
+
+  Future<int> verification(uuid, verificationCode) async {
+    // int _loginChecker;
+    String url =
+        "http://192.168.75.119:3000/register/verify/$uuid/$verificationCode";
+    final uri = Uri.parse(url);
+    final response = await http.get(
+      uri,
+    );
+    // print(url);
+    return response.statusCode;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,9 +112,38 @@ class VerifyPage extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
               ),
-              const SizedBox(
+              SizedBox(
                 width: 300,
-                child: Email(displayedText: "6-pin Code"),
+                child: Form(
+                  key: _formKeyVerification,
+                  child: TextFormField(
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
+                    decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(),
+                      hintText: "6-Pin Verification",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    controller: _verification,
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter verification code';
+                      }
+                      if (value.length > 6) {
+                        return 'Verification code exceeds character limit';
+                      }
+                      if (value.length < 6) {
+                        return 'Verification code is insufficient';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
               ),
               /*PinCodeFields(
                 length: 4,
@@ -121,8 +181,65 @@ class VerifyPage extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           )),
-                      onPressed: () {
-                        navigateToLoginPage(context);
+                      onPressed: () async {
+                        final verificationCode = _verification.text;
+
+                        if (_formKeyVerification.currentState!.validate()) {
+                          if (kDebugMode) {
+                            print("Verification code: $verificationCode");
+                          }
+                          statusCode =
+                              await verification(_uuid, verificationCode);
+                          if (statusCode == 200) {
+                            navigateToLoginPage(context);
+                            clearText();
+                            // dispose();
+                          } else {
+                            clearText();
+                            // Error message (for users)
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
+                                content: Container(
+                                  padding: const EdgeInsets.all(16),
+                                  height: 90,
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xFFC72C41),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(20),
+                                    ),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: const [
+                                      Text(
+                                        "OH NO!",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        "You've entered a wrong login information. Please try to login again.",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                        ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          // dispose();
+                        }
+                        // navigateToLoginPage(context);
                       },
                       icon: const Icon(Icons.arrow_back),
                       label: const Text(
@@ -134,6 +251,12 @@ class VerifyPage extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 20),
                   ),
+                  // Text(
+                  //   _uuid,
+                  //   style: TextStyle(
+                  //     color: Colors.white,
+                  //   ),
+                  // ),
                   SizedBox(
                     width: 300,
                     child: Row(

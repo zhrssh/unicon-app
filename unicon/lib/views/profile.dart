@@ -67,6 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   TextButton(
                     onPressed: (() {
                       navigateToHome(context);
+                      // Navigator.pop(context);
                     }),
                     child: Row(
                       children: const [
