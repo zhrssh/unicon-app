@@ -72,6 +72,26 @@ class _LoginPageState extends State<LoginPage> {
     return response.statusCode;
   }
 
+  showLoaderDialog(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      content: Row(
+        children: [
+          const CircularProgressIndicator(),
+          Container(
+              margin: const EdgeInsets.only(left: 7),
+              child: const Text("Logging in...")),
+        ],
+      ),
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -242,6 +262,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   onPressed: () async {
+                    showLoaderDialog(context);
                     final email = _email.text;
                     final password = _password.text;
 
@@ -304,6 +325,7 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       }
                     }
+                    Navigator.pop(context);
                   },
                   child: const Text(
                     'Login',
