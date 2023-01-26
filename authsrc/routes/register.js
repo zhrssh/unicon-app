@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
         userInfo.code = code.toLowerCase()
 
         // Sends verification email
-        // await verify.sendConfirmationEmail(userInfo)
+        await verify.sendConfirmationEmail(userInfo)
         return res.status(200).send({ uuid: userInfo.uuid })
 
     } catch (err) {
