@@ -2,50 +2,64 @@ require("dotenv").config()
 
 const Token = require("../model/Tokens")
 const getDate = require("../utils/logs").getDate
+const raise = require("../utils/raise")
 
 /**
  * Stores the token in the token database
- * @param {String} uuid
- * @param {String} myToken 
+ * @param {string} uuid
+ * @param {string} myToken
+ * @returns {Promise<null>}
  */
-async function storeToken(uuid, myToken) {
-    try {
+function storeToken(uuid, myToken) {
+    return new Promise(async (resolve, reject) => {
+        // Find and update
+        if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), "Updating refresh token to the database.")
         const token = await Token.findOneAndUpdate({ uuid: uuid }, { refreshToken: myToken })
 
-        if (token == null) throw null
+        // Create new token
+        if (token == null) {
+            if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), "Adding refresh token to the database.")
 
-        console.log(getDate(Date.now()), "Updating refresh token to the database.")
-    } catch (err) {
-        await Token.create({
-            uuid: uuid,
-            refreshToken: myToken
-        })
+            await Token.create({
+                uuid: uuid,
+                refreshToken: myToken
+            })
+                .catch(err => reject(raise(err.message, 500)))
+                .then(result => resolve(null))
+        }
 
-        console.log(getDate(Date.now()), "Adding refresh token to the database.")
-    }
+        return resolve(null)
+    })
 }
 
 /**
  * Finds the token from the database
- * @param {String} myToken 
- * @returns Token
+ * @param {string} myToken 
+ * @returns {Promise<mongoose.Document<Token>>}
  */
-async function getToken(myToken) {
-    try {
-        const token = await Token.findOne({ refreshToken: myToken })
-        return token
-    } catch (err) {
-        return null
-    }
+function getToken(myToken) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const token = await Token.findOne({ refreshToken: myToken })
+            return resolve(token)
+        } catch (err) {
+            return reject(raise(err.message, 500))
+        }
+    })
 }
 
 /**
  * Delets token from the database
- * @param {String} myToken 
+ * @param {string} myToken 
+ * @returns {Promise<null>}
  */
-async function deleteToken(myToken) {
-    await Token.findOneAndUpdate({ refreshToken: myToken }, { refreshToken: null })
-    console.log(getDate(Date.now()), "Deleting refresh token from the database.")
+function deleteToken(myToken) {
+    return new Promise((resolve, reject) => {
+        if (process.env.NODE_ENV === "development ") console.log(getDate(Date.now()), "Deleting refresh token from the database.")
+        Token.findOneAndUpdate({ refreshToken: myToken }, { $set: { refreshToken: null } })
+            .catch(err => reject(raise(err.message, 500)))
+            .then(result => resolve(null))
+    })
 }
 
 // Exports

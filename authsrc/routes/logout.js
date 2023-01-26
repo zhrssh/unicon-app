@@ -6,7 +6,7 @@ const auth = require("../services/auth")
 router.post('/', async (req, res) => {
     try {
         await auth.deleteRefreshToken(req.body.refreshToken)
-        return res.sendStatus(204)
+        return res.sendStatus(200)
     } catch (err) {
         return res.sendStatus(400)
     }

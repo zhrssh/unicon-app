@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<int> login(email, password) async {
     // int _loginChecker;
-    final uri = Uri.parse('http://192.168.10.119:3000/login');
+    final uri = Uri.parse('http://192.168.75.119:3000/login');
     final response = await http.post(
       uri,
       headers: <String, String>{
@@ -66,10 +66,30 @@ class _LoginPageState extends State<LoginPage> {
         print(response.statusCode);
       }
       // _loginChecker = 0;
-      print(response.body);
+      print(jsonDecode(response.body)["err"]);
     }
 
     return response.statusCode;
+  }
+
+  showLoaderDialog(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      content: Row(
+        children: [
+          const CircularProgressIndicator(),
+          Container(
+              margin: const EdgeInsets.only(left: 7),
+              child: const Text("Logging in...")),
+        ],
+      ),
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -242,6 +262,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   onPressed: () async {
+                    showLoaderDialog(context);
                     final email = _email.text;
                     final password = _password.text;
 
@@ -251,11 +272,13 @@ class _LoginPageState extends State<LoginPage> {
                           print("Email: $email");
                           print("Password: $password");
                           // print(email.runtimeType);
+
+                          // login system
                           statusCode = await login(email, password);
                           print(statusCode);
                           if (statusCode == 200) {
                             clearText();
-                            navigateToHomePage(context);
+                            navigateToHome(context);
                           } else {
                             clearText();
                             // Error message (for users)
@@ -302,6 +325,7 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       }
                     }
+                    Navigator.pop(context);
                   },
                   child: const Text(
                     'Login',

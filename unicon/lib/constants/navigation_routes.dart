@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import '../views/calendar.dart';
+import '../views/home.dart';
 import '../views/homepage.dart';
+import '../views/location.dart';
 import '../views/login.dart';
+import '../views/profile.dart';
 import '../views/resetpw.dart';
 import '../views/signup_v2.dart';
 import '../views/verify.dart';
@@ -10,9 +14,14 @@ Future navigateToSignUpPage(context) async {
       context, MaterialPageRoute(builder: (context) => const SignupPage()));
 }
 
-Future navigateToHomePage(context) async {
+Future navigateToHome(context) async {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const HomePage()));
+      context, MaterialPageRoute(builder: (context) => const Home()));
+}
+
+Future navigateToDashboard(context) async {
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const Dashboard()));
 }
 
 Future navigateToResetPWPage(context) async {
@@ -28,4 +37,19 @@ Future navigateToLoginPage(context) async {
 Future navigateToVerifyPage(context) async {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => const VerifyPage()));
+}
+
+Future navigateToCalendarPage(context) async {
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const CalendarPage()));
+}
+
+Future navigateToLocationPage(context) async {
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => LocationPage()));
+}
+
+Future navigateToProfilePage(context) async {
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => ProfilePage()));
 }

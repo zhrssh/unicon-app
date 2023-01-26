@@ -9,7 +9,7 @@ const db = require("./db/database") // For database
 
 // Server configs
 const server = express()
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 3000
 
 // Connect to the database
 const DATABASE_URL = process.env.DATABASE_URL || "mongodb://127.0.0.1:27017/uniconauth"

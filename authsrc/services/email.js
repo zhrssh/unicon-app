@@ -5,6 +5,8 @@ const handlebars = require("handlebars")
 const fs = require("fs")
 const path = require("path")
 
+const getDate = require("../utils/logs").getDate
+
 /**
  * Sends an email verification to the user
  * @param {*} req 
@@ -29,22 +31,22 @@ function _transport() {
  * @param {String} subj 
  * @param {*} dir 
  * @param {*} replc 
+ * @returns {Promise<null>}
  */
 function send(from, to, subj, dir, replc = null) {
+    return new Promise((resolve, reject) => {
+        // Checks if there is path to html
+        if (dir == null) {
+            if (process.env.NODE_ENV == "development")
+                console.log(getDate(Date.now()), "Requires path to the html.")
+            return reject("Requires path to the html.")
+        }
 
-    // Checks if there is path to html
-    if (dir == null) {
-        const error = new Error("Path to HTML is required.")
-        error.code = "500"
-        throw error
-    }
-
-    try {
         fs.readFile(path.join(__dirname, dir), { encoding: "utf-8" }, (err, html) => {
             if (err) {
-                const error = new Error("Error reading file.")
-                error.code = "500"
-                throw error
+                if (process.env.NODE_ENV == "development")
+                    console.log(getDate(Date.now()), err.message)
+                return reject(err.message)
             }
 
             // Prepares the template
@@ -60,17 +62,15 @@ function send(from, to, subj, dir, replc = null) {
                         subject: subj,
                         html: htmlToSend
                     })
+
+                resolve(null)
             } catch (err) {
-                const error = new Error(err.message)
-                error.code = "500"
-                throw error
+                if (process.env.NODE_ENV == "development")
+                    console.log(getDate(Date.now()), err.message)
+                return reject(err.message)
             }
         })
-    } catch (err) {
-        const error = new Error(err.message)
-        error.code = "500"
-        throw error
-    }
+    })
 }
 
 // Exports

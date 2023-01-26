@@ -2,6 +2,8 @@
 const express = require("express")
 const router = express.Router()
 
+const mongoose = require("mongoose")
+
 const auth = require("../services/auth")
 const verify = require("../services/verify")
 
@@ -17,13 +19,23 @@ router.get('/', auth.verifyAccessToken, (req, res) => {
 router.post('/', async (req, res) => {
     try {
         // Creates a new user
-        await createUser(req, res)
+        let userInfo = {
+            email: req.body.email,
+            password: req.body.password
+        }
+
+        // Grabs the uuid and verification code
+        const { uuid, code } = await createUser(userInfo)
+
+        userInfo.uuid = uuid
+        userInfo.code = code.toLowerCase()
 
         // Sends verification email
-        verify.sendConfirmationEmail(req, res)
+        await verify.sendConfirmationEmail(userInfo)
+        return res.status(200).send({ uuid: userInfo.uuid })
 
     } catch (err) {
-        return res.status(parseInt(err.code)).send({ err: err.message })
+        return res.status(err.code || 500).send({ err: err.message })
     }
 })
 
@@ -31,9 +43,14 @@ router.post('/', async (req, res) => {
 router.post('/verify/resend', async (req, res) => {
     try {
         // Resends the confirmation email
-        verify.resendConfirmationEmail(req, res)
+        let userInfo = {
+            email: req.body.email
+        }
+
+        await verify.resendConfirmationEmail(userInfo)
+        return res.sendStatus(200)
     } catch (err) {
-        return res.status(parseInt(err.code)).send({ err: err.message })
+        return res.status(err.code || 500).send({ err: err.message })
     }
 })
 
@@ -42,9 +59,9 @@ router.get("/verify/:uuid/:confirmationCode", async (req, res) => {
     try {
         // Verifies the user
         await verify.verifyUser(req.params.uuid, req.params.confirmationCode)
-        res.sendStatus(200)
+        return res.sendStatus(200)
     } catch (err) {
-        return res.status(parseInt(err.code)).send({ err: err.message })
+        return res.status(err.code || 500).send({ err: err.message })
     }
 })
 

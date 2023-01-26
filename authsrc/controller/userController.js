@@ -1,101 +1,112 @@
+require("dotenv").config()
+
 const bcrypt = require("bcrypt")
+const { default: mongoose } = require("mongoose")
 
 const User = require("../model/Users")
 const getDate = require("../utils/logs").getDate
 const generateKey = require("../utils/generate").generateKey
+const raise = require("../utils/raise")
 
 /**
- * Creates a new user and store it in the database
- * Sets req.body.uuid and req.body.confirmationCode
- * @param {*} req 
- * @param {*} res 
+ * Creates a new user and store it in the database.
+ * @param {Object} userInfo
+ * @returns {Promise<{ uuid : string, code : string }>}
  */
-async function createUser(req, res) {
+function createUser(userInfo) {
+    return new Promise(async (resolve, reject) => {
+        // Check if the user already exist
+        const user = await User.findOne({ email: userInfo.email }, "email")
+        if (user != null) return reject(raise("E05", 409))
 
-    // Check if the user already exist
-    const user = await User.findOne({ email: req.body.email }, "email")
+        // Validate password
+        const validate = function (v) {
+            let regex = /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{12,}$/g
+            return regex.test(v)
+        }
 
-    if (user != null) {
-        const error = new Error("Email already exists.")
-        error.code = "409"
-        throw error
-    }
+        if (validate(userInfo.password) === false) return reject(raise("E05", 409))
 
-    // Validate password
-    const validate = function (v) {
-        let regex = /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{12,}$/g
-        return regex.test(v)
-    }
+        // Encrypt password
+        const salt = await bcrypt.genSalt()
+        const hashedPassword = await bcrypt.hash(userInfo.password, salt)
 
-    if (validate(req.body.password) === false) {
-        const error = new Error("Password does not met requirements.")
-        error.code = "403"
-        throw error
-    }
+        // Create confirmation code
+        const code = generateKey(3).toLowerCase()
 
-    // Encrypt password
-    const salt = await bcrypt.genSalt()
-    const hashedPassword = await bcrypt.hash(req.body.password, salt)
+        // Create the user
+        let _userId
+        await User.create({
+            email: userInfo.email,
+            password: hashedPassword,
+            confirmationCode: code
+        }).then((user) => {
+            _userId = user._id
 
-    // Create confirmation code
-    const code = generateKey(3).toLowerCase()
+            if (process.env.NODE_ENV === "development")
+                console.log(getDate(Date.now()), `Adding ${userInfo.email} to the database...`)
 
-    // Create the user
-    let _userId
-    await User.create({
-        email: req.body.email,
-        password: hashedPassword,
-        confirmationCode: code
-    }).then((user) => {
-        _userId = user._id
-    }).catch((err) => {
-        const error = new Error("Internal server error.")
-        error.code = "500"
-        throw error
+            return resolve({ uuid: _userId, code: code })
+        }).catch((err) => reject(raise("S01", 500)))
+
+
     })
-
-    console.log(getDate(Date.now()), `Adding ${req.body.email} to the database...`)
-
-    req.body.uuid = _userId
-    req.body.confirmationCode = code
 }
 
 /**
  * Finds a user from the database using email
- * @param {String} email 
- * @returns 
+ * @param {string} email 
+ * @returns {Promise<mongoose.Document<User>>}
  */
-async function getUserByEmail(email) {
-    try {
-        const user = await User.findOne({ email: email })
-        return user
-    } catch (err) {
-        return null
-    }
+function getUserByEmail(email) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const user = await User.findOne({ email: email })
+            if (user == null) return resolve(null)
+            return resolve(user)
+        } catch (err) {
+            if (process.env.NODE_ENV === "development")
+                console.log(getDate(Date.now()), err.message)
+            return reject(raise("S01", 500))
+        }
+    })
 }
 
 /**
  * Finds a user from the database using uuid
- * @param {String} uuid
- * @returns User
+ * @param {string} uuid
+ * @returns {Promise<mongoose.Document<User>>}
  */
-async function getUserByUUID(uuid) {
-    try {
-        const user = await User.findById(uuid)
-        return user
-    } catch (err) {
-        return null
-    }
+function getUserByUUID(uuid) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const user = await User.findById(uuid)
+            if (user == null) return resolve(null)
+            return resolve(user)
+        } catch (err) {
+            if (process.env.NODE_ENV === "development")
+                console.log(getDate(Date.now()), err.message)
+            return reject(raise("S01", 500))
+        }
+    })
 }
 
-async function deleteUser(uuid) {
-    try {
-        await User.deleteOne({ id: uuid })
-    } catch (err) {
-        const error = new Error(err.message)
-        error.code = "400"
-        throw error
-    }
+/**
+ * Deletes a user from the database using uuid
+ * @param {string} uuid 
+ * @returns {Promise<null>}
+ */
+function deleteUser(uuid) {
+    return new Promise((resolve, reject) => {
+        try {
+            User.deleteOne({ id: uuid })
+            return resolve(null)
+        } catch (err) {
+            if (process.env.NODE_ENV === "development")
+                console.log(getDate(Date.now()), err.message)
+            return reject(raise("S01", 500))
+        }
+    })
 }
 
 // Exports
