@@ -31,10 +31,45 @@ const reviewSchema = new mongoose.Schema({
     }
 })
 
-const workerSchema = new mongoose.Schema({
-    worker: {
+const nameSchema = new mongoose.Schema({
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    }
+})
+
+const providerSchema = new mongoose.Schema({
+    accountType: {
+        type: String,
+        default: "provider"
+    },
+    uuid: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "profile"
+        required: true,
+        unique: true
+    },
+    name: {
+        type: nameSchema
+    },
+    birthDate: {
+        type: Date,
+        required: true
+    },
+    contactNumber: {
+        type: String,
+        required: true
+    },
+    avatar: {
+        type: String,
+        default: null
+    },
+    company: {
+        type: String,
+        default: null
     },
     profession: {
         type: String,
@@ -61,7 +96,7 @@ const workerSchema = new mongoose.Schema({
 
 }, { timestamps: true })
 
-const Worker = mongoose.model("worker", workerSchema)
+const Provider = mongoose.model("provider", providerSchema)
 
 // Exports
-module.exports = Worker
+module.exports = Provider

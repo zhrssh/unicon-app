@@ -24,8 +24,8 @@ function storeToken(uuid, myToken) {
                 uuid: uuid,
                 refreshToken: myToken
             })
-                .catch(err => reject(raise(err.message, 500)))
                 .then(result => resolve(null))
+                .catch(err => reject(raise(err.message, 500)))
         }
 
         return resolve(null)
@@ -57,8 +57,8 @@ function deleteToken(myToken) {
     return new Promise((resolve, reject) => {
         if (process.env.NODE_ENV === "development ") console.log(getDate(Date.now()), "Deleting refresh token from the database.")
         Token.findOneAndUpdate({ refreshToken: myToken }, { $set: { refreshToken: null } })
-            .catch(err => reject(raise(err.message, 500)))
             .then(result => resolve(null))
+            .catch(err => reject(raise(err.message, 500)))
     })
 }
 
