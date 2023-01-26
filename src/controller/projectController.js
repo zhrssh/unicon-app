@@ -1,24 +1,24 @@
-const Profile = require("../model/Profiles")
+const Client = require("../model/Clients")
 const Project = require("../model/Projects")
 const raise = require("../utils/raise")
 
 /**
  * Create a new project for a user
- * @param {*} userId
- * @param {*} info
- * @returns Promise
+ * @param {string} uuid
+ * @param {Object} info
+ * @returns {Promise<null>}
  */
-function createProject(userId, info) {
+function createProject(uuid, info) {
     return new Promise(async (resolve, reject) => {
-        const user = await Profile.findOne({ uuid: userId })
-        if (user === null) return reject(raise("User does not exists", 404))
+        const client = await Client.findOne({ uuid: uuid })
+        if (client === null) return reject(raise("User does not exists", 404))
 
         // Creates the project info then add the project id to the user
         Project.create(info)
             .catch(err => reject(raise(err.message, 400)))
             .then(value => {
-                user.projects.push(value._id)
-                user.save()
+                client.projects.push(value._id)
+                client.save()
                     .catch(err => reject(raise(err.message, 400)))
                     .then(value => resolve(null))
             })
@@ -27,13 +27,13 @@ function createProject(userId, info) {
 
 /**
  * Delete a project.
- * @param {String} userId
- * @param {String} projectId
- * @returns
+ * @param {string} uuid
+ * @param {string} projectId
+ * @returns {Promise<null>}
  */
-function deleteProject(userId, projectId) {
+function deleteProject(uuid, projectId) {
     return new Promise(async (resolve, reject) => {
-        await Profile.updateOne({ uuid: userId }, { $pull: { projects: projectId } })
+        await Client.updateOne({ uuid: uuid }, { $pull: { projects: projectId } })
             .catch(err => reject(raise(err.message, 400)))
             .then(result => resolve(null))
     })
@@ -41,48 +41,48 @@ function deleteProject(userId, projectId) {
 
 /**
  * Get all available jobs
- * @returns projects | null 
+ * @returns {Promise<mongoose.Document<Project> | null>} 
  */
 function getProjects() {
     return new Promise(async (resolve, reject) => {
         await Project.find({ visibility: "Public", status: "Active" })
-            .catch(err => reject(raise(err.message, 400)))
             .then(projects => {
                 if (projects === null) return resolve(null)
                 return resolve(projects)
             })
+            .catch(err => reject(raise(err.message, 400)))
     })
 }
 
 /**
  * Gets all user's project
- * @param {String} userId
- * @returns projects | null
+ * @param {string} uuid
+ * @returns {Promise<mongoose.Document<Project> | null>}
  */
-function getAllUserProjects(userId) {
+function getAllClientProjects(uuid) {
     return new Promise(async (resolve, reject) => {
-        await Profile.findOne({ uuid: userId })
-            .catch(err => reject(raise(err.message, 400)))
+        await Client.findOne({ uuid: uuid }).populate("projects")
             .then(result => {
-                if (result === null) return reject(raise("User does not exists.", 404))
+                if (result === null) return reject(raise("E03", 404))
                 if (result.projects.length <= 0) return resolve(null)
                 return resolve(result.projects)
             })
+            .catch(err => reject(raise(err.message, 400)))
     })
 }
 
 /**
  * Gets a specific project of a user
- * @param {String} userId 
+ * @param {String} uuid 
  * @param {String} projectId 
- * @returns project | null 
+ * @returns {Promise<mongoose.Document<Project | null>}
  */
-function getUserProject(userId, projectId) {
+function getClientProject(uuid, projectId) {
     return new Promise(async (resolve, reject) => {
-        await Profile.findOne({ uuid: userId })
+        await Client.findOne({ uuid: uuid })
             .catch(err => reject(raise(err.message, 400)))
             .then(async user => {
-                if (user === null) return reject(raise("User does not exists.", 404))
+                if (user === null) return reject(raise("E03", 404))
                 const project = await user.get({ projects: projectId })
                 return resolve(project)
             })
@@ -93,5 +93,5 @@ function getUserProject(userId, projectId) {
 module.exports.createProject = createProject
 module.exports.deleteProject = deleteProject
 module.exports.getProjects = getProjects
-module.exports.getUserProject = getUserProject
-module.exports.getAllUserProjects = getAllUserProjects
+module.exports.getUserProject = getClientProject
+module.exports.getAllUserProjects = getAllClientProjects

@@ -1,0 +1,16 @@
+{
+    "apps": [
+        {
+            "name": "auth-server",
+            "script": "./authsrc/app.js",
+            "watch": true,
+            "exec_mode": "cluster"
+        },
+        {
+            "name": "rsc-server",
+            "script": "./src/app.js",
+            "watch": true,
+            "exec_mode": "cluster"
+        }
+    ]
+}

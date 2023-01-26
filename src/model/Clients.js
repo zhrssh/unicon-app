@@ -14,8 +14,7 @@ const nameSchema = new mongoose.Schema({
 const profileSchema = new mongoose.Schema({
     accountType: {
         type: String,
-        enum: ["Consumer", "Provider"],
-        required: true
+        default: "client"
     },
     uuid: {
         type: mongoose.Schema.Types.ObjectId,
@@ -37,13 +36,20 @@ const profileSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    company: {
+        type: String,
+        default: null
+    },
+    interests: [{
+        type: String
+    }],
     projects: [{
         type: mongoose.Schema.Types.ObjectId,
         unique: true
     }]
 })
 
-const Profile = mongoose.model("profile", profileSchema)
+const Client = mongoose.model("client", profileSchema)
 
 // Exports
-module.exports = Profile
+module.exports = Client
