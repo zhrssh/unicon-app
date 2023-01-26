@@ -4,6 +4,11 @@ wait
 docker run -d -p 27017:27017 --name=mongodb mongo -v "./db/data"
 wait
 docker stop mongodb
+wait
+
+# Installs pm2 package globally
+npm install pm2 -g
+wait
 
 # Sets up packages in nodejs servers
 cd ../../authsrc
@@ -16,22 +21,22 @@ cd ../
 
 
 # Creates a run shell script after setup
-cd ./scripts/linux
+cd ../../scripts/linux
 touch run.sh
 echo -e "docker start mongodb
-\n wait
-\ncd ./../../authsrc
-\nnohup npm run dev > auth.log &
-\ncd ./../src
-\nnohup npm run dev > rsc.log &" > run.sh
-wait
+\nwait
+\ncd ../../
+\npm2 start ecosystem.config.json
+\nwait
+\npm2 list" > run.sh
 chmod +x ./run.sh
 
 # Creates a stop shell script after setup
 touch stop.sh
-echo -e "pkill -f 'nohup npm run dev'
-\ndocker stop mongodb
-\nlsof -t -i:3000 | xargs kill -9
+echo -e "docker stop mongodb
 \nwait
-\nlsof -t -i:3001 | xargs kill -9" > stop.sh
+\ncd ../../
+\npm2 stop ecosystem.config.json
+\nwait
+\npm2 delete ecosystem.config.json" > stop.sh
 chmod +x ./stop.sh
