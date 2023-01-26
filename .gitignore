@@ -9,6 +9,8 @@ lerna-debug.log*
 # Run and stop scripts
 run.sh
 stop.sh
+run.bat
+stop.bat
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
