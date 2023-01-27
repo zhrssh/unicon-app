@@ -81,7 +81,7 @@ class _DashboardState extends State<Dashboard> {
             ),
           ),
           backgroundColor: Colors.grey[50],
-          drawer: const NavigationDrawer(),
+          drawer: const CustomNavigationDrawer(),
           body: Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 15.0,

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'navigation_routes.dart';
 import 'top_bottom_clippings.dart';
 
-class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({super.key});
+class CustomNavigationDrawer extends StatelessWidget {
+  const CustomNavigationDrawer({super.key});
 
   @override
   Widget build(BuildContext context) => Drawer(
@@ -83,12 +83,11 @@ class NavigationDrawer extends StatelessWidget {
                             height: 15,
                             width: 150,
                             child: Text(
-                              "Edit Profile",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color.fromARGB(150, 78, 112, 67)
-                                  // fontWeight: FontWeight.bold,
-                                  ),
+                              "andrewtate@gmail.com",
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.black38
+                                      // fontWeight: FontWeight.bold,
+                                      ),
                             ),
                           ),
                         ),
