@@ -59,13 +59,14 @@ function verifyUser(uuid, confirmationCode) {
         }
 
         // Send email
-        await send(config.from, config.to, config.subject, dir, replacements)
+        send(config.from, config.to, config.subject, dir, replacements)
             .catch(err => {
                 if (process.env.NODE_ENV == "development")
                     console.log(getDate(Date.now()), err.message)
                 return reject(raise("S01", 500))
             })
-            .then(result => resolve(null))
+
+        resolve(null)
     })
 }
 

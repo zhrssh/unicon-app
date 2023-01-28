@@ -13,6 +13,7 @@ const feed = require("./routes/feed")
 const projects = require("./routes/project")
 const notifications = require("./routes/notifications")
 const client = require("./routes/client")
+const provider = require("./routes/provider")
 
 // Default PORT
 const PORT = process.env.PORT || 3001
@@ -51,6 +52,7 @@ app.use("/api/feed", auth.verifyAccessToken, feed)
 app.use("/api/projects", auth.verifyAccessToken, projects)
 app.use("/api/notifications", auth.verifyAccessToken, notifications)
 app.use("/api/client", auth.verifyAccessToken, client)
+app.use("/api/provider", auth.verifyAccessToken, provider)
 
 // When accessing non-existing routes
 app.all('*', (req, res) => {

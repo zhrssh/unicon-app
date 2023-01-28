@@ -6,6 +6,9 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+# Ignores the upload folder
+**/src/uploads
+
 # Run and stop scripts
 run.sh
 stop.sh
