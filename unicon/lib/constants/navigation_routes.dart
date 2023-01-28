@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../views/calendar.dart';
 import '../views/home.dart';
-import '../views/homepage.dart';
+import '../views/dashboard.dart';
 import '../views/location.dart';
 import '../views/login.dart';
 import '../views/profile.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'signup.dart';
+// import 'signup.dart';
 import 'resetpw.dart';
 import 'settingsPages/notifications.dart';
 
@@ -198,12 +198,12 @@ class TopClipPath extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
-Future navigateToSignUpPage(context) async {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const SignUpPage()));
-}
+// Future navigateToSignUpPage(context) async {
+//   Navigator.push(
+//       context, MaterialPageRoute(builder: (context) => const SignUpPage()));
+// }
 
-Future navigateToResetPWPage(context) async {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const ResetPWPage()));
-}
+// Future navigateToResetPWPage(context) async {
+//   Navigator.push(
+//       context, MaterialPageRoute(builder: (context) => const ResetPWPage()));
+// }
