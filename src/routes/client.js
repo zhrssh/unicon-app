@@ -21,6 +21,36 @@ router.get('/view?uuid=:uuid', async (req, res) => {
     }
 })
 
+// Registers new user client
+router.post("/register", async (req, res) => {
+    try {
+        // Client info
+        const clientInfo = {
+            uuid: req.body.uuid,
+            name: {
+                firstName: req.body.name.firstName,
+                lastName: req.body.name.lastName,
+                middleName: req.body.name.middleName
+            },
+            birthDate: req.body.birthDate,
+            contactNumber: req.body.contactNumber,
+            location: {
+                address: req.body.location.address,
+                city: req.body.location.city,
+                province: req.body.location.province
+            },
+            company: req.body.company
+        }
+
+        // Creates the client profile
+        await clientController.createClient(clientInfo)
+
+        return res.sendStatus(200)
+    } catch (err) {
+        return res.status(err.code).send({ err: err.message })
+    }
+})
+
 // Updates user client
 router.post("/update", async (req, res) => {
     // Stores or update user client

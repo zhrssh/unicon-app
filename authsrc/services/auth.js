@@ -201,3 +201,4 @@ module.exports.requestAccessToken = requestAccessToken
 module.exports.deleteRefreshToken = deleteRefreshToken
 module.exports.requestRefreshToken = requestRefreshToken
 module.exports.getUUIDFromToken = getUUIDFromToken
+module.exports.generateAccessToken = generateAccessToken

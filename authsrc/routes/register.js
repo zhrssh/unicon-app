@@ -1,3 +1,5 @@
+require("dotenv").config
+
 // Route for app.js
 const express = require("express")
 const router = express.Router()
@@ -59,7 +61,17 @@ router.get("/verify/:uuid/:confirmationCode", async (req, res) => {
     try {
         // Verifies the user
         await verify.verifyUser(req.params.uuid, req.params.confirmationCode)
-        return res.sendStatus(200)
+
+        // JWT Payload
+        const data = {
+            iss: process.env.ISS,
+            uuid: req.params.uuid,
+            status: user.status,
+            role: user.role
+        }
+
+        const token = auth.generateAccessToken(data)
+        return res.status(200).send({ accessToken: token })
     } catch (err) {
         return res.status(err.code || 500).send({ err: err.message })
     }
