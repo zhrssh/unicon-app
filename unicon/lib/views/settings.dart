@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'signup.dart';
+import 'settingsPages/changepw.dart';
+import 'signup_v2.dart';
 import 'resetpw.dart';
 import 'settingsPages/notifications.dart';
 
@@ -40,7 +41,7 @@ class SettingsPage extends StatelessWidget {
                 Stack(
                   children: [
                     ClipPath(
-                      clipper: TopClipPath(),
+                      clipper: SettingsTopClipPath(),
                       child: Container(
                         color: const Color.fromARGB(255, 84, 122, 70),
                         height: 180,
@@ -78,7 +79,7 @@ class SettingsPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    height: 225,
+                    height: 175,
                     width: MediaQuery.of(context).size.width - 10,
                     decoration: BoxDecoration(
                         color: Colors.white,
@@ -117,7 +118,13 @@ class SettingsPage extends StatelessWidget {
                         ListTile(
                           leading: const Icon(Icons.password_rounded),
                           title: const Text("Change Password"),
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ChangePasswordPage()));
+                          },
                         ),
                       ],
                     )),
@@ -181,7 +188,7 @@ class SettingsPage extends StatelessWidget {
   }
 }
 
-class TopClipPath extends CustomClipper<Path> {
+class SettingsTopClipPath extends CustomClipper<Path> {
   var radius = 5.0;
   @override
   Path getClip(Size size) {
