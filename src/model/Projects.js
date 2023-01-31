@@ -35,7 +35,8 @@ const infoSchema = new mongoose.Schema({
         type: Date
     },
     location: {
-        type: locationSchema
+        type: locationSchema,
+        required: true
     },
     currentWorkers: [{
         type: currentWorkerSchema
