@@ -14,13 +14,19 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  late BuildContext _context;
+
+  void setContext(BuildContext context) {
+    _context = context;
+  }
+
   late final TextEditingController _email;
   late final TextEditingController _password;
 
   final _formKeyEmail = GlobalKey<FormState>();
   final _formKeyPassword = GlobalKey<FormState>();
 
-  var statusCode;
+  late http.Response response;
   bool showPassword = true;
 
   @override
@@ -42,9 +48,48 @@ class _LoginPageState extends State<LoginPage> {
     _password.clear();
   }
 
-  Future<int> login(email, password) async {
+  Future<void> showLoginErrorSnackBar(String message) async {
+    ScaffoldMessenger.of(_context).showSnackBar(SnackBar(
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      content: Container(
+        padding: const EdgeInsets.all(16),
+        height: 90,
+        decoration: const BoxDecoration(
+          color: Color(0xFFC72C41),
+          borderRadius: BorderRadius.all(
+            Radius.circular(20),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "OH NO!",
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.white,
+              ),
+            ),
+            Text(
+              message,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+    ));
+  }
+
+  Future<http.Response> login(email, password) async {
     // int _loginChecker;
-    final uri = Uri.parse('http://192.168.75.119:3000/login');
+    final uri = Uri.parse('http://localhost:3000/login');
     final response = await http.post(
       uri,
       headers: <String, String>{
@@ -59,20 +104,22 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     if (response.statusCode == 200) {
-      print(response.body);
+      if (kDebugMode) {
+        print(response.body);
+      }
       // _loginChecker = 1;
     } else {
       if (kDebugMode) {
         print(response.statusCode);
+        print(jsonDecode(response.body)["err"]);
       }
       // _loginChecker = 0;
-      print(jsonDecode(response.body)["err"]);
     }
 
-    return response.statusCode;
+    return response;
   }
 
-  showLoaderDialog(BuildContext context) {
+  Future<void> showLoaderDialog() async {
     AlertDialog alert = AlertDialog(
       content: Row(
         children: [
@@ -83,9 +130,10 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
+
     showDialog(
       barrierDismissible: false,
-      context: context,
+      context: _context,
       builder: (BuildContext context) {
         return alert;
       },
@@ -240,7 +288,8 @@ class _LoginPageState extends State<LoginPage> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {
-                        navigateToResetPWPage(context);
+                        setContext(context);
+                        navigateToResetPWPage(_context);
                       },
                       child: const Text(
                         "Forgot Password?",
@@ -261,76 +310,45 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(50),
                     ),
                   ),
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(fontSize: 20),
+                  ),
                   onPressed: () async {
-                    showLoaderDialog(context);
+                    setContext(context);
+                    showLoaderDialog();
                     final email = _email.text;
                     final password = _password.text;
 
                     if (_formKeyEmail.currentState!.validate()) {
                       if (_formKeyPassword.currentState!.validate()) {
+                        response = await login(email, password);
+
+                        // Removes the "Logging in" dialog
+                        Navigator.pop(_context);
+
+                        // If the login succeed
+                        if (response.statusCode == 200) {
+                          clearText();
+                          // TODO: Use the access token to check if the resource server is available before navigating to home page
+                          navigateToHome(_context);
+                        } else if (response.statusCode == 401) {
+                          showLoginErrorSnackBar(
+                              "You've entered the wrong login information. Please try again.");
+                        } else {
+                          showLoginErrorSnackBar(
+                              "We've encountered an unexpected error. Please try again later.");
+                        }
+
+                        // Prints user input and response status code
                         if (kDebugMode) {
                           print("Email: $email");
                           print("Password: $password");
-                          // print(email.runtimeType);
-
-                          // login system
-                          statusCode = await login(email, password);
-                          print(statusCode);
-                          if (statusCode == 200) {
-                            clearText();
-                            navigateToHome(context);
-                          } else {
-                            clearText();
-                            // Error message (for users)
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                behavior: SnackBarBehavior.floating,
-                                backgroundColor: Colors.transparent,
-                                elevation: 0,
-                                content: Container(
-                                  padding: const EdgeInsets.all(16),
-                                  height: 90,
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xFFC72C41),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(20),
-                                    ),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
-                                        "OH NO!",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        "You've entered a wrong login information. Please try to login again.",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                        ),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
+                          print(response.statusCode);
                         }
                       }
                     }
-                    Navigator.pop(context);
                   },
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(fontSize: 20),
-                  ),
                 ),
                 SizedBox(
                   width: 300,
@@ -343,7 +361,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       TextButton(
                         onPressed: () {
-                          navigateToSignUpPage(context);
+                          navigateToRegTypePage(context);
                         },
                         child: const Text(
                           "    Create Now",

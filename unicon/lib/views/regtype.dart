@@ -7,19 +7,19 @@ import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MaterialApp(
-    home: Login2Page(),
+    home: RegTypePage(),
     debugShowCheckedModeBanner: false,
   ));
 }
 
-class Login2Page extends StatefulWidget {
-  const Login2Page({super.key});
+class RegTypePage extends StatefulWidget {
+  const RegTypePage({super.key});
 
   @override
-  State<Login2Page> createState() => _LoginPage2State();
+  State<RegTypePage> createState() => _RegTypePageState();
 }
 
-class _LoginPage2State extends State<Login2Page> {
+class _RegTypePageState extends State<RegTypePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +76,11 @@ class _LoginPage2State extends State<Login2Page> {
             children: [
               InkWell(
                 onTap: (() {
-                  print("Find Services");
+                  /** TODO: Tell flutter that the user is registering as a client.
+                   *  We can use enumerations { Account Type: Client, Provider }.
+                   *  This is to avoid using multiple pages for the same purpose.
+                   */
+                  navigateToSignUpPage(context);
                 }),
                 child: Container(
                   height: 112,
@@ -126,7 +130,11 @@ class _LoginPage2State extends State<Login2Page> {
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0)),
           InkWell(
             onTap: () {
-              print("Offer Services");
+              /** TODO: Tell flutter that the user is registering as a client.
+                   *  We can use enumerations { Account Type: Client, Provider }.
+                   *  This is to avoid using multiple pages for the same purpose.
+                   */
+              navigateToSignUpPage(context);
             },
             child: Container(
               height: 112,
@@ -171,7 +179,7 @@ class _LoginPage2State extends State<Login2Page> {
               padding: EdgeInsets.symmetric(vertical: 7, horizontal: 0)),
           InkWell(
             onTap: () {
-              print("Proceed to Login.");
+              navigateToLoginPage(context);
             },
             child: const Text(
               "Already have an account?",

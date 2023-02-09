@@ -8,6 +8,7 @@ import '../views/profile.dart';
 import '../views/resetpw.dart';
 import '../views/signup_v2.dart';
 import '../views/verify.dart';
+import '../views/regtype.dart';
 
 Future navigateToSignUpPage(context) async {
   Navigator.push(
@@ -51,10 +52,15 @@ Future navigateToCalendarPage(context) async {
 
 Future navigateToLocationPage(context) async {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => LocationPage()));
+      context, MaterialPageRoute(builder: (context) => const LocationPage()));
 }
 
 Future navigateToProfilePage(context) async {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => ProfilePage()));
+      context, MaterialPageRoute(builder: (context) => const ProfilePage()));
+}
+
+Future navigateToRegTypePage(context) async {
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const RegTypePage()));
 }
