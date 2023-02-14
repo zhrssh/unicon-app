@@ -1,7 +1,7 @@
 {
   "name": "unicon-app",
   "version": "1.0.0",
-  "description": "- An application designed to help our local contractors in the construction industry.\r ## How to Run:\r 1. **Run MongoDB Server**\r     - Start a local or remote MongoDB server.\r     - Copy the uri+db to the dot-env file of each app directory. (e.g. `mongodb://localhost:27017/mydb`)\r     - ***NOTE: Make sure dot-env file has the following variables:***",
+  "description": "- An application designed to help our local contractors in the construction industry.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "devauth": "nodemon ./auth_server/app.js",
