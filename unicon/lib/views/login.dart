@@ -87,33 +87,42 @@ class _LoginPageState extends State<LoginPage> {
     ));
   }
 
+  // Logins to the server
   Future<http.Response> login(email, password) async {
     // int _loginChecker;
     final uri = Uri.parse('http://localhost:3000/login');
-    final response = await http.post(
-      uri,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(
-        <String, String>{
-          'email': email,
-          'password': password,
-        },
-      ),
-    );
+    late final http.Response response;
 
-    if (response.statusCode == 200) {
-      if (kDebugMode) {
-        print(response.body);
-      }
-      // _loginChecker = 1;
-    } else {
-      if (kDebugMode) {
-        print(response.statusCode);
-        print(jsonDecode(response.body)["err"]);
-      }
-      // _loginChecker = 0;
+    try {
+      response = await http.post(
+        uri,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          <String, String>{
+            'email': email,
+            'password': password,
+          },
+        ),
+      );
+    } catch (err) {
+      response = http.Response(err.toString(), 500);
+    }
+
+    return response;
+  }
+
+  // Checks if the resource server is active
+  Future<http.Response> checkRscServer(accessToken) async {
+    final uri = Uri.parse("http://localhost:3001/api");
+    late final http.Response response;
+
+    try {
+      response = await http.get(uri,
+          headers: <String, String>{"Authorization": "Bearer $accessToken"});
+    } catch (err) {
+      response = http.Response(err.toString(), 500);
     }
 
     return response;
@@ -324,27 +333,53 @@ class _LoginPageState extends State<LoginPage> {
                       if (_formKeyPassword.currentState!.validate()) {
                         response = await login(email, password);
 
-                        // Removes the "Logging in" dialog
-                        Navigator.pop(_context);
-
-                        // If the login succeed
-                        if (response.statusCode == 200) {
-                          clearText();
-                          // TODO: Use the access token to check if the resource server is available before navigating to home page
-                          navigateToHome(_context);
-                        } else if (response.statusCode == 401) {
-                          showLoginErrorSnackBar(
-                              "You've entered the wrong login information. Please try again.");
-                        } else {
-                          showLoginErrorSnackBar(
-                              "We've encountered an unexpected error. Please try again later.");
-                        }
-
                         // Prints user input and response status code
                         if (kDebugMode) {
                           print("Email: $email");
                           print("Password: $password");
-                          print(response.statusCode);
+                          print("Login Status: ${response.statusCode}");
+                        }
+
+                        switch (response.statusCode) {
+                          case 200: // If the login succeeds
+                            clearText();
+
+                            // Will use the received access token to communicate with the server
+                            final body = jsonDecode(response.body);
+                            final accessToken = body["accessToken"];
+
+                            // TODO: Store refreshToken somewhere in the device
+                            final refreshToken = body["refreshToken"];
+
+                            // Checks if the resource server is active
+                            response = await checkRscServer(accessToken);
+                            if (kDebugMode) {
+                              print(
+                                  "Rsc Server Status: ${response.statusCode}");
+                              print(response.body);
+                            }
+
+                            // Removes the "Logging in" dialog
+                            Navigator.pop(_context);
+
+                            if (response.statusCode != 200) {
+                              return showLoginErrorSnackBar(
+                                  "We've encountered an unexpected error. Please try again later.");
+                            } else {
+                              return navigateToHome(_context);
+                            }
+
+                          case 401:
+                            // Removes the "Logging in" dialog
+                            Navigator.pop(_context);
+                            return showLoginErrorSnackBar(
+                                "You've entered the wrong login information. Please try again.");
+
+                          default:
+                            // Removes the "Logging in" dialog
+                            Navigator.pop(_context);
+                            return showLoginErrorSnackBar(
+                                "We've encountered an unexpected error. Please try again later.");
                         }
                       }
                     }

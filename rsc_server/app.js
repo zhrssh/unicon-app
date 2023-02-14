@@ -16,7 +16,7 @@ const client = require("./routes/client")
 const provider = require("./routes/provider")
 
 // Default PORT
-const PORT = process.env.PORT || 3001
+const PORT = process.env.RSC_PORT || 3001
 
 // App middlewares
 app.use(morgan("dev"))
@@ -24,7 +24,7 @@ app.use(helmet()) // For improved http security (src: https://www.npmjs.com/pack
 app.use(express.json()) // Use JSON
 
 // Connect to the database
-const DATABASE_URL = process.env.DATABASE_URL || "mongodb://127.0.0.1:27017/unicondb"
+const DATABASE_URL = process.env.RSCDB_URL || "mongodb://127.0.0.1:27017/unicondb"
 const DB_OPTIONS = {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -42,7 +42,7 @@ db.connectDb(DATABASE_URL, DB_OPTIONS)
     })
 
 // Starting point of the server
-app.get('/', (req, res) => {
+app.get('/api/', auth.verifyAccessToken, (req, res) => {
     // If connected, proceed to login
     res.status(200).send({ 'body': 'Hello, there!' })
 })
