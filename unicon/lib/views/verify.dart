@@ -9,19 +9,17 @@ import 'package:http/http.dart' as http;
 
 class VerifyPage extends StatefulWidget {
   final String uuid;
-  const VerifyPage({super.key, required this.uuid});
+  final Map<String, dynamic> data;
+  const VerifyPage({super.key, required this.uuid, required this.data});
 
   @override
-  State<VerifyPage> createState() => _VerifyPageState(uuid);
+  State<VerifyPage> createState() => _VerifyPageState();
 }
 
 class _VerifyPageState extends State<VerifyPage> {
-  final String _uuid;
-  _VerifyPageState(this._uuid);
-
   late final TextEditingController _verification;
   late final _formKeyVerification = GlobalKey<FormState>();
-  var statusCode;
+  late final int? statusCode;
 
   @override
   void initState() {
@@ -39,16 +37,17 @@ class _VerifyPageState extends State<VerifyPage> {
     _verification.clear();
   }
 
-  Future<int> verification(uuid, verificationCode) async {
+  Future<http.Response> verification(uuid, verificationCode) async {
     // int _loginChecker;
     String url =
-        "http://192.168.75.119:3000/register/verify/$uuid/$verificationCode";
+        "http://localhost:3000/register/verify/$uuid/$verificationCode";
     final uri = Uri.parse(url);
     final response = await http.get(
       uri,
     );
-    // print(url);
-    return response.statusCode;
+
+    if (kDebugMode) print(response.body);
+    return response;
   }
 
   @override
@@ -181,65 +180,68 @@ class _VerifyPageState extends State<VerifyPage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           )),
-                      onPressed: () async {
+                      onPressed: () {
                         final verificationCode = _verification.text;
 
                         if (_formKeyVerification.currentState!.validate()) {
                           if (kDebugMode) {
                             print("Verification code: $verificationCode");
                           }
-                          statusCode =
-                              await verification(_uuid, verificationCode);
-                          if (statusCode == 200) {
-                            navigateToLoginPage(context);
-                            clearText();
-                            // dispose();
-                          } else {
-                            clearText();
-                            // Error message (for users)
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                behavior: SnackBarBehavior.floating,
-                                backgroundColor: Colors.transparent,
-                                elevation: 0,
-                                content: Container(
-                                  padding: const EdgeInsets.all(16),
-                                  height: 90,
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xFFC72C41),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(20),
+
+                          verification(widget.uuid, verificationCode)
+                              .then((response) {
+                            if (response.statusCode == 200) {
+                              var jsonBody = jsonDecode(response.body);
+                              widget.data.addAll(
+                                  {"accessToken": jsonBody["accessToken"]});
+                              navigateToRegisterPage(context, widget.data);
+                              clearText();
+                              // dispose();
+                            } else {
+                              clearText();
+                              // Error message (for users)
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: Colors.transparent,
+                                  elevation: 0,
+                                  content: Container(
+                                    padding: const EdgeInsets.all(16),
+                                    height: 90,
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFFC72C41),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(20),
+                                      ),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: const [
+                                        Text(
+                                          "OH NO!",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text(
+                                          "You've entered a wrong login information. Please try to login again.",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                          ),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
-                                        "OH NO!",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        "You've entered a wrong login information. Please try to login again.",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                        ),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
-                                  ),
                                 ),
-                              ),
-                            );
-                          }
-                          // dispose();
+                              );
+                            }
+                          });
                         }
-                        // navigateToLoginPage(context);
                       },
                       icon: const Icon(Icons.arrow_back),
                       label: const Text(

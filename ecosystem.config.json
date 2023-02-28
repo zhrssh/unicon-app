@@ -4,12 +4,26 @@
             "name": "auth-server",
             "script": "./auth_server/app.js",
             "watch": true,
+            "watch_options": {
+                "followSymlinks": false
+            },
+            "ignore_watch": [
+                "unicon",
+                "rsc_server"
+            ],
             "exec_mode": "cluster"
         },
         {
             "name": "rsc-server",
             "script": "./rsc_server/app.js",
             "watch": true,
+            "watch_options": {
+                "followSymlinks": false
+            },
+            "ignore_watch": [
+                "unicon",
+                "auth-server"
+            ],
             "exec_mode": "cluster"
         }
     ]

@@ -5,22 +5,81 @@ import '../constants/navigation_routes.dart';
 import '../constants/top_bottom_clippings.dart';
 import 'package:http/http.dart' as http;
 
-void main() {
-  runApp(const MaterialApp(
-    home: RegisterPage(),
-    debugShowCheckedModeBanner: false,
-  ));
-}
+// void main() {
+//   runApp(const MaterialApp(
+//     home: RegisterPage(),
+//     debugShowCheckedModeBanner: false,
+//   ));
+// }
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+  final Map<String, dynamic> data;
+  const RegisterPage({super.key, required this.data});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  bool TermsAndConditions = false;
+  bool termsAndConditions = false;
+
+  // Controllers
+  final _firstNameController = TextEditingController();
+  final _middleNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _birthDateController = TextEditingController();
+  final _contactNumberController = TextEditingController();
+  final _locationController = TextEditingController();
+  final _companyController = TextEditingController();
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _middleNameController.dispose();
+    _lastNameController.dispose();
+    _birthDateController.dispose();
+    _contactNumberController.dispose();
+    _locationController.dispose();
+    _companyController.dispose();
+    super.dispose();
+  }
+
+  Future<http.Response> _submitForm() async {
+    Map<String, dynamic> userInfo = {
+      "name": {
+        "firstName": _firstNameController.text,
+        "lastName": _lastNameController.text,
+        "middleName": _middleNameController.text
+      },
+      "birthDate": _birthDateController.text,
+      "contactNumber": _contactNumberController.text,
+      // TODO: Separate addresses by commas
+      "location": {
+        "address": "Needs implementation",
+        "city": "Needs implementation",
+        "province": "Needs implementation"
+      },
+      "company": _companyController.text
+    };
+
+    return await register(
+        widget.data["accountType"], widget.data["accessToken"], userInfo);
+  }
+
+  Future<http.Response> register(
+      String accountType, String accessToken, Map<String, dynamic> data) async {
+    final uri = Uri.parse("http://localhost:3001/$accountType/register");
+    final response = await http.post(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${data["accessToken"]}'
+      },
+      body: data,
+    );
+
+    return response;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -292,7 +351,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           filled: true,
                           fillColor: Colors.white,
                           border: OutlineInputBorder(),
-                          hintText: "Address, City, Province",
+                          hintText: "Address, City, Province (Use commas ',')",
                           hintStyle: TextStyle(
                             color: Colors.grey,
                           ),
@@ -358,14 +417,16 @@ class _RegisterPageState extends State<RegisterPage> {
                         "I agree with the Terms and Conditions provided by Unicon.",
                         style: TextStyle(color: Colors.white60),
                       ),
-                      value: TermsAndConditions,
+                      value: termsAndConditions,
                       onChanged: (value) {
                         setState(() {
-                          TermsAndConditions = value!;
+                          termsAndConditions = value!;
                         });
                       },
                     ),
-                  )
+                  ),
+                  ElevatedButton(
+                      onPressed: _submitForm, child: const Text("Submit")),
                 ],
               ),
               const Padding(

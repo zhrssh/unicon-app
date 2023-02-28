@@ -7,7 +7,8 @@ import '../constants/top_bottom_clippings.dart';
 import 'package:http/http.dart' as http;
 
 class SignupPage extends StatefulWidget {
-  const SignupPage({super.key});
+  final Map<String, dynamic> data;
+  const SignupPage({super.key, required this.data});
 
   @override
   State<SignupPage> createState() => _SignupPageState();
@@ -26,13 +27,13 @@ class _SignupPageState extends State<SignupPage> {
   final _formKeyPassword = GlobalKey<FormState>();
   final _formKeyConfirmPass = GlobalKey<FormState>();
 
-  var response;
+  late http.Response response;
   bool showPasswordpw = true;
   bool showPasswordcPW = true;
 
-  Future<Object> register(email, password) async {
+  Future<http.Response> register(email, password) async {
     // int _loginChecker;
-    final uri = Uri.parse('http://192.168.75.119:3000/register');
+    final uri = Uri.parse('http://localhost:3000/register');
     final response = await http.post(
       uri,
       headers: <String, String>{
@@ -289,91 +290,84 @@ class _SignupPageState extends State<SignupPage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
                               )),
-                          onPressed: () async {
+                          onPressed: () {
                             final email = _email.text;
                             final password = _password.text;
 
                             // Check whether inserted text for each form is valid.
-                            if (_formKeyEmail.currentState!.validate()) {
-                              if (_formKeyPassword.currentState!.validate()) {
-                                if (_formKeyConfirmPass.currentState!
-                                    .validate()) {
-                                  if (kDebugMode) {
-                                    print("Email: $email");
-                                    print("Password: $password");
+                            if (!_formKeyEmail.currentState!.validate()) {
+                              return;
+                            }
+                            if (!_formKeyPassword.currentState!.validate()) {
+                              return;
+                            }
+                            if (!_formKeyConfirmPass.currentState!.validate()) {
+                              return;
+                            }
 
-                                    // register system
-                                    response = await register(email, password);
-                                    print(response.statusCode);
-                                    var jsonBody = jsonDecode(response.body);
-                                    var uuid = jsonBody['uuid'];
-                                    print(response.body);
-                                    print(uuid);
-                                    print(uuid.runtimeType);
-                                    if (response.statusCode == 200) {
-                                      navigateToVerifyPage(context, uuid);
-                                      print(true);
-                                    } else {
-                                      clearText();
-                                      // Error message (for users)
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          behavior: SnackBarBehavior.floating,
-                                          backgroundColor: Colors.transparent,
-                                          elevation: 0,
-                                          content: Container(
-                                            padding: const EdgeInsets.all(16),
-                                            height: 90,
-                                            decoration: const BoxDecoration(
-                                              color: Color(0xFFC72C41),
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(20),
-                                              ),
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: const [
-                                                Text(
-                                                  "OH NO!",
-                                                  style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "Invalid credentials. Please try to input credentials again.",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12,
-                                                  ),
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                              ],
+                            // register system
+                            register(email, password).then((response) {
+                              var jsonBody = jsonDecode(response.body);
+                              var uuid = jsonBody['uuid'];
+
+                              if (response.statusCode == 200) {
+                                // Proceeds to verify page
+                                navigateToVerifyPage(
+                                    context, uuid, widget.data);
+                              } else {
+                                clearText();
+                                // Error message (for users)
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    behavior: SnackBarBehavior.floating,
+                                    backgroundColor: Colors.transparent,
+                                    elevation: 0,
+                                    content: Container(
+                                      padding: const EdgeInsets.all(16),
+                                      height: 90,
+                                      decoration: const BoxDecoration(
+                                        color: Color(0xFFC72C41),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20),
+                                        ),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: const [
+                                          Text(
+                                            "OH NO!",
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.white,
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    }
-                                    // print(response.statusCode);
-                                    // print(response.body.uuid);
-                                    // if (response.body.uuid != null) {
-                                    // print(true);
-                                    // } else {
-                                    //   print(false);
-                                    // }
+                                          Text(
+                                            "Invalid credentials. Please try to input credentials again.",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                            ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
 
-                                    // print(response);
-
-                                    clearText();
-                                    // navigateToVerifyPage(context);
-                                  }
+                                if (kDebugMode) {
+                                  print("Email: $email");
+                                  print("Password: $password");
+                                  print(response.statusCode);
+                                  print(response.body);
+                                  print(uuid);
+                                  print(uuid.runtimeType);
                                 }
                               }
-                            }
+                            });
+                            clearText();
                           },
                           child: const Text(
                             'Sign up',

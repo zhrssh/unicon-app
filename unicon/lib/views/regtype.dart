@@ -76,11 +76,11 @@ class _RegTypePageState extends State<RegTypePage> {
             children: [
               InkWell(
                 onTap: (() {
-                  /** TODO: Tell flutter that the user is registering as a client.
-                   *  We can use enumerations { Account Type: Client, Provider }.
-                   *  This is to avoid using multiple pages for the same purpose.
-                   */
-                  navigateToSignUpPage(context);
+                  // Sends account type to next page
+                  final Map<String, dynamic> accountType = {
+                    "accountType": "client"
+                  };
+                  navigateToSignUpPage(context, accountType);
                 }),
                 child: Container(
                   height: 112,
@@ -130,11 +130,11 @@ class _RegTypePageState extends State<RegTypePage> {
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0)),
           InkWell(
             onTap: () {
-              /** TODO: Tell flutter that the user is registering as a client.
-                   *  We can use enumerations { Account Type: Client, Provider }.
-                   *  This is to avoid using multiple pages for the same purpose.
-                   */
-              navigateToSignUpPage(context);
+              // Sends account type to next page
+              final Map<String, dynamic> accountType = {
+                "accountType": "provider"
+              };
+              navigateToSignUpPage(context, accountType);
             },
             child: Container(
               height: 112,

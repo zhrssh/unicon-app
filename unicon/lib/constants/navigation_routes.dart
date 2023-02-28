@@ -9,10 +9,16 @@ import '../views/resetpw.dart';
 import '../views/signup_v2.dart';
 import '../views/verify.dart';
 import '../views/regtype.dart';
+import '../views/register.dart';
 
-Future navigateToSignUpPage(context) async {
+Future navigateToRegisterPage(context, Map<String, dynamic> data) async {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => RegisterPage(data: data)));
+}
+
+Future navigateToSignUpPage(context, Map<String, dynamic> data) async {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const SignupPage()));
+      context, MaterialPageRoute(builder: (context) => SignupPage(data: data)));
 }
 
 Future navigateToHome(context) async {
@@ -35,14 +41,12 @@ Future navigateToLoginPage(context) async {
       context, MaterialPageRoute(builder: (context) => const LoginPage()));
 }
 
-Future navigateToVerifyPage(context, String uuid) async {
-  print(uuid);
+Future navigateToVerifyPage(
+    context, String uuid, Map<String, dynamic> data) async {
   Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => VerifyPage(
-                uuid: uuid,
-              )));
+          builder: (context) => VerifyPage(uuid: uuid, data: data)));
 }
 
 Future navigateToCalendarPage(context) async {
