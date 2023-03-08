@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/views/company/publish_project.dart';
 import '../views/calendar.dart';
 import '../views/home.dart';
 import '../views/dashboard.dart';
@@ -67,4 +68,9 @@ Future navigateToProfilePage(context) async {
 Future navigateToRegTypePage(context) async {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => const RegTypePage()));
+}
+
+Future navigateToPublishProjectPage(context) async {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => const PublishProjectPage()));
 }
