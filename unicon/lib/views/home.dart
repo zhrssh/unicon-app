@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../constants/navigation_routes.dart';
 import 'calendar.dart';
 import 'dashboard.dart';
 import 'location.dart';
@@ -36,7 +37,9 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color.fromARGB(255, 84, 122, 70), // green bg
-        onPressed: () {},
+        onPressed: () {
+          navigateToPublishProjectPage(context);
+          },
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
