@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/views/home.dart';
-// import 'package:untitled/views/homepage.dart';
-import 'package:untitled/views/profile.dart';
 import 'views/login.dart';
 
 void main() {

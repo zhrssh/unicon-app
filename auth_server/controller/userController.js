@@ -32,7 +32,7 @@ function createUser(userInfo) {
         const hashedPassword = await bcrypt.hash(userInfo.password, salt)
 
         // Create confirmation code
-        const code = generateKey(3).toLowerCase()
+        const code = generateKey(3)
 
         // Create the user
         let _userId

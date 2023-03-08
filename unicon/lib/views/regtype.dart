@@ -1,9 +1,6 @@
-import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../constants/navigation_routes.dart';
 import '../constants/top_bottom_clippings.dart';
-import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MaterialApp(

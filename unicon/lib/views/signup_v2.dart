@@ -255,15 +255,14 @@ class _SignupPageState extends State<SignupPage> {
                                   color: Colors.grey,
                                 ),
                                 suffixIcon: IconButton(
-                                  icon: Icon(
-                                    showPasswordcPW
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                  ),
-                                  color: Colors.black45,
-                                  onPressed: () => setState(
-                                      () => showPasswordcPW = !showPasswordcPW),
-                                ),
+                                    icon: Icon(
+                                      showPasswordcPW
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                    ),
+                                    color: Colors.black45,
+                                    onPressed: () => setState(() =>
+                                        showPasswordcPW = !showPasswordcPW)),
                               ),
                               controller: _confirmPass,
                               validator: (String? value) {
@@ -313,7 +312,7 @@ class _SignupPageState extends State<SignupPage> {
                               if (response.statusCode == 200) {
                                 // Proceeds to verify page
                                 navigateToVerifyPage(
-                                    context, uuid, widget.data);
+                                    context, uuid, email, widget.data);
                               } else {
                                 clearText();
                                 // Error message (for users)
@@ -357,6 +356,7 @@ class _SignupPageState extends State<SignupPage> {
                                   ),
                                 );
 
+                                // For Debugging Purposes
                                 if (kDebugMode) {
                                   print("Email: $email");
                                   print("Password: $password");
@@ -367,6 +367,7 @@ class _SignupPageState extends State<SignupPage> {
                                 }
                               }
                             });
+
                             clearText();
                           },
                           child: const Text(

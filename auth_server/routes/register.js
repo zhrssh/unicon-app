@@ -65,9 +65,7 @@ router.get("/verify/:uuid/:confirmationCode", async (req, res) => {
         // JWT Payload
         const data = {
             iss: process.env.ISS,
-            uuid: req.params.uuid,
-            status: user.status,
-            role: user.role
+            uuid: req.params.uuid
         }
 
         const token = auth.generateAccessToken(data)

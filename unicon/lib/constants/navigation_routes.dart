@@ -10,67 +10,68 @@ import '../views/resetpw.dart';
 import '../views/signup_v2.dart';
 import '../views/verify.dart';
 import '../views/regtype.dart';
-import '../views/register.dart';
+import '../views/client/client_register.dart';
 
-Future navigateToRegisterPage(context, Map<String, dynamic> data) async {
+void navigateToRegisterPage(context, Map<String, dynamic> data) {
   Navigator.push(context,
       MaterialPageRoute(builder: (context) => RegisterPage(data: data)));
 }
 
-Future navigateToSignUpPage(context, Map<String, dynamic> data) async {
+void navigateToSignUpPage(context, Map<String, dynamic> data) {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => SignupPage(data: data)));
 }
 
-Future navigateToHome(context) async {
+void navigateToHome(context) {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => const Home()));
 }
 
-Future navigateToDashboard(context) async {
+void navigateToDashboard(context) {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => const Dashboard()));
 }
 
-Future navigateToResetPWPage(context) async {
+void navigateToResetPWPage(context) {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => const ResetPWPage()));
 }
 
-Future navigateToLoginPage(context) async {
+void navigateToLoginPage(context) {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => const LoginPage()));
 }
 
-Future navigateToVerifyPage(
-    context, String uuid, Map<String, dynamic> data) async {
+void navigateToVerifyPage(
+    context, String uuid, String email, Map<String, dynamic> data) {
   Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => VerifyPage(uuid: uuid, data: data)));
+          builder: (context) =>
+              VerifyPage(uuid: uuid, email: email, data: data)));
 }
 
-Future navigateToCalendarPage(context) async {
+void navigateToCalendarPage(context) {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => const CalendarPage()));
 }
 
-Future navigateToLocationPage(context) async {
+void navigateToLocationPage(context) {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => const LocationPage()));
 }
 
-Future navigateToProfilePage(context) async {
+void navigateToProfilePage(context) {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => const ProfilePage()));
 }
 
-Future navigateToRegTypePage(context) async {
+void navigateToRegTypePage(context) {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => const RegTypePage()));
 }
 
-Future navigateToPublishProjectPage(context) async {
+void navigateToPublishProjectPage(context) {
   Navigator.push(context,
       MaterialPageRoute(builder: (context) => const PublishProjectPage()));
 }

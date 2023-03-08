@@ -15,6 +15,7 @@ const getDate = require("../utils/logs").getDate
  */
 function verifyUser(uuid, confirmationCode) {
     return new Promise(async (resolve, reject) => {
+
         const user = await User.findOne({ _id: uuid })
 
         // Checks if the user with the confirmation code exists
@@ -59,6 +60,9 @@ function verifyUser(uuid, confirmationCode) {
         }
 
         // Send email
+        if (process.env.NODE_ENV == "development")
+            return resolve(null)
+
         send(config.from, config.to, config.subject, dir, replacements)
             .catch(err => {
                 if (process.env.NODE_ENV == "development")
@@ -95,6 +99,9 @@ function sendConfirmationEmail(userInfo) {
         }
 
         // Send email
+        if (process.env.NODE_ENV == "development")
+            return resolve(null)
+
         await send(config.from, config.to, config.subject, dir, replacements)
             .catch(err => {
                 if (process.env.NODE_ENV == "development")
@@ -129,7 +136,7 @@ function resendConfirmationEmail(userInfo) {
         }
 
         // Generates a new code
-        const newCode = generateKey(3).toLowerCase()
+        const newCode = generateKey(3)
 
         user.confirmationCode = newCode
         user.save((err, result) => {
@@ -142,6 +149,9 @@ function resendConfirmationEmail(userInfo) {
 
         // Resends confirmation email
         userInfo.code = newCode
+        if (process.env.NODE_ENV == "development")
+            return resolve(null)
+
         sendConfirmationEmail(userInfo)
             .catch(err => {
                 if (err) {

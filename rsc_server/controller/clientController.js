@@ -1,5 +1,5 @@
 const Client = require("../model/Clients")
-const getDate = require("../utils/logs")
+const getDate = require("../utils/logs").getDate
 const raise = require("../utils/raise")
 
 /**

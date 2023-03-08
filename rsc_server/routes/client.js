@@ -34,11 +34,7 @@ router.post("/register", async (req, res) => {
             },
             birthDate: req.body.birthDate,
             contactNumber: req.body.contactNumber,
-            location: {
-                address: req.body.location.address,
-                city: req.body.location.city,
-                province: req.body.location.province
-            },
+            location: req.body.location,
             company: req.body.company
         }
 

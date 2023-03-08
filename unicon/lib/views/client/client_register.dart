@@ -1,16 +1,19 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../constants/navigation_routes.dart';
-import '../constants/top_bottom_clippings.dart';
+import 'package:untitled/constants/navigation_routes.dart';
+import '../../constants/top_bottom_clippings.dart';
 import 'package:http/http.dart' as http;
 
-// void main() {
-//   runApp(const MaterialApp(
-//     home: RegisterPage(),
-//     debugShowCheckedModeBanner: false,
-//   ));
-// }
+void main() {
+  runApp(const MaterialApp(
+    home: RegisterPage(data: <String, dynamic>{"test": "test"}),
+    debugShowCheckedModeBanner: false,
+  ));
+}
 
 class RegisterPage extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -44,7 +47,7 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
-  Future<http.Response> _submitForm() async {
+  void _submitForm() async {
     Map<String, dynamic> userInfo = {
       "name": {
         "firstName": _firstNameController.text,
@@ -53,29 +56,70 @@ class _RegisterPageState extends State<RegisterPage> {
       },
       "birthDate": _birthDateController.text,
       "contactNumber": _contactNumberController.text,
-      // TODO: Separate addresses by commas
-      "location": {
-        "address": "Needs implementation",
-        "city": "Needs implementation",
-        "province": "Needs implementation"
-      },
+      "location": _locationController.text,
       "company": _companyController.text
     };
 
-    return await register(
+    final http.Response response = await register(
         widget.data["accountType"], widget.data["accessToken"], userInfo);
+
+    if (response.statusCode == 200) {
+      Navigator.of(context).pop();
+      return navigateToLoginPage(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          content: Container(
+            padding: const EdgeInsets.all(16),
+            height: 90,
+            decoration: const BoxDecoration(
+              color: Color(0xFFC72C41),
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  "OH NO!",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  "There's an error in your registration. Please try again.",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      return;
+    }
   }
 
   Future<http.Response> register(
       String accountType, String accessToken, Map<String, dynamic> data) async {
-    final uri = Uri.parse("http://localhost:3001/$accountType/register");
+    final uri = Uri.parse("http://localhost:3001/api/$accountType/register");
     final response = await http.post(
       uri,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ${data["accessToken"]}'
+        'Authorization': 'Bearer $accessToken'
       },
-      body: data,
+      body: jsonEncode(data),
     );
 
     return response;
@@ -100,7 +144,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   clipper: TopClipPath(),
                   child: Container(
                     color: const Color.fromARGB(255, 84, 122, 70),
-                    height: 160,
+                    height: 120,
                   ),
                 ),
               ),
@@ -108,7 +152,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 clipper: TopClipPath(),
                 child: Container(
                   color: const Color.fromARGB(150, 78, 112, 67),
-                  height: 100,
+                  height: 70,
                 ),
               ),
             ],
@@ -118,7 +162,7 @@ class _RegisterPageState extends State<RegisterPage> {
             style: TextStyle(color: Colors.grey),
           ),
           const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10)),
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10)),
           Column(
             children: [
               Row(
@@ -140,6 +184,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         width: 145,
                         child: Form(
                           child: TextFormField(
+                            controller: _firstNameController,
                             style: const TextStyle(
                               color: Colors.black,
                             ),
@@ -182,6 +227,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         width: 145,
                         child: Form(
                           child: TextFormField(
+                            controller: _middleNameController,
                             style: const TextStyle(
                               color: Colors.black,
                             ),
@@ -217,6 +263,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 width: 300,
                 child: Form(
                   child: TextFormField(
+                    controller: _lastNameController,
                     style: const TextStyle(
                       color: Colors.black,
                     ),
@@ -259,6 +306,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         width: 145,
                         child: Form(
                           child: TextFormField(
+                            controller: _birthDateController,
                             style: const TextStyle(
                               color: Colors.black,
                             ),
@@ -266,7 +314,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               filled: true,
                               fillColor: Colors.white,
                               border: OutlineInputBorder(),
-                              hintText: "DD/MM/YY",
+                              hintText: "yyyy-mm-dd",
                               hintStyle: TextStyle(
                                 color: Colors.grey,
                               ),
@@ -301,6 +349,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         width: 145,
                         child: Form(
                           child: TextFormField(
+                            controller: _contactNumberController,
                             style: const TextStyle(
                               color: Colors.black,
                             ),
@@ -308,7 +357,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               filled: true,
                               fillColor: Colors.white,
                               border: OutlineInputBorder(),
-                              hintText: "+63 9...",
+                              hintText: "0912...",
                               hintStyle: TextStyle(
                                 color: Colors.grey,
                               ),
@@ -344,6 +393,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     width: 300,
                     child: Form(
                       child: TextFormField(
+                        controller: _locationController,
                         style: const TextStyle(
                           color: Colors.black,
                         ),
@@ -351,7 +401,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           filled: true,
                           fillColor: Colors.white,
                           border: OutlineInputBorder(),
-                          hintText: "Address, City, Province (Use commas ',')",
+                          hintText: "Address, City, Province",
                           hintStyle: TextStyle(
                             color: Colors.grey,
                           ),
@@ -385,6 +435,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     width: 300,
                     child: Form(
                       child: TextFormField(
+                        controller: _companyController,
                         style: const TextStyle(
                           color: Colors.black,
                         ),
@@ -410,23 +461,78 @@ class _RegisterPageState extends State<RegisterPage> {
                       padding: EdgeInsets.symmetric(
                     vertical: 5,
                   )),
-                  SizedBox(
-                    width: 300,
-                    child: CheckboxListTile(
-                      secondary: const Text(
-                        "I agree with the Terms and Conditions provided by Unicon.",
-                        style: TextStyle(color: Colors.white60),
-                      ),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Checkbox(
+                      side: const BorderSide(color: Colors.white, width: 2),
                       value: termsAndConditions,
-                      onChanged: (value) {
+                      onChanged: ((value) {
                         setState(() {
                           termsAndConditions = value!;
                         });
-                      },
+                      }),
+                    ),
+                    const Text(
+                      "I agree with the Terms and Conditions provided by Unicon.",
+                      style: TextStyle(color: Colors.white60),
+                    ),
+                  ]),
+                  const Padding(
+                      padding: EdgeInsets.symmetric(
+                    vertical: 5,
+                  )),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Checks if the terms and conditions is checked
+                      if (termsAndConditions == false) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                            content: Container(
+                              padding: const EdgeInsets.all(16),
+                              height: 90,
+                              decoration: const BoxDecoration(
+                                color: Color(0xFFC72C41),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const [
+                                  Text(
+                                    "OH NO!",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Text(
+                                    "You need to accept terms and conditions.",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+
+                        return;
+                      }
+
+                      _submitForm();
+                    },
+                    child: const Text(
+                      "Register",
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  ElevatedButton(
-                      onPressed: _submitForm, child: const Text("Submit")),
                 ],
               ),
               const Padding(

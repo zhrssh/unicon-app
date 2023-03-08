@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -170,7 +172,7 @@ class _LoginPageState extends State<LoginPage> {
                     clipper: TopClipPath(),
                     child: Container(
                       color: const Color.fromARGB(255, 84, 122, 70),
-                      height: 160,
+                      height: 120,
                     ),
                   ),
                 ),
@@ -178,7 +180,7 @@ class _LoginPageState extends State<LoginPage> {
                   clipper: TopClipPath(),
                   child: Container(
                     color: const Color.fromARGB(150, 78, 112, 67),
-                    height: 100,
+                    height: 70,
                   ),
                 ),
               ],
@@ -349,7 +351,7 @@ class _LoginPageState extends State<LoginPage> {
                             final accessToken = body["accessToken"];
 
                             // TODO: Store refreshToken somewhere in the device
-                            final refreshToken = body["refreshToken"];
+                            // final refreshToken = body["refreshToken"];
 
                             // Checks if the resource server is active
                             response = await checkRscServer(accessToken);
@@ -359,30 +361,34 @@ class _LoginPageState extends State<LoginPage> {
                               print(response.body);
                             }
 
-                            // Removes the "Logging in" dialog
-                            Navigator.pop(_context);
-
                             if (response.statusCode != 200) {
-                              return showLoginErrorSnackBar(
-                                  "We've encountered an unexpected error. Please try again later.");
+                              showLoginErrorSnackBar(
+                                  "We've encountered an unexpected error in the server. Please try again later.");
                             } else {
-                              return navigateToHome(_context);
+                              navigateToHome(_context);
                             }
+                            break;
 
                           case 401:
-                            // Removes the "Logging in" dialog
-                            Navigator.pop(_context);
-                            return showLoginErrorSnackBar(
+                            showLoginErrorSnackBar(
                                 "You've entered the wrong login information. Please try again.");
+                            break;
+
+                          case 404:
+                            showLoginErrorSnackBar(
+                                "Email does not exists. Please try again later.");
+                            break;
 
                           default:
-                            // Removes the "Logging in" dialog
-                            Navigator.pop(_context);
-                            return showLoginErrorSnackBar(
+                            showLoginErrorSnackBar(
                                 "We've encountered an unexpected error. Please try again later.");
+                            break;
                         }
                       }
                     }
+
+                    // Removes the "Logging in" dialog
+                    Navigator.pop(_context);
                   },
                 ),
                 SizedBox(
@@ -395,9 +401,7 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(color: Colors.white),
                       ),
                       TextButton(
-                        onPressed: () {
-                          navigateToRegTypePage(context);
-                        },
+                        onPressed: () => navigateToRegTypePage(context),
                         child: const Text(
                           "    Create Now",
                           style: TextStyle(

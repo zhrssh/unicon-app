@@ -1,16 +1,19 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
 import '../constants/top_bottom_clippings.dart';
 import '../constants/navigation_routes.dart';
 import 'package:http/http.dart' as http;
 
 class VerifyPage extends StatefulWidget {
   final String uuid;
+  final String email;
   final Map<String, dynamic> data;
-  const VerifyPage({super.key, required this.uuid, required this.data});
+  const VerifyPage(
+      {super.key, required this.uuid, required this.email, required this.data});
 
   @override
   State<VerifyPage> createState() => _VerifyPageState();
@@ -196,7 +199,6 @@ class _VerifyPageState extends State<VerifyPage> {
                                   {"accessToken": jsonBody["accessToken"]});
                               navigateToRegisterPage(context, widget.data);
                               clearText();
-                              // dispose();
                             } else {
                               clearText();
                               // Error message (for users)
@@ -226,7 +228,7 @@ class _VerifyPageState extends State<VerifyPage> {
                                           ),
                                         ),
                                         Text(
-                                          "You've entered a wrong login information. Please try to login again.",
+                                          "You've entered a wrong verification code. Please try again.",
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 12,
@@ -263,15 +265,80 @@ class _VerifyPageState extends State<VerifyPage> {
                     width: 300,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text(
-                          "Resend code in ",
-                          style: TextStyle(color: Colors.white),
+                      children: [
+                        GestureDetector(
+                          child: const Text(
+                            "Tap here",
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 21, 253, 141),
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                          onTap: () async {
+                            final http.Response response = await http.post(
+                              Uri.parse(
+                                  "http://localhost:3000/register/verify/resend"),
+                              headers: <String, String>{
+                                'Content-Type':
+                                    'application/json; charset=UTF-8',
+                              },
+                              body: jsonEncode(
+                                <String, String>{
+                                  'email': widget.email,
+                                },
+                              ),
+                            );
+
+                            if (kDebugMode) {
+                              print(response.body);
+                            }
+
+                            if (response.statusCode != 200) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: Colors.transparent,
+                                  elevation: 0,
+                                  content: Container(
+                                    padding: const EdgeInsets.all(16),
+                                    height: 90,
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFFC72C41),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(20),
+                                      ),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: const [
+                                        Text(
+                                          "OH NO!",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text(
+                                          "There's some error sending the code. Please try again.",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                          ),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                          },
                         ),
-                        Text(
-                          "0:20",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 21, 253, 141)),
+                        const Text(
+                          " to resend code.",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ],
                     ),

@@ -1,6 +1,6 @@
 require("dotenv").config()
 const jwt = require("jsonwebtoken")
-const getDate = require("../utils/logs")
+const getDate = require("../utils/logs").getDate
 const raise = require("../utils/raise")
 
 /**
