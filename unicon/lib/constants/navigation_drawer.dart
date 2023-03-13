@@ -146,7 +146,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                     child: Image.asset('assets/icons/settings.png'),
                   ),
                   title: const Text('Settings'),
-                  onTap: () {},
+                  onTap: () => navigateToNotificationSettingsPage(context),
                 ),
                 // Place holder
                 // Container(

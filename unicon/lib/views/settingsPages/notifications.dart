@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-class NotificationPage extends StatefulWidget {
-  const NotificationPage({super.key});
+class NotificationSettingsPage extends StatefulWidget {
+  const NotificationSettingsPage({super.key});
   @override
-  State<NotificationPage> createState() => _NotificationPageState();
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Notifications Settings',
-      debugShowCheckedModeBanner: false,
-    );
-  }
+  State<NotificationSettingsPage> createState() =>
+      _NotificationSettingsPageState();
 }
 
-class _NotificationPageState extends State<NotificationPage> {
+class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
   //Toggle values
   bool forGenNotif = true;
   bool forSound = false;
@@ -33,12 +28,13 @@ class _NotificationPageState extends State<NotificationPage> {
       appBar: AppBar(
         title: const Text(
           "Notification Settings",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         shadowColor: Colors.black,
         toolbarHeight: 75.0,
+        leadingWidth: 30,
       ),
       body: SingleChildScrollView(
         child: Column(
