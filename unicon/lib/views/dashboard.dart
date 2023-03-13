@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/constants/navigation_routes.dart';
 import 'package:untitled/constants/published_projects.dart';
 import 'package:untitled/views/calendar.dart';
 import 'package:untitled/views/location.dart';
@@ -39,7 +40,7 @@ class _DashboardState extends State<Dashboard> {
                   height: 30,
                   child: Image.asset('assets/icons/notification.png'),
                 ),
-                onPressed: () {},
+                onPressed: () => navigateToNotification(context),
               )
             ],
             title: Column(

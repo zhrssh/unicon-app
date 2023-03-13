@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/views/company/publish_project.dart';
+import 'package:untitled/views/settingsPages/notifications.dart';
 import '../views/calendar.dart';
 import '../views/home.dart';
 import '../views/dashboard.dart';
 import '../views/location.dart';
 import '../views/login.dart';
+import '../views/notifications_page.dart';
 import '../views/profile.dart';
 import '../views/resetpw.dart';
 import '../views/signup_v2.dart';
@@ -74,4 +76,16 @@ void navigateToRegTypePage(context) {
 void navigateToPublishProjectPage(context) {
   Navigator.push(context,
       MaterialPageRoute(builder: (context) => const PublishProjectPage()));
+}
+
+void navigateToNotification(context) {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => const NotificationPage()));
+}
+
+void navigateToNotificationSettingsPage(context) {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => const NotificationSettingsPage()));
 }

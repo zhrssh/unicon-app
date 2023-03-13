@@ -1,5 +1,11 @@
+import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:path/path.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 
 class PublishProjectPage extends StatefulWidget {
   const PublishProjectPage({super.key});
@@ -12,8 +18,40 @@ class _PublishProjectPageState extends State<PublishProjectPage> {
   late TextEditingController _projectNameController;
   late TextEditingController _dateController;
   late TextEditingController _locationController;
+  File? _image;
   bool allFieldsFilled =
       false; // boolean to detect whether text forms are filled
+
+  // Function for getting image from gallery
+  Future getImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (image == null) return;
+      // final imageTemporary = File(image.path);
+      final imagePermanent = await saveFile(image.path);
+
+      setState(
+        () {
+          // ignore: unnecessary_this
+          this._image = imagePermanent;
+        },
+      );
+    } on PlatformException catch (e) {
+      if (kDebugMode) {
+        print('Failed to pick image: $e');
+      }
+    }
+  }
+
+  // Function to store the uploaded image
+  Future<File> saveFile(String imagePath) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final name = basename(imagePath);
+    final image = File('${directory.path}/$name');
+
+    return File(imagePath).copy(image.path);
+  }
 
   @override
   void initState() {
@@ -106,13 +144,18 @@ class _PublishProjectPageState extends State<PublishProjectPage> {
                     const SizedBox(
                       width: 10,
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: SizedBox(
-                        height: 50,
-                        child: Image.asset("assets/icons/upload.png"),
-                      ),
-                    ),
+                    _image != null
+                        ? Image.asset(
+                            "assets/icons/check_icon.png",
+                            height: 40,
+                          )
+                        : IconButton(
+                            onPressed: () => getImage(),
+                            icon: SizedBox(
+                              height: 50,
+                              child: Image.asset("assets/icons/upload.png"),
+                            ),
+                          ),
                   ],
                 ),
               ),
@@ -186,6 +229,21 @@ class _PublishProjectPageState extends State<PublishProjectPage> {
                             ),
                           ),
                           controller: _dateController,
+                          onTap: () async {
+                            DateTime? pickeddate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime(2101));
+
+                            if (pickeddate != null) {
+                              setState(() {
+                                _dateController.text =
+                                    DateFormat('dd MMMM yyyy')
+                                        .format(pickeddate);
+                              });
+                            }
+                          },
                         ),
                       ),
                     ),
@@ -291,7 +349,7 @@ class _PublishProjectPageState extends State<PublishProjectPage> {
               ElevatedButton(
                 onPressed: allFieldsFilled
                     ? () {
-                        _publish;
+                        _publish(context);
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
@@ -327,8 +385,35 @@ class _PublishProjectPageState extends State<PublishProjectPage> {
   }
 }
 
-void _publish() {
-  if (kDebugMode) {
-    print("Publish button presesd");
-  }
+void _publish(context) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      behavior: SnackBarBehavior.fixed,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      content: Container(
+        // padding: const EdgeInsets.all(16),
+        height: 40,
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(255, 40, 133, 255),
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text(
+              "Publish Press",
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }
