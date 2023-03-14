@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import '../constants/navigation_routes.dart';
 import '../constants/top_bottom_clippings.dart';
-import 'package:http/http.dart' as http;
 
 class SignupPage extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -33,7 +35,7 @@ class _SignupPageState extends State<SignupPage> {
 
   Future<http.Response> register(email, password) async {
     // int _loginChecker;
-    final uri = Uri.parse('http://localhost:3000/register');
+    final uri = Uri.parse('http://${dotenv.env["AUTH_URL"]}/register');
     final response = await http.post(
       uri,
       headers: <String, String>{

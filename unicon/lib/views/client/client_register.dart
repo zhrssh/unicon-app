@@ -2,11 +2,12 @@
 
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/constants/navigation_routes.dart';
-import '../../constants/top_bottom_clippings.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import '../../constants/top_bottom_clippings.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -112,7 +113,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<http.Response> register(
       String accountType, String accessToken, Map<String, dynamic> data) async {
-    final uri = Uri.parse("http://localhost:3001/api/$accountType/register");
+    final uri =
+        Uri.parse("http://${dotenv.env["RSC_URL"]}/api/$accountType/register");
     final response = await http.post(
       uri,
       headers: <String, String>{

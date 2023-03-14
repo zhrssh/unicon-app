@@ -4,9 +4,11 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import '../constants/top_bottom_clippings.dart';
 import '../constants/navigation_routes.dart';
-import 'package:http/http.dart' as http;
 
 class VerifyPage extends StatefulWidget {
   final String uuid;
@@ -43,7 +45,7 @@ class _VerifyPageState extends State<VerifyPage> {
   Future<http.Response> verification(uuid, verificationCode) async {
     // int _loginChecker;
     String url =
-        "http://localhost:3000/register/verify/$uuid/$verificationCode";
+        "http://${dotenv.env["AUTH_URL"]}/register/verify/$uuid/$verificationCode";
     final uri = Uri.parse(url);
     final response = await http.get(
       uri,
@@ -277,7 +279,7 @@ class _VerifyPageState extends State<VerifyPage> {
                           onTap: () async {
                             final http.Response response = await http.post(
                               Uri.parse(
-                                  "http://localhost:3000/register/verify/resend"),
+                                  "http://${dotenv.env["AUTH_URL"]}/register/verify/resend"),
                               headers: <String, String>{
                                 'Content-Type':
                                     'application/json; charset=UTF-8',

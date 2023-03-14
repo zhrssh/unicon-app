@@ -4,9 +4,11 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import '../constants/navigation_routes.dart';
 import '../constants/top_bottom_clippings.dart';
-import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -92,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
   // Logins to the server
   Future<http.Response> login(email, password) async {
     // int _loginChecker;
-    final uri = Uri.parse('http://localhost:3000/login');
+    final uri = Uri.parse('http://${dotenv.env["AUTH_URL"]}/login');
     late final http.Response response;
 
     try {
@@ -117,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
 
   // Checks if the resource server is active
   Future<http.Response> checkRscServer(accessToken) async {
-    final uri = Uri.parse("http://localhost:3001/api");
+    final uri = Uri.parse("http://${dotenv.env["RSC_URL"]}/api");
     late final http.Response response;
 
     try {

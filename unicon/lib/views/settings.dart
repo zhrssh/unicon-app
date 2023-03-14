@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'settingsPages/changepw.dart';
-import 'signup_v2.dart';
-import 'resetpw.dart';
+
 import 'settingsPages/notifications.dart';
 
 void main() {
