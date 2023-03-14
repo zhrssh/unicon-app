@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:untitled/constants/navigation_routes.dart';
 import 'package:untitled/constants/published_projects.dart';
 import '../constants/navigation_drawer.dart';
-
+import '/constants/projects_data.dart';
 // import 'package:untitled/views/calendar.dart';
 // import 'package:untitled/views/location.dart';
 // import 'package:untitled/views/profile.dart';
@@ -15,6 +15,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+
+
   @override
   Widget build(BuildContext context) {
     // final double height = MediaQuery.of(context).size.height;
@@ -55,17 +57,18 @@ class _DashboardState extends State<Dashboard> {
               fontWeight: FontWeight.bold,
             ),
             backgroundColor: const Color.fromARGB(255, 84, 122, 70),
-            bottom: const PreferredSize(
-              preferredSize: Size.fromHeight(50),
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(50),
               child: Padding(
-                padding: EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.only(bottom: 10),
                 child: TextField(
+                  readOnly: true,
                   cursorColor: Colors.white,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     color: Colors.white,
                   ),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
@@ -78,6 +81,12 @@ class _DashboardState extends State<Dashboard> {
                     hintText: "Search for workers",
                     hintStyle: TextStyle(color: Colors.white54),
                   ),
+                  onTap: () {
+                    showSearch(
+                      context: context,
+                      delegate: SearchPageDelegate(),
+                    );
+                  },
                 ),
               ),
             ),
@@ -144,6 +153,54 @@ class _DashboardState extends State<Dashboard> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class SearchPageDelegate extends SearchDelegate {
+
+  @override
+  Widget? buildLeading(BuildContext context) => IconButton(
+        onPressed: () => close(context, null), // close searchbar
+        icon: const Icon(
+          Icons.arrow_back,
+        ),
+      );
+
+  @override
+  List<Widget>? buildActions(BuildContext context) => [
+        IconButton(
+          onPressed: () {
+            // query is empty, then close search page
+            if (query.isEmpty) {
+              close(context, null);
+            } else {
+              query = '';
+            }
+          },
+          icon: const Icon(
+            Icons.clear,
+          ),
+        ),
+      ];
+
+  @override
+  Widget buildResults(BuildContext context) => Container();
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String> list = ['Juan Dela Cruz', 'Lebron James', 'Ryza Mae Dizon'];
+
+    return ListView.builder(
+      itemCount: list.length,
+      itemBuilder: (context, index) {
+        final worker = list[index];
+        return ListTile(
+            title: Text(worker),
+            onTap: () {
+              query = worker;
+            });
+      },
     );
   }
 }

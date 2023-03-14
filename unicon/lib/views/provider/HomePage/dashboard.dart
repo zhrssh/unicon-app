@@ -83,62 +83,64 @@ class _DashboardState extends State<Dashboard> {
           ),
           backgroundColor: Colors.grey[50],
           drawer: const CustomNavigationDrawer(),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 15.0,
-              horizontal: 15.0,
-            ),
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 50,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Jobs Today (Near you)",
-                        style: TextStyle(
-                          color: Color.fromARGB(200, 18, 13, 38),
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 15.0,
+                horizontal: 15.0,
+              ),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 50,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Jobs Today (Near you)",
+                          style: TextStyle(
+                            color: Color.fromARGB(200, 18, 13, 38),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          style: ButtonStyle(
-                            overlayColor: MaterialStateColor.resolveWith(
-                              (states) =>
-                                  const Color.fromARGB(100, 84, 122, 70),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            style: ButtonStyle(
+                              overlayColor: MaterialStateColor.resolveWith(
+                                (states) =>
+                                    const Color.fromARGB(100, 84, 122, 70),
+                              ),
+                            ),
+                            onPressed: () {
+                              // ignore: avoid_print
+                              print("See all button pressed.");
+                            },
+                            child: Row(
+                              children: [
+                                const Text(
+                                  "See All",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                                const SizedBox(width: 5),
+                                Image.asset("assets/icons/arrow_right.png"),
+                              ],
                             ),
                           ),
-                          onPressed: () {
-                            // ignore: avoid_print
-                            print("See all button pressed.");
-                          },
-                          child: Row(
-                            children: [
-                              const Text(
-                                "See All",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              Image.asset("assets/icons/arrow_right.png"),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 500,
-                  child: ProjectList(),
-                ),
-              ],
+                  SizedBox(
+                    height: 500,
+                    child: ProjectList(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
