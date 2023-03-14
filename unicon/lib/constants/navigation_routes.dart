@@ -91,7 +91,7 @@ void navigateToNotificationSettingsPage(context) {
           builder: (context) => const NotificationSettingsPage()));
 }
 
-void navigateToProviderRegType(context) {
+void navigateToProviderRegType(context, Map<String, dynamic> data) {
   Navigator.push(context,
-      MaterialPageRoute(builder: (context) => const ProviderRegType()));
+      MaterialPageRoute(builder: (context) => ProviderRegType(data: data)));
 }

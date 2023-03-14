@@ -20,6 +20,8 @@ class CompanyFillUp extends StatefulWidget {
 class _CompanyFillUpState extends State<CompanyFillUp> {
   bool termsAndConditions = false;
 
+  // TODO: IMPLEMENT BACKEND CONNECTION
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -39,6 +39,9 @@ const nameSchema = new mongoose.Schema({
     lastName: {
         type: String,
         required: true
+    },
+    middleName: {
+        type: String
     }
 })
 
@@ -46,6 +49,11 @@ const providerSchema = new mongoose.Schema({
     accountType: {
         type: String,
         default: "provider"
+    },
+    accountGroup: {
+        type: String,
+        enum: ["individual", "company"],
+        required: true
     },
     uuid: {
         type: mongoose.Schema.Types.ObjectId,
@@ -67,9 +75,9 @@ const providerSchema = new mongoose.Schema({
         type: String,
         default: null
     },
-    company: {
+    location: {
         type: String,
-        default: null
+        required: true
     },
     profession: {
         type: String,

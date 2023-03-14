@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/views/provider/company/company_fillup.dart';
 import 'package:untitled/views/login.dart';
-import 'package:untitled/views/provider/provider_fillup.dart';
+import 'package:untitled/views/provider/individual/individual_fillup.dart';
 import '../../constants/top_bottom_clippings.dart';
 
 void main() {
   runApp(const MaterialApp(
-    home: ProviderRegType(),
+    home: ProviderRegType(data: {"test": "test"}),
     debugShowCheckedModeBanner: false,
   ));
 }
 
 class ProviderRegType extends StatefulWidget {
-  const ProviderRegType({super.key});
+  final Map<String, dynamic> data;
+  const ProviderRegType({super.key, required this.data});
 
   @override
   State<ProviderRegType> createState() => ProviderRegTypeState();
@@ -64,10 +65,19 @@ class ProviderRegTypeState extends State<ProviderRegType> {
             children: [
               InkWell(
                 onTap: (() {
+                  // Sets the account group to individual
+                  final Map<String, dynamic> accountGroup = {
+                    "accountGroup": "individual"
+                  };
+
+                  widget.data.addAll(accountGroup);
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ProviderFillUp()));
+                          builder: (context) => IndividualFillUp(
+                                data: widget.data,
+                              )));
                 }),
                 child: Container(
                   height: 112,
@@ -118,6 +128,8 @@ class ProviderRegTypeState extends State<ProviderRegType> {
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0)),
           InkWell(
             onTap: () {
+              // TODO: ADD ACCOUNT GROUP
+
               Navigator.push(
                   context,
                   MaterialPageRoute(

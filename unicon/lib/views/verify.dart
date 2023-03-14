@@ -205,7 +205,7 @@ class _VerifyPageState extends State<VerifyPage> {
                               }
 
                               if (widget.data["accountType"] == "provider") {
-                                navigateToProviderRegType(context);
+                                navigateToProviderRegType(context, widget.data);
                               }
 
                               clearText();

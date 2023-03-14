@@ -1,24 +1,110 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import '../../constants/navigation_routes.dart';
-import '../../constants/top_bottom_clippings.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import '../../../constants/navigation_routes.dart';
+import '../../../constants/top_bottom_clippings.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MaterialApp(
-    home: ProviderConfirmFill(),
+    home: IndividualConfirmFill(data: {"test": "test"}),
     debugShowCheckedModeBanner: false,
   ));
 }
 
-class ProviderConfirmFill extends StatefulWidget {
-  const ProviderConfirmFill({super.key});
+class IndividualConfirmFill extends StatefulWidget {
+  final Map<String, dynamic> data;
+  const IndividualConfirmFill({super.key, required this.data});
 
   @override
-  State<ProviderConfirmFill> createState() => _ProviderConfirmFillState();
+  State<IndividualConfirmFill> createState() => _IndividualConfirmFillState();
 }
 
-class _ProviderConfirmFillState extends State<ProviderConfirmFill> {
+class _IndividualConfirmFillState extends State<IndividualConfirmFill> {
   bool termsAndConditions = false;
+
+  void _submitForm() async {
+    Map<String, dynamic> userInfo = {
+      "name": {
+        "firstName": widget.data["name"]["firstName"],
+        "lastName": widget.data["name"]["lastName"],
+        "middleName": widget.data["name"]["middleName"]
+      },
+      "birthDate": widget.data["birthDate"],
+      "contactNumber": widget.data["contactNumber"],
+      "location": widget.data["location"],
+    };
+
+    // TODO: UPLOAD FILES TO THE SERVER
+
+    final http.Response response = await register(
+        widget.data["accountType"], widget.data["accessToken"], userInfo);
+
+    if (response.statusCode == 200) {
+      Navigator.of(context).pop();
+      return navigateToLoginPage(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          content: Container(
+            padding: const EdgeInsets.all(16),
+            height: 90,
+            decoration: const BoxDecoration(
+              color: Color(0xFFC72C41),
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  "OH NO!",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  "There's an error in your registration. Please try again.",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      return;
+    }
+  }
+
+  Future<http.Response> register(
+      String accountType, String accessToken, Map<String, dynamic> data) async {
+    final uri =
+        Uri.parse("http://${dotenv.env["RSC_URL"]}/api/$accountType/register");
+    final response = await http.post(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $accessToken'
+      },
+      body: jsonEncode(data),
+    );
+
+    return response;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -226,8 +312,8 @@ class _ProviderConfirmFillState extends State<ProviderConfirmFill> {
                           borderRadius: BorderRadius.circular(50),
                         ),
                       ),
-                      onPressed: () => navigateToLoginPage(
-                          context), //navigate to provider/company homepage
+                      onPressed: () =>
+                          _submitForm(), //navigate to provider/company homepage
                       child: const Text(
                         'Submit',
                         style: TextStyle(fontSize: 18),

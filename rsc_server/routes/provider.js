@@ -21,6 +21,16 @@ router.get('/view?uuid=:uuid', async (req, res) => {
     }
 })
 
+router.post("/register/individual", (req, res) => {
+    // TODO: IMPLEMENT REGISTRATION
+    req.sendStatus(200)
+})
+
+router.post("/register/company", (req, res) => {
+    // TODO: IMPLEMENT REGISTRATION
+    req.sendStatus(200)
+})
+
 // Updates user provider
 router.post("/update", async (req, res) => {
     // Stores or update user provider
