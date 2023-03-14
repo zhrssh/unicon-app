@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:untitled/views/company/publish_project.dart';
 import 'package:untitled/views/settingsPages/notifications.dart';
 import '../views/calendar.dart';
-import '../views/home.dart';
+import '../views/client/client_home.dart';
 import '../views/dashboard.dart';
 import '../views/location.dart';
 import '../views/login.dart';

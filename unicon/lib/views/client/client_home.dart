@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../constants/navigation_routes.dart';
-import 'calendar.dart';
-import 'dashboard.dart';
-import 'location.dart';
-import 'profile.dart';
+import '../../constants/navigation_routes.dart';
+import '../calendar.dart';
+import '../dashboard.dart';
+import '../location.dart';
+import '../profile.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,10 +18,10 @@ class _HomeState extends State<Home> {
 
   // different views/bottomNavBar item
   final List<Widget> screens = [
-    Dashboard(),
-    CalendarPage(),
-    LocationPage(),
-    ProfilePage(),
+    const Dashboard(),
+    const CalendarPage(),
+    const LocationPage(),
+    const ProfilePage(),
   ];
 
   Widget currentScreen = Dashboard(); // sets current view
@@ -39,7 +39,7 @@ class _HomeState extends State<Home> {
         backgroundColor: const Color.fromARGB(255, 84, 122, 70), // green bg
         onPressed: () {
           navigateToPublishProjectPage(context);
-          },
+        },
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

@@ -344,6 +344,9 @@ class _LoginPageState extends State<LoginPage> {
                           print("Login Status: ${response.statusCode}");
                         }
 
+                        // Removes the "Logging in" dialog
+                        Navigator.pop(_context);
+
                         switch (response.statusCode) {
                           case 200: // If the login succeeds
                             clearText();
@@ -363,11 +366,11 @@ class _LoginPageState extends State<LoginPage> {
                               print(response.body);
                             }
 
-                            if (response.statusCode != 200) {
+                            if (response.statusCode == 200) {
+                              navigateToHome(_context);
+                            } else {
                               showLoginErrorSnackBar(
                                   "We've encountered an unexpected error in the server. Please try again later.");
-                            } else {
-                              navigateToHome(_context);
                             }
                             break;
 
@@ -388,9 +391,6 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       }
                     }
-
-                    // Removes the "Logging in" dialog
-                    Navigator.pop(_context);
                   },
                 ),
                 SizedBox(
