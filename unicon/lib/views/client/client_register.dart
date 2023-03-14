@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:untitled/constants/navigation_routes.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -326,6 +327,21 @@ class _RegisterPageState extends State<RegisterPage> {
                                 return 'Please enter your birthdate';
                               }
                               return null;
+                            },
+                            onTap: () async {
+                              DateTime? pickeddate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(1900),
+                                  lastDate: DateTime.now());
+
+                              if (pickeddate != null) {
+                                setState(() {
+                                  _birthDateController.text =
+                                      DateFormat('yyyy-mm-dd')
+                                          .format(pickeddate);
+                                });
+                              }
                             },
                           ),
                         ),

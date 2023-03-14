@@ -96,17 +96,18 @@ class _PublishProjectPageState extends State<PublishProjectPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          elevation: 5,
+          toolbarHeight: 100,
+          elevation: 1,
           backgroundColor: Colors.white,
           leading: const BackButton(
             color: Colors.black,
           ),
           leadingWidth: 30,
-          title: const Text("Publish a New Project"),
+          title: const Text("Publish Project"),
           titleTextStyle: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
-            fontSize: 16,
+            fontSize: 20,
           ),
         ),
         body: SingleChildScrollView(
