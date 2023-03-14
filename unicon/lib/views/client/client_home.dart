@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
     const ProfilePage(),
   ];
 
-  Widget currentScreen = Dashboard(); // sets current view
+  Widget currentScreen = const Dashboard(); // sets current view
 
   final PageStorageBucket bucket = PageStorageBucket();
 
@@ -32,8 +32,8 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageStorage(
-        child: currentScreen,
         bucket: bucket,
+        child: currentScreen,
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color.fromARGB(255, 84, 122, 70), // green bg
@@ -55,14 +55,14 @@ class _HomeState extends State<Home> {
                 IconButton(
                   onPressed: (() {
                     setState(() {
-                      currentScreen = Dashboard();
+                      currentScreen = const Dashboard();
                       currentTab = 0;
                     });
                   }),
                   icon: Icon(
                     Icons.home,
                     color: currentTab == 0
-                        ? Color.fromARGB(255, 84, 122, 70)
+                        ? const Color.fromARGB(255, 84, 122, 70)
                         : Colors.grey[400],
                   ),
                   iconSize: 30,
@@ -70,14 +70,14 @@ class _HomeState extends State<Home> {
                 IconButton(
                   onPressed: (() {
                     setState(() {
-                      currentScreen = CalendarPage();
+                      currentScreen = const CalendarPage();
                       currentTab = 1;
                     });
                   }),
                   icon: Icon(
                     Icons.calendar_month,
                     color: currentTab == 1
-                        ? Color.fromARGB(255, 84, 122, 70)
+                        ? const Color.fromARGB(255, 84, 122, 70)
                         : Colors.grey[400],
                   ),
                   iconSize: 30,
@@ -85,14 +85,14 @@ class _HomeState extends State<Home> {
                 IconButton(
                   onPressed: (() {
                     setState(() {
-                      currentScreen = LocationPage();
+                      currentScreen = const LocationPage();
                       currentTab = 2;
                     });
                   }),
                   icon: Icon(
                     Icons.location_pin,
                     color: currentTab == 2
-                        ? Color.fromARGB(255, 84, 122, 70)
+                        ? const Color.fromARGB(255, 84, 122, 70)
                         : Colors.grey[400],
                   ),
                   iconSize: 30,
@@ -100,14 +100,14 @@ class _HomeState extends State<Home> {
                 IconButton(
                   onPressed: (() {
                     setState(() {
-                      currentScreen = ProfilePage();
+                      currentScreen = const ProfilePage();
                       currentTab = 3;
                     });
                   }),
                   icon: Icon(
                     Icons.people,
                     color: currentTab == 3
-                        ? Color.fromARGB(255, 84, 122, 70)
+                        ? const Color.fromARGB(255, 84, 122, 70)
                         : Colors.grey[400],
                   ),
                   iconSize: 30,

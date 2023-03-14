@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/views/company/publish_project.dart';
+import 'package:untitled/views/provider/company/publish_project.dart';
 import 'package:untitled/views/settingsPages/notifications.dart';
 import '../views/calendar.dart';
 import '../views/client/client_home.dart';
@@ -8,6 +8,7 @@ import '../views/location.dart';
 import '../views/login.dart';
 import '../views/notifications_page.dart';
 import '../views/profile.dart';
+import '../views/provider/provider_regtype.dart';
 import '../views/resetpw.dart';
 import '../views/signup_v2.dart';
 import '../views/verify.dart';
@@ -88,4 +89,9 @@ void navigateToNotificationSettingsPage(context) {
       context,
       MaterialPageRoute(
           builder: (context) => const NotificationSettingsPage()));
+}
+
+void navigateToProviderRegType(context) {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => const ProviderRegType()));
 }

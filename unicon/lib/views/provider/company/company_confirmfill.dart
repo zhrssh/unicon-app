@@ -1,26 +1,23 @@
-import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../../constants/navigation_routes.dart';
-import '../../constants/top_bottom_clippings.dart';
+import 'package:untitled/views/provider/company/company_confirmfill2.dart';
+import '../../../constants/top_bottom_clippings.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MaterialApp(
-    home: CompanyConfirmFill2(),
+    home: CompanyConfirmFill(),
     debugShowCheckedModeBanner: false,
   ));
 }
 
-class CompanyConfirmFill2 extends StatefulWidget {
-  const CompanyConfirmFill2({super.key});
+class CompanyConfirmFill extends StatefulWidget {
+  const CompanyConfirmFill({super.key});
 
   @override
-  State<CompanyConfirmFill2> createState() => _CompanyConfirmFill2State();
+  State<CompanyConfirmFill> createState() => _CompanyConfirmFillState();
 }
 
-class _CompanyConfirmFill2State extends State<CompanyConfirmFill2> {
-
+class _CompanyConfirmFillState extends State<CompanyConfirmFill> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +40,7 @@ class _CompanyConfirmFill2State extends State<CompanyConfirmFill2> {
                         clipper: TopClipPath(),
                         child: Container(
                           color: const Color.fromARGB(255, 84, 122, 70),
-                          height: 160,
+                          height: 130,
                         ),
                       ),
                     ),
@@ -57,7 +54,7 @@ class _CompanyConfirmFill2State extends State<CompanyConfirmFill2> {
                   ],
                 ),
                 const Text(
-                  "Confirm Company Identity",
+                  "Confirm Identification",
                   style: TextStyle(color: Colors.grey),
                 ),
                 const Padding(
@@ -73,13 +70,13 @@ class _CompanyConfirmFill2State extends State<CompanyConfirmFill2> {
                           Row(
                             children: const [
                               Text(
-                                "Valid Company Permits",
+                                "2 Valid Government ID",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                " (PCAB License, DTI",
+                                " (Driver’s License,",
                                 style: TextStyle(color: Colors.grey),
                               ),
                             ],
@@ -88,7 +85,14 @@ class _CompanyConfirmFill2State extends State<CompanyConfirmFill2> {
                               padding: EdgeInsets.symmetric(
                                   vertical: 2, horizontal: 0)),
                           const Text(
-                            "Permit, BIR Clearance)",
+                            "National ID, PhilHealth, Postal ID, NBI ",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 0)),
+                          const Text(
+                            "Clearance)",
                             style: TextStyle(color: Colors.grey),
                           ),
                         ],
@@ -106,7 +110,7 @@ class _CompanyConfirmFill2State extends State<CompanyConfirmFill2> {
                             color: Colors.black,
                           ),
                           label: const Text(
-                            "Attach File (PCAB License)",
+                            "Attach File",
                             style: TextStyle(color: Colors.grey),
                           ),
                           style: TextButton.styleFrom(
@@ -124,25 +128,7 @@ class _CompanyConfirmFill2State extends State<CompanyConfirmFill2> {
                             color: Colors.black,
                           ),
                           label: const Text(
-                            "Attach File (DTI Permit)",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          style: TextButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              fixedSize: const Size(300, 45),
-                              alignment: Alignment.centerLeft),
-                        ),
-                        const Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 0)),
-                        TextButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.file_download_outlined,
-                            color: Colors.black,
-                          ),
-                          label: const Text(
-                            "Attach File (BIR Clearance)",
+                            "Attach File",
                             style: TextStyle(color: Colors.grey),
                           ),
                           style: TextButton.styleFrom(
@@ -154,7 +140,66 @@ class _CompanyConfirmFill2State extends State<CompanyConfirmFill2> {
                     ),
                     const Padding(
                         padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 0)),
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 0)),
+                    SizedBox(
+                      width: 300,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: const [
+                              Text(
+                                "Photo Verification",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                " (Copy the man's hand",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                          const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 0)),
+                          const Text(
+                            "position in the picture below)",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 0)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Image.asset(
+                                'assets/images/left-handed-man-verification.png',
+                                width: 131,
+                                height: 113,
+                              ),
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  fixedSize: const Size(135, 113),
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                ),
+                                onPressed: () {},
+                                child: const Icon(
+                                  Icons.file_download_outlined,
+                                  size: 60,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 0)),
                     SizedBox(
                       width: 300,
                       child: Column(
@@ -169,18 +214,26 @@ class _CompanyConfirmFill2State extends State<CompanyConfirmFill2> {
                     ),
                     const Padding(
                         padding:
-                            EdgeInsets.symmetric(vertical: 50, horizontal: 0)),
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 0)),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         fixedSize: const Size(300, 40),
-                        backgroundColor: const Color.fromARGB(255, 104, 147, 89),
+                        backgroundColor:
+                            const Color.fromARGB(255, 104, 147, 89),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50),
                         ),
                       ),
-                      onPressed: () {}, //navigate to provider/company homepage
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CompanyConfirmFill2(),
+                          ),
+                        );
+                      },
                       child: const Text(
-                        'Submit',
+                        'Next',
                         style: TextStyle(fontSize: 18),
                       ),
                     ),

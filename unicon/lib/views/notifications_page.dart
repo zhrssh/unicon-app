@@ -26,7 +26,7 @@ class _NotificationPageState extends State<NotificationPage> {
           fontSize: 20,
         ),
       ),
-      body: Column(children: <Widget>[]),
+      body: Column(children: const <Widget>[]),
     );
   }
 }

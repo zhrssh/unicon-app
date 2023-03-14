@@ -1,9 +1,6 @@
-import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled/views/company/company_verify.dart';
-import '../../constants/navigation_routes.dart';
-import '../../constants/top_bottom_clippings.dart';
+import 'package:untitled/views/provider/company/company_confirmfill.dart';
+import '../../../constants/top_bottom_clippings.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
@@ -21,7 +18,7 @@ class CompanyFillUp extends StatefulWidget {
 }
 
 class _CompanyFillUpState extends State<CompanyFillUp> {
-  bool TermsAndConditions = false;
+  bool termsAndConditions = false;
 
   @override
   Widget build(BuildContext context) {
@@ -241,12 +238,13 @@ class _CompanyFillUpState extends State<CompanyFillUp> {
                             controlAffinity: ListTileControlAffinity.leading,
                             title: const Text(
                               "I agree with the Terms and Conditions provided by Unicon.",
-                              style: TextStyle(color: Colors.white60, fontSize: 12),
+                              style: TextStyle(
+                                  color: Colors.white60, fontSize: 12),
                             ),
-                            value: TermsAndConditions,
+                            value: termsAndConditions,
                             onChanged: (value) {
                               setState(() {
-                                TermsAndConditions = value!;
+                                termsAndConditions = value!;
                               });
                             },
                           ),
@@ -262,13 +260,13 @@ class _CompanyFillUpState extends State<CompanyFillUp> {
                               borderRadius: BorderRadius.circular(50),
                             ),
                           ),
-                          onPressed: TermsAndConditions
+                          onPressed: termsAndConditions
                               ? () {
                                   Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const CompanyVerify(uuid: "")));
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const CompanyConfirmFill()));
                                 }
                               : null,
                           child: const Text(

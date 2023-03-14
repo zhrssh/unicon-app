@@ -199,10 +199,19 @@ class _VerifyPageState extends State<VerifyPage> {
                               var jsonBody = jsonDecode(response.body);
                               widget.data.addAll(
                                   {"accessToken": jsonBody["accessToken"]});
-                              navigateToRegisterPage(context, widget.data);
+
+                              if (widget.data["accountType"] == "client") {
+                                navigateToRegisterPage(context, widget.data);
+                              }
+
+                              if (widget.data["accountType"] == "provider") {
+                                navigateToProviderRegType(context);
+                              }
+
                               clearText();
                             } else {
                               clearText();
+
                               // Error message (for users)
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(

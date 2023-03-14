@@ -363,7 +363,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     key: ValueKey(chip.id),
                                     label: Text(
                                       chip.name,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),

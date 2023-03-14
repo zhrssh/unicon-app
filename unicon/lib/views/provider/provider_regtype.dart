@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/views/company/company_fillup.dart';
+import 'package:untitled/views/provider/company/company_fillup.dart';
 import 'package:untitled/views/login.dart';
+import 'package:untitled/views/provider/provider_fillup.dart';
 import '../../constants/top_bottom_clippings.dart';
-import '../../constants/navigation_routes.dart';
-import 'provider_signup.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -53,7 +52,7 @@ class ProviderRegTypeState extends State<ProviderRegType> {
             ],
           ),
           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 50),
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 25),
           ),
           const Text(
             "Select your provider type",
@@ -66,7 +65,9 @@ class ProviderRegTypeState extends State<ProviderRegType> {
               InkWell(
                 onTap: (() {
                   Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => const ProviderSignupPage()));
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProviderFillUp()));
                 }),
                 child: Container(
                   height: 112,
@@ -118,7 +119,9 @@ class ProviderRegTypeState extends State<ProviderRegType> {
           InkWell(
             onTap: () {
               Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => const CompanyFillUp()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CompanyFillUp()));
             },
             child: Container(
               height: 112,
@@ -168,8 +171,8 @@ class ProviderRegTypeState extends State<ProviderRegType> {
               padding: EdgeInsets.symmetric(vertical: 7, horizontal: 0)),
           InkWell(
             onTap: () {
-              Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => const LoginPage()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()));
             },
             child: const Text(
               "Already have an account?",

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:untitled/chat/models/chatmessagemodel.dart';
 
 class ChatDetailPage extends StatefulWidget {
+  const ChatDetailPage({super.key});
+
   @override
-  _ChatDetailPageState createState() => _ChatDetailPageState();
+  State<ChatDetailPage> createState() => _ChatDetailPageState();
 }
 
 class _ChatDetailPageState extends State<ChatDetailPage> {
@@ -143,52 +145,50 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               },
             ),
           ),
-          Container(
-            child: Align(
-              alignment: FractionalOffset.bottomLeft,
-              child: Container(
-                padding: const EdgeInsets.only(left: 10, bottom: 10, top: 10),
-                height: 90,
-                width: double.infinity,
-                color: const Color.fromARGB(255, 84, 122, 70),
-                child: Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {},
-                      child: IconButton(
-                        icon: const Icon(Icons.file_upload_outlined),
-                        onPressed: () {},
-                        iconSize: 30,
-                      ),
+          Align(
+            alignment: FractionalOffset.bottomLeft,
+            child: Container(
+              padding: const EdgeInsets.only(left: 10, bottom: 10, top: 10),
+              height: 90,
+              width: double.infinity,
+              color: const Color.fromARGB(255, 84, 122, 70),
+              child: Row(
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {},
+                    child: IconButton(
+                      icon: const Icon(Icons.file_upload_outlined),
+                      onPressed: () {},
+                      iconSize: 30,
                     ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Expanded(
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          hintText: "Type your message...",
-                          hintStyle: const TextStyle(color: Colors.black54),
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 15),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50.0),
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.send),
-                            color: Colors.grey,
-                            onPressed: () {},
-                          ),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "Type your message...",
+                        hintStyle: const TextStyle(color: Colors.black54),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 15),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.send),
+                          color: Colors.grey,
+                          onPressed: () {},
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 25,
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(
+                    width: 25,
+                  ),
+                ],
               ),
             ),
           ),

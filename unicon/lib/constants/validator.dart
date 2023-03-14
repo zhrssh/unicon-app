@@ -26,7 +26,7 @@ class MyCustomFormState extends State<MyCustomForm> {
     return Form(
       key: _formKey,
       child: Column(
-        children: <Widget>[
+        children: const <Widget>[
           // Add TextFormFields and ElevatedButton here.
         ],
       ),

@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../constants/navigation_routes.dart';
 import '../../constants/top_bottom_clippings.dart';
@@ -20,7 +18,7 @@ class ProviderConfirmFill extends StatefulWidget {
 }
 
 class _ProviderConfirmFillState extends State<ProviderConfirmFill> {
-  bool TermsAndConditions = false;
+  bool termsAndConditions = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +42,7 @@ class _ProviderConfirmFillState extends State<ProviderConfirmFill> {
                         clipper: TopClipPath(),
                         child: Container(
                           color: const Color.fromARGB(255, 84, 122, 70),
-                          height: 160,
+                          height: 130,
                         ),
                       ),
                     ),
@@ -222,12 +220,14 @@ class _ProviderConfirmFillState extends State<ProviderConfirmFill> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         fixedSize: const Size(300, 40),
-                        backgroundColor: const Color.fromARGB(255, 104, 147, 89),
+                        backgroundColor:
+                            const Color.fromARGB(255, 104, 147, 89),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50),
                         ),
                       ),
-                      onPressed: () {}, //navigate to provider/company homepage
+                      onPressed: () => navigateToLoginPage(
+                          context), //navigate to provider/company homepage
                       child: const Text(
                         'Submit',
                         style: TextStyle(fontSize: 18),

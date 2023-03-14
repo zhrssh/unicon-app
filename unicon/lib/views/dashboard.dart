@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/constants/navigation_routes.dart';
 import 'package:untitled/constants/published_projects.dart';
-import 'package:untitled/views/calendar.dart';
-import 'package:untitled/views/location.dart';
-import 'package:untitled/views/profile.dart';
 import '../constants/navigation_drawer.dart';
+
+// import 'package:untitled/views/calendar.dart';
+// import 'package:untitled/views/location.dart';
+// import 'package:untitled/views/profile.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});

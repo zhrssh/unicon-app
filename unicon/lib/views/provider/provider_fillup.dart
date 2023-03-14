@@ -1,7 +1,4 @@
-import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../../constants/navigation_routes.dart';
 import '../../constants/top_bottom_clippings.dart';
 import 'provider_confirmfill.dart';
 import 'package:http/http.dart' as http;
@@ -21,7 +18,7 @@ class ProviderFillUp extends StatefulWidget {
 }
 
 class _ProviderFillUpState extends State<ProviderFillUp> {
-  bool TermsAndConditions = false;
+  bool termsAndConditions = false;
 
   @override
   Widget build(BuildContext context) {
@@ -293,10 +290,10 @@ class _ProviderFillUpState extends State<ProviderFillUp> {
                               "I agree with the Terms and Conditions provided by Unicon.",
                               style: TextStyle(color: Colors.white60),
                             ),
-                            value: TermsAndConditions,
+                            value: termsAndConditions,
                             onChanged: (value) {
                               setState(() {
-                                TermsAndConditions = value!;
+                                termsAndConditions = value!;
                               });
                             },
                           ),
@@ -312,13 +309,13 @@ class _ProviderFillUpState extends State<ProviderFillUp> {
                               borderRadius: BorderRadius.circular(50),
                             ),
                           ),
-                          onPressed: TermsAndConditions
+                          onPressed: termsAndConditions
                               ? () {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              ProviderConfirmFill()));
+                                              const ProviderConfirmFill()));
                                 }
                               : null,
                           child: const Text(
