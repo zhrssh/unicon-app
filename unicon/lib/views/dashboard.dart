@@ -161,6 +161,9 @@ class SearchPageDelegate extends SearchDelegate {
     Worker('Juan Dela Cruz', 'Painter', 'Quezon City'),
     Worker('Albert Dela Rosa', 'Carpenter', 'Pasig City'),
     Worker('Wally Bayola', 'Carpenter', 'Quezon City'),
+    Worker('Rendon Labador', 'Pancit Canton', 'Pasig City'),
+    Worker('Andrew Tate', 'Cool-Kid', 'US of A'),
+    Worker('Crisostomo Ibarra', 'Welder', 'Quezon City'),
   ];
 
   @override
@@ -201,23 +204,134 @@ class SearchPageDelegate extends SearchDelegate {
       itemCount: displayWorkers.length,
       itemBuilder: (context, index) {
         // final worker = ;
-        return SizedBox(
-          // width: 200,
-          height: 100,
-          child: Card(
-            elevation: 3,
-            child: ListTile(
-              leading: Image.asset("unicon/assets/images/avatar1.jpg"),
-              title: Text(
-                displayWorkers[index].name!,
-                style: TextStyle(),
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: Column(
+            children: [
+              const SizedBox(height: 10),
+              InkWell(
+                onTap: (() {}),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      child: Material(
+                        child: Container(
+                          height: 130,
+                          // width: 500,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                offset: const Offset(0, 4),
+                                blurRadius: 3.0,
+                                spreadRadius: 2.0,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Positioned(
+                      left: 5,
+                      top: 10,
+                      height: 100,
+                      child: CircleAvatar(
+                        radius: 80,
+                        backgroundColor: Colors.deepOrangeAccent,
+                        child: Text(
+                          "Insert image here",
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                        top: 30,
+                        left: 150,
+                        child: SizedBox(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                displayWorkers[index].name!.toUpperCase(),
+                                style: const TextStyle(
+                                  color: Color.fromARGB(255, 84, 122, 70),
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 13,
+                                ),
+                              ),
+                              Text(
+                                displayWorkers[index].job!,
+                                style: const TextStyle(
+                                  // color: Color.fromARGB(255, 84, 122, 70),
+                                  // fontWeight: FontWeight.w900,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Text(
+                                displayWorkers[index].location!.toUpperCase(),
+                                style: const TextStyle(
+                                  color: Color.fromARGB(255, 84, 122, 70),
+                                  // fontWeight: FontWeight.w900,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ))
+                  ],
+                ),
               ),
-              onTap: () {
-                query = displayWorkers[index].name!;
-              },
-            ),
+              const SizedBox(height: 10),
+            ],
           ),
         );
+
+        // return Material(
+        //   borderRadius: BorderRadius.circular(80),
+        //   child: SizedBox(
+        //     // width: 200,
+        //     height: 150,
+        //     child: Stack(children: [
+        //       Card(
+        //         shape: RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.circular(15)),
+        //         elevation: 5,
+        //         child: Padding(
+        //           padding: const EdgeInsets.all(15.0),
+        //           child: CircleAvatar(
+        //             radius: 80,
+        //             child: ClipRRect(
+        //               borderRadius: BorderRadius.circular(80),
+        //               child: Image.asset("assets/images/avatar1.jpg"),
+
+        //               // child: ListTile(
+        //               //   leading: CircleAvatar(
+        //               //     child: ClipRRect(
+        //               //       child: Image.asset("/assets/images/avatar1.jpg"),
+        //               //     ),
+        //               //   ),
+        //               //   title: Text(
+        //               //     displayWorkers[index].name!.toUpperCase(),
+        //               //     style: const TextStyle(
+        //               //       color: Color.fromARGB(255, 84, 122, 70),
+        //               //       fontWeight: FontWeight.w900,
+        //               //       fontSize: 12,
+        //               //       // fontFeatures:
+        //               //     ),
+        //               //   ),
+        //               //   onTap: () {
+        //               //     query = displayWorkers[index].name!;
+        //               //   },
+        //               // ),
+        //             ),
+        //           ),
+        //         ),
+        //       ),
+        //     ]),
+        //   ),
+        // );
       },
     );
   }
