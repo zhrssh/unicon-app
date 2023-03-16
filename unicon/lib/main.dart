@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/views/client/client_home.dart';
 import 'views/login.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -19,7 +20,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: Home(),
     );
   }
 }

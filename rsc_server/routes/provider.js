@@ -21,16 +21,16 @@ router.get('/view?uuid=:uuid', async (req, res) => {
     }
 })
 
-router.put("/register/individual", (req, res) => {
+router.post("/register/individual", (req, res) => {
     // TODO: IMPLEMENT REGISTRATION
     req.sendStatus(200)
 })
 
-router.put("/register/individual/ids", async (req, res) => {
+router.post("/register/individual/ids", async (req, res) => {
     upload.array("ids", 2)(req, res, async (err) => {
         if (err) {
             if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
-            return res.sendStatus(400)
+            return res.status(400).send(err.message)
         } else {
             if (req.file == undefined) return res.sendStatus(400)
 
@@ -46,11 +46,11 @@ router.put("/register/individual/ids", async (req, res) => {
     })
 })
 
-router.put("/register/individual/photo", async (req, res) => {
+router.post("/register/individual/photo", async (req, res) => {
     upload.single('photo')(req, res, async (err) => {
         if (err) {
             if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
-            return res.sendStatus(400)
+            return res.status(400).send(err.message)
         } else {
             if (req.file == undefined) return res.sendStatus(400)
 
@@ -66,7 +66,7 @@ router.put("/register/individual/photo", async (req, res) => {
     })
 })
 
-router.put("/register/company", (req, res) => {
+router.post("/register/company", (req, res) => {
     // TODO: IMPLEMENT REGISTRATION
     req.sendStatus(200)
 })
@@ -92,7 +92,7 @@ router.post("/profile/update/avatar", async (req, res) => {
     upload.single('avatar')(req, res, async (err) => {
         if (err) {
             if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
-            return res.sendStatus(400)
+            return res.status(400).send(err.message)
         } else {
             if (req.file == undefined) return res.sendStatus(400)
 

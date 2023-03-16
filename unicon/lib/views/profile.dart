@@ -55,6 +55,21 @@ class _ProfilePageState extends State<ProfilePage> {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      // appBar: AppBar(
+      //   toolbarHeight: 100,
+      //   elevation: 0,
+      //   backgroundColor: Colors.transparent,
+      //   leading: const BackButton(
+      //     color: Colors.black,
+      //   ),
+      //   leadingWidth: 30,
+      //   title: const Text("Profile"),
+      //   titleTextStyle: const TextStyle(
+      //     color: Colors.black,
+      //     fontWeight: FontWeight.bold,
+      //     fontSize: 20,
+      //   ),
+      // ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -94,43 +109,43 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             Center(
               child: SizedBox(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: height * .01),
-                  child: Container(
-                    // color: Colors.redAccent,
-                    padding: const EdgeInsets.all(8.0),
-                    // height: height * .20,
-                    width: width * .8,
-                    child: Column(
-                      children: <Widget>[
-                        Material(
-                          // elevation: 5,
-                          borderRadius: BorderRadius.circular(80),
-                          child: CircleAvatar(
-                            radius: 80,
-                            backgroundColor: Colors.white,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(80),
-                              child: Image.asset(_profileImage),
-                            ),
+                // child: Padding(
+                // padding: EdgeInsets.symmetric(vertical: height * .01),
+                child: Container(
+                  // color: Colors.redAccent,
+                  padding: const EdgeInsets.all(8.0),
+                  // height: height * .20,
+                  width: width * .8,
+                  child: Column(
+                    children: <Widget>[
+                      Material(
+                        // elevation: 5,
+                        borderRadius: BorderRadius.circular(80),
+                        child: CircleAvatar(
+                          radius: 80,
+                          backgroundColor: Colors.white,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(80),
+                            child: Image.asset(_profileImage),
                           ),
                         ),
-                        SizedBox(
-                          height: height * .01,
+                      ),
+                      SizedBox(
+                        height: height * .01,
+                      ),
+                      const Text(
+                        "Andrew Tate",
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w800,
                         ),
-                        const Text(
-                          "Andrew Tate",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        )
-                      ],
-                    ),
+                      )
+                    ],
                   ),
                 ),
               ),
             ),
+            // ),
             SizedBox(
               // height: height * .25,
               child: Padding(
