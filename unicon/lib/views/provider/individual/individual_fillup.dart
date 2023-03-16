@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:untitled/constants/navigation_routes.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -245,6 +246,21 @@ class _IndividualFillUpState extends State<IndividualFillUp> {
                               }
                               return null;
                             },
+                            onTap: () async {
+                              DateTime? pickeddate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime.now(),
+                                  lastDate: DateTime(2101));
+
+                              if (pickeddate != null) {
+                                setState(() {
+                                  _birthDateController.text =
+                                      DateFormat('yyyy-MM-dd')
+                                          .format(pickeddate);
+                                });
+                              }
+                            },
                           ),
                         ),
                       ),
@@ -277,7 +293,7 @@ class _IndividualFillUpState extends State<IndividualFillUp> {
                               filled: true,
                               fillColor: Colors.white,
                               border: OutlineInputBorder(),
-                              hintText: "0912...",
+                              hintText: "+63 999 999 9999",
                               hintStyle: TextStyle(
                                 color: Colors.grey,
                               ),
