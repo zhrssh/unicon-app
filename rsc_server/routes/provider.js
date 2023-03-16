@@ -21,18 +21,58 @@ router.get('/view?uuid=:uuid', async (req, res) => {
     }
 })
 
-router.post("/register/individual", (req, res) => {
+router.put("/register/individual", (req, res) => {
     // TODO: IMPLEMENT REGISTRATION
     req.sendStatus(200)
 })
 
-router.post("/register/company", (req, res) => {
+router.put("/register/individual/ids", async (req, res) => {
+    upload.array("ids", 2)(req, res, async (err) => {
+        if (err) {
+            if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
+            return res.sendStatus(400)
+        } else {
+            if (req.file == undefined) return res.sendStatus(400)
+
+            // Update profile
+            const uuid = auth.getUUIDFromToken(req)
+            const toUpdate = { uploads: { ids: req.file.path } }
+
+            await providerController.updateProvider(uuid, toUpdate)
+
+            // Sends file details back to the uploader
+            return res.status(200).send(req.file)
+        }
+    })
+})
+
+router.put("/register/individual/photo", async (req, res) => {
+    upload.single('photo')(req, res, async (err) => {
+        if (err) {
+            if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
+            return res.sendStatus(400)
+        } else {
+            if (req.file == undefined) return res.sendStatus(400)
+
+            // Update profile
+            const uuid = auth.getUUIDFromToken(req)
+            const toUpdate = { uploads: { photo: req.file.path } }
+
+            await providerController.updateProvider(uuid, toUpdate)
+
+            // Sends file details back to the uploader
+            return res.status(200).send(req.file)
+        }
+    })
+})
+
+router.put("/register/company", (req, res) => {
     // TODO: IMPLEMENT REGISTRATION
     req.sendStatus(200)
 })
 
 // Updates user provider
-router.post("/update", async (req, res) => {
+router.post("/profile/update", async (req, res) => {
     // Stores or update user provider
     try {
         // Req.body.uuid came from jwt token
@@ -48,7 +88,7 @@ router.post("/update", async (req, res) => {
 })
 
 // Upload an avatar to the database
-router.post("/update/avatar", async (req, res) => {
+router.post("/profile/update/avatar", async (req, res) => {
     upload.single('avatar')(req, res, async (err) => {
         if (err) {
             if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)

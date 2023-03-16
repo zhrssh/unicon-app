@@ -1,5 +1,15 @@
 const mongoose = require("mongoose")
 
+// Schema for file uploads
+const imagesSchema = new mongoose.Schema({
+    ids: [{
+        type: String
+    }],
+    photo: {
+        type: String
+    }
+})
+
 // Schema for followers
 const followerSchema = new mongoose.Schema({
     follower: {
@@ -71,10 +81,6 @@ const providerSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    avatar: {
-        type: String,
-        default: null
-    },
     location: {
         type: String,
         required: true
@@ -100,6 +106,13 @@ const providerSchema = new mongoose.Schema({
     },
     reviews: {
         type: reviewSchema
+    },
+    avatar: {
+        type: String,
+        default: null
+    },
+    uploads: {
+        type: imagesSchema
     }
 
 }, { timestamps: true })
