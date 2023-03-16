@@ -50,6 +50,7 @@ class _PublishProjectPageState extends State<PublishProjectPage> {
     final name = basename(imagePath);
     final image = File('${directory.path}/$name');
 
+    // print(image);
     return File(imagePath).copy(image.path);
   }
 
@@ -97,8 +98,8 @@ class _PublishProjectPageState extends State<PublishProjectPage> {
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: 100,
-          elevation: 1,
-          backgroundColor: Colors.white,
+          elevation: 0,
+          backgroundColor: Colors.transparent,
           leading: const BackButton(
             color: Colors.black,
           ),
@@ -223,7 +224,7 @@ class _PublishProjectPageState extends State<PublishProjectPage> {
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            hintText: "Date of start (MM/DD/YY)",
+                            hintText: "Date of start (yyyy-MM-dd)",
                             hintStyle: const TextStyle(
                               color: Colors.black26,
                               fontSize: 13,
@@ -240,8 +241,7 @@ class _PublishProjectPageState extends State<PublishProjectPage> {
                             if (pickeddate != null) {
                               setState(() {
                                 _dateController.text =
-                                    DateFormat('dd MMMM yyyy')
-                                        .format(pickeddate);
+                                    DateFormat('yyyy-MM-dd').format(pickeddate);
                               });
                             }
                           },

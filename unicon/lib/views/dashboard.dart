@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/constants/navigation_routes.dart';
 import 'package:untitled/constants/published_projects.dart';
+import 'package:untitled/views/worker_model.dart';
 import '../constants/navigation_drawer.dart';
 import '/constants/projects_data.dart';
 // import 'package:untitled/views/calendar.dart';
@@ -15,8 +16,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-
-
   @override
   Widget build(BuildContext context) {
     // final double height = MediaQuery.of(context).size.height;
@@ -158,6 +157,11 @@ class _DashboardState extends State<Dashboard> {
 }
 
 class SearchPageDelegate extends SearchDelegate {
+  static List<Worker> workersList = [
+    Worker('Juan Dela Cruz', 'Painter', 'Quezon City'),
+    Worker('Albert Dela Rosa', 'Carpenter', 'Pasig City'),
+    Worker('Wally Bayola', 'Carpenter', 'Quezon City'),
+  ];
 
   @override
   Widget? buildLeading(BuildContext context) => IconButton(
@@ -189,17 +193,31 @@ class SearchPageDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<String> list = ['Juan Dela Cruz', 'Lebron James', 'Ryza Mae Dizon'];
+    // List<String> list = ['Juan Dela Cruz', 'Lebron James', 'Ryza Mae Dizon'];
+    //building list of workers
+    List<Worker> displayWorkers = List.from(workersList);
 
     return ListView.builder(
-      itemCount: list.length,
+      itemCount: displayWorkers.length,
       itemBuilder: (context, index) {
-        final worker = list[index];
-        return ListTile(
-            title: Text(worker),
-            onTap: () {
-              query = worker;
-            });
+        // final worker = ;
+        return SizedBox(
+          // width: 200,
+          height: 100,
+          child: Card(
+            elevation: 3,
+            child: ListTile(
+              leading: Image.asset("unicon/assets/images/avatar1.jpg"),
+              title: Text(
+                displayWorkers[index].name!,
+                style: TextStyle(),
+              ),
+              onTap: () {
+                query = displayWorkers[index].name!;
+              },
+            ),
+          ),
+        );
       },
     );
   }
