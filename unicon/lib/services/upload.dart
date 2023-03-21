@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -6,15 +7,31 @@ import 'package:http/http.dart' as http;
 
 // Upload the image to the server
 Future<http.StreamedResponse> uploadImage(
-    File? file, String path, String fieldname) async {
+    String accessToken, File? file, String path, String fieldname) async {
   final request = http.MultipartRequest(
-      "POST", Uri.parse("http://${dotenv.env["RSC_URL"]}/api/provider$path"));
+    "POST",
+    Uri.parse("http://${dotenv.env["RSC_URL"]}/api/$path"),
+  );
 
-  request.files.add(http.MultipartFile.fromBytes(
-      fieldname, File(file!.path).readAsBytesSync()));
+  request.headers.addAll(<String, String>{
+    "Content-type": "multipart/form-data",
+    'Authorization': 'Bearer $accessToken'
+  });
+
+  // Image information
+  final fileStream = http.ByteStream(file!.openRead());
+  final fileLength = await file.length();
+  final multipartFile = http.MultipartFile(fieldname, fileStream, fileLength);
+  request.files.add(multipartFile);
 
   // Request to upload to server
   final response = await request.send();
+
+  if (kDebugMode) {
+    final responseBody = await response.stream.bytesToString();
+    print(responseBody);
+  }
+
   if (response.statusCode == 200) {
     if (kDebugMode) {
       print("Uploaded successfully.");
@@ -26,19 +43,33 @@ Future<http.StreamedResponse> uploadImage(
 
 // Upload multiple images to the server
 Future<http.StreamedResponse?> uploadImageMultiple(
+  String accessToken,
   List<File?> files,
   String path,
   String fieldname,
 ) async {
   final request = http.MultipartRequest(
-      "POST", Uri.parse("http://${dotenv.env["RSC_URL"]}/api/provider$path"));
+      "POST", Uri.parse("http://${dotenv.env["RSC_URL"]}/api/$path"));
 
   final length = files.length;
   if (length > 0) {
+    // Add headers
+    request.headers.addAll(<String, String>{
+      "Content-type": "multipart/form-data",
+      'Authorization': 'Bearer $accessToken'
+    });
+
     // Add files to be uploaded
-    for (var i = 0; i < length; i++) {
-      request.files.add(http.MultipartFile.fromBytes(
-          fieldname, File(files[i]!.path).readAsBytesSync()));
+    for (File? file in files) {
+      if (file == null) {
+        continue;
+      }
+
+      final fileStream = http.ByteStream(file.openRead());
+      final fileLength = await file.length();
+      final multipartFile =
+          http.MultipartFile(fieldname, fileStream, fileLength);
+      request.files.add(multipartFile);
     }
 
     // Request to upload to server

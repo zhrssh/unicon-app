@@ -21,24 +21,51 @@ router.get('/view?uuid=:uuid', async (req, res) => {
     }
 })
 
-router.post("/register/individual", (req, res) => {
-    // TODO: IMPLEMENT REGISTRATION
-    req.sendStatus(200)
+router.post("/register/individual", async (req, res) => {
+    try {
+        // Provider info
+        const providerInfo = {
+            accountType: req.body.accountType,
+            accountGroup: req.body.accountGroup,
+            uuid: req.body.uuid,
+            name: {
+                firstName: req.body.name.firstName,
+                lastName: req.body.name.lastName,
+                middleName: req.body.name.middleName
+            },
+            birthDate: req.body.birthDate,
+            contactNumber: req.body.contactNumber,
+            location: req.body.location,
+        }
+
+        if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), providerInfo)
+
+        // Creates the client profile
+        await providerController.createProvider(providerInfo)
+
+        return res.sendStatus(200)
+    } catch (err) {
+        return res.status(err.code).send({ err: err.message })
+    }
 })
 
 router.post("/register/individual/ids", async (req, res) => {
-    upload.array("ids", 2)(req, res, async (err) => {
+    upload.array('ids')(req, res, async (err) => {
         if (err) {
             if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
             return res.status(400).send(err.message)
         } else {
-            if (req.file == undefined) return res.sendStatus(400)
+            if (!req.files || req.files.length <= 0) return res.status(400).send("No files where uploaded")
 
             // Update profile
             const uuid = auth.getUUIDFromToken(req)
-            const toUpdate = { uploads: { ids: req.file.path } }
 
-            await providerController.updateProvider(uuid, toUpdate)
+            // Get the file paths
+            if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
+            const filePaths = req.files.map(file => file.path)
+            const toUpdate = { uploads: { ids: filePaths } }
+
+            providerController.updateProvider(uuid, toUpdate)
 
             // Sends file details back to the uploader
             return res.status(200).send(req.file)
@@ -52,13 +79,13 @@ router.post("/register/individual/photo", async (req, res) => {
             if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
             return res.status(400).send(err.message)
         } else {
-            if (req.file == undefined) return res.sendStatus(400)
+            if (req.file == undefined) return res.status(400).send("Undefined file")
 
             // Update profile
             const uuid = auth.getUUIDFromToken(req)
             const toUpdate = { uploads: { photo: req.file.path } }
 
-            await providerController.updateProvider(uuid, toUpdate)
+            providerController.updateProvider(uuid, toUpdate)
 
             // Sends file details back to the uploader
             return res.status(200).send(req.file)

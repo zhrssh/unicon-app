@@ -33,11 +33,9 @@ const reviewSchema = new mongoose.Schema({
     },
     rating: {
         type: Number,
-        default: 0
     },
     content: {
         type: String,
-        default: null
     }
 })
 
@@ -86,8 +84,7 @@ const providerSchema = new mongoose.Schema({
         required: true
     },
     profession: {
-        type: String,
-        required: true
+        type: String
     },
     averageRating: {
         type: Number,
@@ -98,7 +95,6 @@ const providerSchema = new mongoose.Schema({
     },
     about: {
         type: String,
-        default: null
     },
     projectsHistory: {
         type: mongoose.Types.ObjectId,

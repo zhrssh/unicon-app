@@ -8,8 +8,8 @@ const raise = require("../utils/raise")
  * @returns {Promise<null>}
  */
 function createProvider(providerInfo) {
-    return new Promise((resolve, reject) => {
-        Provider.create(providerInfo)
+    return new Promise(async (resolve, reject) => {
+        await Provider.create(providerInfo)
             .then(resolve(null))
             .catch((err) => {
                 if (process.env.NODE_ENV === "development")
@@ -27,7 +27,7 @@ function createProvider(providerInfo) {
 function updateProvider(uuid, providerInfo) {
     return new Promise(async (resolve, reject) => {
         // Checks if the user already exists
-        const user = await Client.findOne({ uuid: uuid })
+        const user = await Provider.findOne({ uuid: uuid })
 
         if (user == null)
             return reject(raise("E03", 404))
@@ -51,7 +51,7 @@ function updateProvider(uuid, providerInfo) {
  */
 function getProvider(uuid) {
     return new Promise(async (resolve, reject) => {
-        const user = await Client.findOne({ uuid: uuid })
+        const user = await Provider.findOne({ uuid: uuid })
         if (user === null) return reject(raise("E03", 404))
         return resolve(user)
     })

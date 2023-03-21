@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:untitled/views/client/client_home.dart';
 import 'views/login.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 Future main() async {
   await dotenv.load(fileName: ".env");
+  //await [Permission.storage].request();
+
   runApp(const MyApp());
 }
 
@@ -20,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Home(),
+      home: LoginPage(),
     );
   }
 }

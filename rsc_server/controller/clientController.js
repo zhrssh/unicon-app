@@ -8,8 +8,8 @@ const raise = require("../utils/raise")
  * @returns {Promise<null>}
  */
 function createClient(clientInfo) {
-    return new Promise((resolve, reject) => {
-        Client.create(clientInfo)
+    return new Promise(async (resolve, reject) => {
+        await Client.create(clientInfo)
             .then(resolve(null))
             .catch(err => {
                 if (process.env.NODE_ENV === "development")
