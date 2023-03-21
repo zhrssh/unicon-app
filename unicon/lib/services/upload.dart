@@ -13,16 +13,11 @@ Future<http.StreamedResponse> uploadImage(
     Uri.parse("http://${dotenv.env["RSC_URL"]}/api/$path"),
   );
 
-  request.headers.addAll(<String, String>{
-    "Content-type": "multipart/form-data",
-    'Authorization': 'Bearer $accessToken'
-  });
+  request.headers
+      .addAll(<String, String>{'Authorization': 'Bearer $accessToken'});
 
   // Image information
-  final fileStream = http.ByteStream(file!.openRead());
-  final fileLength = await file.length();
-  final multipartFile = http.MultipartFile(fieldname, fileStream, fileLength);
-  request.files.add(multipartFile);
+  request.files.add(await http.MultipartFile.fromPath(fieldname, file!.path));
 
   // Request to upload to server
   final response = await request.send();
@@ -54,10 +49,8 @@ Future<http.StreamedResponse?> uploadImageMultiple(
   final length = files.length;
   if (length > 0) {
     // Add headers
-    request.headers.addAll(<String, String>{
-      "Content-type": "multipart/form-data",
-      'Authorization': 'Bearer $accessToken'
-    });
+    request.headers
+        .addAll(<String, String>{'Authorization': 'Bearer $accessToken'});
 
     // Add files to be uploaded
     for (File? file in files) {
@@ -65,11 +58,8 @@ Future<http.StreamedResponse?> uploadImageMultiple(
         continue;
       }
 
-      final fileStream = http.ByteStream(file.openRead());
-      final fileLength = await file.length();
-      final multipartFile =
-          http.MultipartFile(fieldname, fileStream, fileLength);
-      request.files.add(multipartFile);
+      request.files
+          .add(await http.MultipartFile.fromPath(fieldname, file.path));
     }
 
     // Request to upload to server

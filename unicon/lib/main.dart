@@ -6,7 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 Future main() async {
   await dotenv.load(fileName: ".env");
-  //await [Permission.storage].request();
+  await [Permission.storage].request();
 
   runApp(const MyApp());
 }
