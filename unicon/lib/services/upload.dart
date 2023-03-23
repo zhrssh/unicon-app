@@ -17,7 +17,7 @@ Future<http.StreamedResponse> uploadImage(
   final ext = file.path.substring(lastIndex);
 
   request.headers
-      .addAll(<String, String>{"'authorization'": 'Bearer $accessToken'});
+      .addAll(<String, String>{'Authorization': 'Bearer $accessToken'});
 
   // Image information
   request.files.add(
@@ -61,7 +61,7 @@ Future<http.StreamedResponse?> uploadImageMultiple(
   if (length > 0) {
     // Add headers
     request.headers
-        .addAll(<String, String>{"'authorization'": 'Bearer $accessToken'});
+        .addAll(<String, String>{'Authorization': 'Bearer $accessToken'});
 
     // Add files to be uploaded
     for (File? file in files) {
