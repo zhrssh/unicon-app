@@ -5,13 +5,14 @@ import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MaterialApp(
-    home: CompanyFillUp(),
+    home: CompanyFillUp(data: {"test": "test"}),
     debugShowCheckedModeBanner: false,
   ));
 }
 
 class CompanyFillUp extends StatefulWidget {
-  const CompanyFillUp({super.key});
+  final Map<String, dynamic> data;
+  const CompanyFillUp({super.key, required this.data});
 
   @override
   State<CompanyFillUp> createState() => _CompanyFillUpState();
@@ -20,7 +21,19 @@ class CompanyFillUp extends StatefulWidget {
 class _CompanyFillUpState extends State<CompanyFillUp> {
   bool termsAndConditions = false;
 
-  // TODO: IMPLEMENT BACKEND CONNECTION
+  final _registeredNameController = TextEditingController();
+  final _locationController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _lineOfWorkController = TextEditingController();
+
+  @override
+  void dispose() {
+    _registeredNameController.dispose();
+    _locationController.dispose();
+    _addressController.dispose();
+    _lineOfWorkController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +93,7 @@ class _CompanyFillUpState extends State<CompanyFillUp> {
                       width: 300,
                       child: Form(
                         child: TextFormField(
+                          controller: _registeredNameController,
                           style: const TextStyle(
                             color: Colors.black,
                           ),
@@ -120,6 +134,7 @@ class _CompanyFillUpState extends State<CompanyFillUp> {
                           width: 300,
                           child: Form(
                             child: TextFormField(
+                              controller: _locationController,
                               style: const TextStyle(
                                 color: Colors.black,
                               ),
@@ -162,6 +177,7 @@ class _CompanyFillUpState extends State<CompanyFillUp> {
                           width: 300,
                           child: Form(
                             child: TextFormField(
+                              controller: _addressController,
                               style: const TextStyle(
                                 color: Colors.black,
                               ),
@@ -204,6 +220,7 @@ class _CompanyFillUpState extends State<CompanyFillUp> {
                           width: 300,
                           child: Form(
                             child: TextFormField(
+                              controller: _lineOfWorkController,
                               style: const TextStyle(
                                 color: Colors.black,
                               ),
@@ -264,11 +281,25 @@ class _CompanyFillUpState extends State<CompanyFillUp> {
                           ),
                           onPressed: termsAndConditions
                               ? () {
+                                  Map<String, dynamic> companyInfo = {
+                                    "companyInfo": {
+                                      "registeredName":
+                                          _registeredNameController.text,
+                                      "location": _locationController.text,
+                                      "address": _addressController.text,
+                                      "lineOfWork": _lineOfWorkController.text
+                                    }
+                                  };
+
+                                  // Adds the user info to the data
+                                  widget.data.addAll(companyInfo);
+
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const CompanyConfirmFill()));
+                                              CompanyConfirmFill(
+                                                  data: widget.data)));
                                 }
                               : null,
                           child: const Text(

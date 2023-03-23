@@ -1,23 +1,69 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:untitled/views/provider/company/company_confirmfill2.dart';
 import '../../../constants/top_bottom_clippings.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MaterialApp(
-    home: CompanyConfirmFill(),
+    home: CompanyConfirmFill(data: {"test": "test"}),
     debugShowCheckedModeBanner: false,
   ));
 }
 
 class CompanyConfirmFill extends StatefulWidget {
-  const CompanyConfirmFill({super.key});
+  final Map<String, dynamic> data;
+  const CompanyConfirmFill({super.key, required this.data});
 
   @override
   State<CompanyConfirmFill> createState() => _CompanyConfirmFillState();
 }
 
 class _CompanyConfirmFillState extends State<CompanyConfirmFill> {
+  File? id_1, photoVerification;
+
+  // For uploading an image
+  // Function for getting image from gallery
+  Future<File?> getImage() async {
+    try {
+      // Pick an image
+      final XFile? image =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return null;
+
+      // convert XFile to File
+      final File file = File(image.path);
+      return file;
+    } on PlatformException catch (e) {
+      if (kDebugMode) {
+        print('Failed to pick image: $e');
+      }
+      return null;
+    }
+  }
+
+  Future<File?> getImageFromCamera() async {
+    try {
+      // Pick an image
+      final XFile? image =
+          await ImagePicker().pickImage(source: ImageSource.camera);
+      if (image == null) return null;
+
+      // convert XFile to File
+      final File file = File(image.path);
+      return file;
+    } on PlatformException catch (e) {
+      if (kDebugMode) {
+        print('Failed to pick image: $e');
+      }
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +116,7 @@ class _CompanyConfirmFillState extends State<CompanyConfirmFill> {
                           Row(
                             children: const [
                               Text(
-                                "2 Valid Government ID",
+                                "1 Valid Government ID",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
@@ -104,38 +150,30 @@ class _CompanyConfirmFillState extends State<CompanyConfirmFill> {
                     Column(
                       children: [
                         TextButton.icon(
-                          onPressed: () {},
+                          onPressed: () async {
+                            final file = await getImage();
+                            if (file == null) return;
+
+                            setState(() {
+                              id_1 = file;
+                              if (kDebugMode) {
+                                print("Attachment 1: $id_1");
+                              }
+                            });
+                          },
                           icon: const Icon(
                             Icons.file_download_outlined,
                             color: Colors.black,
                           ),
-                          label: const Text(
-                            "Attach File",
-                            style: TextStyle(color: Colors.grey),
+                          label: Text(
+                            id_1 == null ? "Attach File" : "Ready to upload!",
+                            style: const TextStyle(color: Colors.grey),
                           ),
                           style: TextButton.styleFrom(
                               backgroundColor: Colors.white,
                               fixedSize: const Size(300, 45),
                               alignment: Alignment.centerLeft),
                         ),
-                        const Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 0)),
-                        TextButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.file_download_outlined,
-                            color: Colors.black,
-                          ),
-                          label: const Text(
-                            "Attach File",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          style: TextButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              fixedSize: const Size(300, 45),
-                              alignment: Alignment.centerLeft),
-                        )
                       ],
                     ),
                     const Padding(
@@ -225,10 +263,18 @@ class _CompanyConfirmFillState extends State<CompanyConfirmFill> {
                         ),
                       ),
                       onPressed: () {
+                        final files = <String, File?>{
+                          "id": id_1,
+                          "photoVerification": photoVerification
+                        };
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const CompanyConfirmFill2(),
+                            builder: (context) => CompanyConfirmFill2(
+                              data: widget.data,
+                              files: files,
+                            ),
                           ),
                         );
                       },
