@@ -2,9 +2,9 @@ const mongoose = require("mongoose")
 
 // Schema for file uploads
 const imagesSchema = new mongoose.Schema({
-    ids: [{
+    ids: {
         type: String
-    }],
+    },
     photo: {
         type: String
     }

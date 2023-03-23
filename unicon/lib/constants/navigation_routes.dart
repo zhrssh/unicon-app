@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:untitled/views/provider/company/publish_project.dart';
 import 'package:untitled/views/settingsPages/notifications.dart';
 import '../views/calendar.dart';
-import '../views/client/client_home.dart';
+import '../views/client/homepage/client_home.dart';
 import '../views/dashboard.dart';
 import '../views/location.dart';
 import '../views/login.dart';
@@ -27,7 +27,7 @@ void navigateToSignUpPage(context, Map<String, dynamic> data) {
 
 void navigateToHome(context) {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const Home()));
+      context, MaterialPageRoute(builder: (context) => const ClientHome()));
 }
 
 void navigateToDashboard(context) {

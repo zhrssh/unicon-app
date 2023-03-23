@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/navigation_routes.dart';
-import '../calendar.dart';
-import '../dashboard.dart';
-import '../location.dart';
-import '../profile.dart';
+import '../../../constants/navigation_routes.dart';
+import '../../calendar.dart';
+import '../../location.dart';
+import '../../profile.dart';
+import 'client_dashboard.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class ClientHome extends StatefulWidget {
+  const ClientHome({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<ClientHome> createState() => _ClientHomeState();
 }
 
-class _HomeState extends State<Home> {
+class _ClientHomeState extends State<ClientHome> {
   int currentTab = 0; // counter current tab
 
   // different views/bottomNavBar item
   final List<Widget> screens = [
-    const Dashboard(),
+    const ClientDashboard(),
     const CalendarPage(),
     const LocationPage(),
     const ProfilePage(),
   ];
 
-  Widget currentScreen = const Dashboard(); // sets current view
+  Widget currentScreen = const ClientDashboard(); // sets current view
 
   final PageStorageBucket bucket = PageStorageBucket();
 
@@ -54,7 +54,7 @@ class _HomeState extends State<Home> {
                 IconButton(
                   onPressed: (() {
                     setState(() {
-                      currentScreen = const Dashboard();
+                      currentScreen = const ClientDashboard();
                       currentTab = 0;
                     });
                   }),

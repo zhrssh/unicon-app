@@ -137,7 +137,7 @@ class _DashboardState extends State<Dashboard> {
                   ),
                   SizedBox(
                     height: 500,
-                    child: ProjectList(),
+                    // child: ProjectList(),
                   ),
                 ],
               ),

@@ -36,21 +36,19 @@ function verifyAccessToken(req, res, next) {
  * @returns {Promise<str>}
  */
 function getUUIDFromToken(headers) {
-    return new Promise((resolve, reject) => {
+    // Gets Token from Auth Header
+    const authHeader = headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
 
-        // Gets Token from Auth Header
-        const authHeader = headers['authorization']
-        const token = authHeader && authHeader.split(' ')[1]
+    if (token == null) return null
 
-        if (token == null) return resolve(null)
-
-        try {
-            const decoded = jwt.decode(token)
-            return resolve(decoded.data.uuid)
-        } catch (err) {
-            return reject(raise(err.message, 500))
-        }
-    })
+    try {
+        const decoded = jwt.decode(token)
+        return decoded.data.uuid
+    } catch (err) {
+        raise(err.message, 500)
+        return null
+    }
 }
 
 // Exports

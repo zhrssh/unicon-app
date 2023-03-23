@@ -8,11 +8,23 @@ class ProjectList extends StatefulWidget {
 }
 
 class _ProjectListState extends State<ProjectList> {
+  List<ProjectCompany> projectLists = [
+    ProjectCompany('card1.png', 'Wall Repainting (On Going)',
+        'Juan Construction Co.', 'Quezon City, Philippines'),
+    ProjectCompany('card2.jpg', '"Construction Worker', 'Juan Construction Co.',
+        'San Juan City, Philippines'),
+    ProjectCompany('card3.jpg', 'Carpenter', 'Juan Construction Co.',
+        'San Juan City, Philippines'),
+    ProjectCompany('card4.jpg', 'Welder', 'Juan Construction Co.',
+        'Marikina City, Philippines'),
+  ];
+
+  List<ProjectCompany> displayProjects = [];
   List<Widget> itemsData = [];
 
   // Function to get data from projects_data.dart
   void getProjectsData() {
-    List<dynamic> responseList = projectData;
+    List<dynamic> responseList = List.from(projectLists);
     List<Widget> listItems = [];
     for (var project in responseList) {
       listItems.add(
@@ -59,7 +71,7 @@ class _ProjectListState extends State<ProjectList> {
                       image: DecorationImage(
                         fit: BoxFit.cover,
                         alignment: Alignment.center,
-                        image: AssetImage("assets/images/${project["image"]}"),
+                        image: AssetImage("assets/images/${project.image!}"),
                       ),
                     ),
                   ),
@@ -75,7 +87,7 @@ class _ProjectListState extends State<ProjectList> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${project["job_title"]}",
+                        project.jobTitle!,
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
@@ -94,7 +106,7 @@ class _ProjectListState extends State<ProjectList> {
                             width: 5,
                           ),
                           Text(
-                            "${project["company"]}",
+                            project.company!,
                             style: const TextStyle(
                               fontSize: 14,
                               color: Color.fromARGB(255, 63, 56, 221),
@@ -115,7 +127,7 @@ class _ProjectListState extends State<ProjectList> {
                             width: 5,
                           ),
                           Text(
-                            "${project["location"]}",
+                            project.location!,
                             style: const TextStyle(
                               fontSize: 14,
                               color: Color.fromARGB(255, 43, 40, 73),
