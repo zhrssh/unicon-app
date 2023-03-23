@@ -30,7 +30,7 @@ class IndividualConfirmFill extends StatefulWidget {
 
 class _IndividualConfirmFillState extends State<IndividualConfirmFill> {
   bool termsAndConditions = false;
-  File? id_1, id_2, photoVerification;
+  File? id_1, photoVerification;
 
   // For uploading an image
   // Function for getting image from gallery
@@ -96,15 +96,14 @@ class _IndividualConfirmFillState extends State<IndividualConfirmFill> {
       // Upload images to the server
       // Upload files first to the server
       http.StreamedResponse? streamedResponse;
-      final List<File?> ids = [id_1, id_2];
-      streamedResponse = await uploadImageMultiple(
+      streamedResponse = await uploadImage(
         widget.data["accessToken"],
-        ids,
-        "provider/register/individual/ids",
-        "ids",
+        id_1,
+        "provider/register/individual/id",
+        "id",
       );
 
-      if (streamedResponse!.statusCode != 200) {
+      if (streamedResponse.statusCode != 200) {
         // Show error
         // <---HERE--->
         if (kDebugMode) {
@@ -244,7 +243,7 @@ class _IndividualConfirmFillState extends State<IndividualConfirmFill> {
                       Row(
                         children: const [
                           Text(
-                            "2 Valid Government ID",
+                            "1 Valid Government ID",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
@@ -303,34 +302,6 @@ class _IndividualConfirmFillState extends State<IndividualConfirmFill> {
                           fixedSize: const Size(300, 45),
                           alignment: Alignment.centerLeft),
                     ),
-                    const Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 5, horizontal: 0)),
-                    TextButton.icon(
-                      onPressed: () async {
-                        final file = await getImage();
-                        if (file == null) return;
-
-                        setState(() {
-                          id_2 = file;
-                          if (kDebugMode) {
-                            print("Attachment 2: $id_2");
-                          }
-                        });
-                      },
-                      icon: const Icon(
-                        Icons.file_download_outlined,
-                        color: Colors.black,
-                      ),
-                      label: Text(
-                        id_2 == null ? "Attach File" : "Ready to upload!",
-                        style: const TextStyle(color: Colors.grey),
-                      ),
-                      style: TextButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          fixedSize: const Size(300, 45),
-                          alignment: Alignment.centerLeft),
-                    )
                   ],
                 ),
                 const Padding(

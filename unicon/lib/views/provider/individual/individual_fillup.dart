@@ -2,9 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:untitled/constants/navigation_routes.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:untitled/views/provider/individual/individual_confirmfill.dart';
 
 import '../../../constants/top_bottom_clippings.dart';
@@ -49,6 +46,7 @@ class _IndividualFillUpState extends State<IndividualFillUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -358,24 +356,28 @@ class _IndividualFillUpState extends State<IndividualFillUp> {
               Column(
                 children: [
                   const Padding(
-                      padding: EdgeInsets.symmetric(
-                    vertical: 5,
-                  )),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Checkbox(
-                      side: const BorderSide(color: Colors.white, width: 2),
-                      value: termsAndConditions,
-                      onChanged: ((value) {
-                        setState(() {
-                          termsAndConditions = value!;
-                        });
-                      }),
+                    padding: EdgeInsets.symmetric(
+                      vertical: 5,
                     ),
-                    const Text(
-                      "I agree with the Terms and Conditions provided by Unicon.",
-                      style: TextStyle(color: Colors.white60),
-                    ),
-                  ]),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Checkbox(
+                        side: const BorderSide(color: Colors.white, width: 2),
+                        value: termsAndConditions,
+                        onChanged: ((value) {
+                          setState(() {
+                            termsAndConditions = value!;
+                          });
+                        }),
+                      ),
+                      const Text(
+                        "I agree with the Terms and Conditions provided by Unicon.",
+                        style: TextStyle(color: Colors.white60),
+                      ),
+                    ],
+                  ),
                   const Padding(
                       padding: EdgeInsets.symmetric(
                     vertical: 5,
