@@ -3,10 +3,12 @@ const mongoose = require("mongoose")
 // Schema for file uploads
 const imagesSchema = new mongoose.Schema({
     ids: {
-        type: String
+        type: String,
+        default: null
     },
     photo: {
-        type: String
+        type: String,
+        default: null
     }
 })
 
@@ -24,8 +26,7 @@ const reviewSchema = new mongoose.Schema({
     postedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "profile",
-        required: true,
-        unique: true
+        required: true
     },
     datePosted: {
         type: Date,

@@ -11,7 +11,7 @@ const auth = require("./auth")
  */
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        const uuid = auth.getUUIDFromToken(req)
+        const uuid = auth.getUUIDFromToken(req.headers)
         const dir = `.\\uploads\\${file.fieldname}\\${uuid}`
 
         // Checks if there is a directory
@@ -43,7 +43,7 @@ const storage = multer.diskStorage({
 
     },
     filename: function (req, file, cb) {
-        const uuid = auth.getUUIDFromToken(req)
+        const uuid = auth.getUUIDFromToken(req.headers)
         const fname = file.fieldname + "-" + uuid
         const extname = path.extname(file.originalname).toLocaleLowerCase()
 
