@@ -2,26 +2,26 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:untitled/views/provider/individual/individual_confirmfill.dart';
+import 'package:untitled/views/provider/company/company_fillup.dart';
 
 import '../../../constants/top_bottom_clippings.dart';
 
 void main() {
   runApp(const MaterialApp(
-    home: IndividualFillUp(data: <String, dynamic>{"test": "test"}),
+    home: CompanyUserInfo(data: <String, dynamic>{"test": "test"}),
     debugShowCheckedModeBanner: false,
   ));
 }
 
-class IndividualFillUp extends StatefulWidget {
+class CompanyUserInfo extends StatefulWidget {
   final Map<String, dynamic> data;
-  const IndividualFillUp({super.key, required this.data});
+  const CompanyUserInfo({super.key, required this.data});
 
   @override
-  State<IndividualFillUp> createState() => _IndividualFillUpState();
+  State<CompanyUserInfo> createState() => _CompanyInfoState();
 }
 
-class _IndividualFillUpState extends State<IndividualFillUp> {
+class _CompanyInfoState extends State<CompanyUserInfo> {
   bool termsAndConditions = false;
 
   // Controllers
@@ -77,7 +77,7 @@ class _IndividualFillUpState extends State<IndividualFillUp> {
             ],
           ),
           const Text(
-            "Please complete your registration.",
+            "Please add your basic information.",
             style: TextStyle(color: Colors.grey),
           ),
           const Padding(
@@ -356,28 +356,6 @@ class _IndividualFillUpState extends State<IndividualFillUp> {
               Column(
                 children: [
                   const Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 5,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 350,
-                    child: CheckboxListTile(
-                      activeColor: const Color.fromARGB(149, 89, 148, 67),
-                      controlAffinity: ListTileControlAffinity.leading,
-                      title: const Text(
-                        "I agree with the Terms and Conditions provided by Unicon.",
-                        style: TextStyle(color: Colors.white60, fontSize: 12),
-                      ),
-                      value: termsAndConditions,
-                      onChanged: (value) {
-                        setState(() {
-                          termsAndConditions = value!;
-                        });
-                      },
-                    ),
-                  ),
-                  const Padding(
                       padding: EdgeInsets.symmetric(
                     vertical: 5,
                   )),
@@ -447,7 +425,7 @@ class _IndividualFillUpState extends State<IndividualFillUp> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  IndividualConfirmFill(data: widget.data)));
+                                  CompanyFillUp(data: widget.data)));
                     },
                     child: const Text(
                       "Next",

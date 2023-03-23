@@ -2,11 +2,23 @@ const mongoose = require("mongoose")
 
 // Schema for file uploads
 const imagesSchema = new mongoose.Schema({
-    ids: {
+    id: {
         type: String,
         default: null
     },
     photo: {
+        type: String,
+        default: null
+    },
+    pcab: {
+        type: String,
+        default: null
+    },
+    dti: {
+        type: String,
+        default: null
+    },
+    bir: {
         type: String,
         default: null
     }
@@ -54,6 +66,25 @@ const nameSchema = new mongoose.Schema({
     }
 })
 
+const companySchema = new mongoose.Schema({
+    registeredName: {
+        type: String,
+        required: true
+    },
+    location: {
+        type: String,
+        required: true
+    },
+    address: {
+        type: String,
+        required: true
+    },
+    lineOfWork: {
+        type: String,
+        required: true
+    }
+})
+
 const providerSchema = new mongoose.Schema({
     accountType: {
         type: String,
@@ -63,6 +94,9 @@ const providerSchema = new mongoose.Schema({
         type: String,
         enum: ["individual", "company"],
         required: true
+    },
+    companyInfo: {
+        type: companySchema
     },
     uuid: {
         type: mongoose.Schema.Types.ObjectId,

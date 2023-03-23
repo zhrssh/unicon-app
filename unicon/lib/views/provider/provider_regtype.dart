@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/views/provider/company/company_fillup.dart';
 import 'package:untitled/views/login.dart';
+import 'package:untitled/views/provider/company/company_userinfo.dart';
 import 'package:untitled/views/provider/individual/individual_fillup.dart';
 import '../../constants/top_bottom_clippings.dart';
 
@@ -23,6 +23,7 @@ class ProviderRegTypeState extends State<ProviderRegType> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -128,12 +129,18 @@ class ProviderRegTypeState extends State<ProviderRegType> {
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0)),
           InkWell(
             onTap: () {
-              // TODO: ADD ACCOUNT GROUP
+// Sets the account group to individual
+              final Map<String, dynamic> accountGroup = {
+                "accountGroup": "company"
+              };
+
+              widget.data.addAll(accountGroup);
 
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const CompanyFillUp()));
+                      builder: (context) =>
+                          CompanyUserInfo(data: widget.data)));
             },
             child: Container(
               height: 112,
