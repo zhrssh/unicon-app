@@ -49,7 +49,7 @@ router.post("/register/individual", async (req, res) => {
     }
 })
 
-router.post("/register/individual/id", async (req, res) => {
+router.post("/register/individual/id", (req, res) => {
     upload.single("id")(req, res, async (err) => {
         if (err) {
             if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err)
@@ -57,16 +57,9 @@ router.post("/register/individual/id", async (req, res) => {
         } else {
             if (req.file == undefined) return res.sendStatus(400)
 
-            console.log(req.headers)
-            console.log(req.body)
-
             // Update profile
-            const uuid = auth.getUUIDFromToken(req)
-
-            // Get the file paths
-            if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
-            const filePaths = req.files.map(file => file.path)
-            const toUpdate = { uploads: { ids: filePaths } }
+            const uuid = auth.getUUIDFromToken(req.headers)
+            const toUpdate = { uploads: { id: req.file.path } }
 
             providerController.updateProvider(uuid, toUpdate)
 
@@ -76,7 +69,7 @@ router.post("/register/individual/id", async (req, res) => {
     })
 })
 
-router.post("/register/individual/photo", async (req, res) => {
+router.post("/register/individual/photo", (req, res) => {
     upload.single('photo')(req, res, async (err) => {
         if (err) {
             if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err)
@@ -85,7 +78,7 @@ router.post("/register/individual/photo", async (req, res) => {
             if (req.file == undefined) return res.status(400).send("Undefined file")
 
             // Update profile
-            const uuid = auth.getUUIDFromToken(req)
+            const uuid = auth.getUUIDFromToken(req.headers)
             const toUpdate = { uploads: { photo: req.file.path } }
 
             providerController.updateProvider(uuid, toUpdate)
@@ -118,7 +111,7 @@ router.post("/profile/update", async (req, res) => {
 })
 
 // Upload an avatar to the database
-router.post("/profile/update/avatar", async (req, res) => {
+router.post("/profile/update/avatar", (req, res) => {
     upload.single('avatar')(req, res, async (err) => {
         if (err) {
             if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err)
@@ -127,10 +120,10 @@ router.post("/profile/update/avatar", async (req, res) => {
             if (req.file == undefined) return res.sendStatus(400)
 
             // Update profile
-            const uuid = auth.getUUIDFromToken(req)
+            const uuid = auth.getUUIDFromToken(req.headers)
             const toUpdate = { avatar: req.file.path }
 
-            await providerController.updateProvider(uuid, toUpdate)
+            providerController.updateProvider(uuid, toUpdate)
 
             // Sends file details back to the uploader
             return res.status(200).send(req.file)

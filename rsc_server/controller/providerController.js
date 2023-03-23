@@ -1,3 +1,5 @@
+const mongoose = require("mongoose")
+
 const Provider = require("../model/Providers")
 const getDate = require("../utils/logs").getDate
 const raise = require("../utils/raise")
@@ -27,7 +29,8 @@ function createProvider(providerInfo) {
 function updateProvider(uuid, providerInfo) {
     return new Promise(async (resolve, reject) => {
         // Checks if the user already exists
-        const user = await Provider.findOne({ uuid: uuid })
+        const target = new mongoose.Types.ObjectId(uuid)
+        const user = await Provider.findOne({ uuid: target })
 
         if (user == null)
             return reject(raise("E03", 404))
@@ -51,7 +54,8 @@ function updateProvider(uuid, providerInfo) {
  */
 function getProvider(uuid) {
     return new Promise(async (resolve, reject) => {
-        const user = await Provider.findOne({ uuid: uuid })
+        const target = new mongoose.Types.ObjectId(uuid)
+        const user = await Provider.findOne({ uuid: target })
         if (user === null) return reject(raise("E03", 404))
         return resolve(user)
     })

@@ -9,6 +9,8 @@ lerna-debug.log*
 # Ignores the upload folder
 **/src/uploads
 
+rsc_server/uploads
+
 # Run and stop scripts
 run.sh
 stop.sh

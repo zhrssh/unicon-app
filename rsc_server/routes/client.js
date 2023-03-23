@@ -73,10 +73,10 @@ router.post("/update/avatar", async (req, res) => {
             if (req.file == undefined) return res.sendStatus(400)
 
             // Update profile
-            const uuid = auth.getUUIDFromToken(req)
+            const uuid = auth.getUUIDFromToken(req.headers)
             const toUpdate = { avatar: req.file.path }
 
-            await clientController.updateClientSingleKey(uuid, toUpdate)
+            clientController.updateClientSingleKey(uuid, toUpdate)
 
             // Sends file details back to the uploader
             return res.status(200).send(req.file)
