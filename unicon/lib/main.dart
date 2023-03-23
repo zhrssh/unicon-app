@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/views/client/client_home.dart';
+import 'package:untitled/views/client/homepage/client_home.dart';
+import 'package:untitled/views/provider/HomePage/home.dart';
 import 'views/login.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'views/provider/individual/individual_fillup.dart';
 
 Future main() async {
   await dotenv.load(fileName: ".env");

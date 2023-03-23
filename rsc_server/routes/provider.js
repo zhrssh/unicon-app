@@ -49,13 +49,16 @@ router.post("/register/individual", async (req, res) => {
     }
 })
 
-router.post("/register/individual/ids", async (req, res) => {
-    upload.array('ids')(req, res, async (err) => {
+router.post("/register/individual/id", async (req, res) => {
+    upload.single("id")(req, res, async (err) => {
         if (err) {
-            if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
+            if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err)
             return res.status(400).send(err.message)
         } else {
-            if (!req.files || req.files.length <= 0) return res.status(400).send("No files where uploaded")
+            if (req.file == undefined) return res.sendStatus(400)
+
+            console.log(req.headers)
+            console.log(req.body)
 
             // Update profile
             const uuid = auth.getUUIDFromToken(req)
@@ -76,7 +79,7 @@ router.post("/register/individual/ids", async (req, res) => {
 router.post("/register/individual/photo", async (req, res) => {
     upload.single('photo')(req, res, async (err) => {
         if (err) {
-            if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
+            if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err)
             return res.status(400).send(err.message)
         } else {
             if (req.file == undefined) return res.status(400).send("Undefined file")
@@ -95,7 +98,7 @@ router.post("/register/individual/photo", async (req, res) => {
 
 router.post("/register/company", (req, res) => {
     // TODO: IMPLEMENT REGISTRATION
-    req.sendStatus(200)
+    res.sendStatus(200)
 })
 
 // Updates user provider
@@ -118,7 +121,7 @@ router.post("/profile/update", async (req, res) => {
 router.post("/profile/update/avatar", async (req, res) => {
     upload.single('avatar')(req, res, async (err) => {
         if (err) {
-            if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err.message)
+            if (process.env.NODE_ENV === "development") console.log(getDate(Date.now()), err)
             return res.status(400).send(err.message)
         } else {
             if (req.file == undefined) return res.sendStatus(400)
