@@ -7,7 +7,8 @@ import '../views/dashboard.dart';
 import '../views/location.dart';
 import '../views/login.dart';
 import '../views/notifications_page.dart';
-import '../views/profile.dart';
+import '../views/provider/homepage/provider_profile.dart';
+import '../views/provider/homepage/provider_home.dart';
 import '../views/provider/provider_regtype.dart';
 import '../views/resetpw.dart';
 import '../views/signup_v2.dart';
@@ -15,24 +16,12 @@ import '../views/verify.dart';
 import '../views/regtype.dart';
 import '../views/client/client_register.dart';
 
-void navigateToRegisterPage(context, Map<String, dynamic> data) {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => RegisterPage(data: data)));
-}
-
-void navigateToSignUpPage(context, Map<String, dynamic> data) {
+///////////////// REGISTRATION ///////////////////
+void navigateToClientRegisterInfoPage(context, Map<String, dynamic> data) {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => SignupPage(data: data)));
-}
-
-void navigateToHome(context) {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const ClientHome()));
-}
-
-void navigateToDashboard(context) {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const Dashboard()));
+      context,
+      MaterialPageRoute(
+          builder: (context) => ClientRegisterInfoPage(data: data)));
 }
 
 void navigateToResetPWPage(context) {
@@ -40,9 +29,9 @@ void navigateToResetPWPage(context) {
       context, MaterialPageRoute(builder: (context) => const ResetPWPage()));
 }
 
-void navigateToLoginPage(context) {
+void navigateToSignUpPage(context, Map<String, dynamic> data) {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const LoginPage()));
+      context, MaterialPageRoute(builder: (context) => SignupPage(data: data)));
 }
 
 void navigateToVerifyPage(
@@ -52,6 +41,39 @@ void navigateToVerifyPage(
       MaterialPageRoute(
           builder: (context) =>
               VerifyPage(uuid: uuid, email: email, data: data)));
+}
+
+void navigateToRegTypePage(context) {
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const RegTypePage()));
+}
+
+void navigateToProviderRegType(context, Map<String, dynamic> data) {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => ProviderRegType(data: data)));
+}
+
+///////////////// LOGIN ///////////////////
+void navigateToLoginPage(context) {
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const LoginPage()));
+}
+
+///////////////// CLIENT ///////////////////
+void navigateToClientHome(context, String token) {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => ClientHome(token: token)));
+}
+
+///////////////// PROVIDER ///////////////////
+void navigateToProviderHome(context, String token) {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => ProviderHome(token: token)));
+}
+
+void navigateToDashboard(context) {
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const Dashboard()));
 }
 
 void navigateToCalendarPage(context) {
@@ -64,14 +86,11 @@ void navigateToLocationPage(context) {
       context, MaterialPageRoute(builder: (context) => const LocationPage()));
 }
 
-void navigateToProfilePage(context) {
+void navigateToProfilePage(context, String token) {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const ProfilePage()));
-}
-
-void navigateToRegTypePage(context) {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const RegTypePage()));
+      context,
+      MaterialPageRoute(
+          builder: (context) => ProviderProfilePage(token: token)));
 }
 
 void navigateToPublishProjectPage(context) {
@@ -89,9 +108,4 @@ void navigateToNotificationSettingsPage(context) {
       context,
       MaterialPageRoute(
           builder: (context) => const NotificationSettingsPage()));
-}
-
-void navigateToProviderRegType(context, Map<String, dynamic> data) {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => ProviderRegType(data: data)));
 }

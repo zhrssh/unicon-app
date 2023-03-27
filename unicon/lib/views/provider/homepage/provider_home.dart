@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 
 //import 'calendar.dart';
-import 'dashboard.dart';
+import 'provider_dashboard.dart';
 //import 'location.dart';
 //import 'profile.dart';
 
 void main() {
   runApp(const MaterialApp(
-    home: Home(),
+    home: ProviderHome(token: ""),
     debugShowCheckedModeBanner: false,
   ));
 }
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class ProviderHome extends StatefulWidget {
+  final String token;
+  const ProviderHome({super.key, required this.token});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<ProviderHome> createState() => _ProviderHomeState();
 }
 
-class _HomeState extends State<Home> {
+class _ProviderHomeState extends State<ProviderHome> {
   int currentTab = 0; // counter current tab
 
   // different views/bottomNavBar item

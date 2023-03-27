@@ -1,16 +1,17 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:untitled/constants/navigation_routes.dart';
-import '../actions/models.dart';
+import '../../../actions/models.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class ProviderProfilePage extends StatefulWidget {
+  final String token;
+  const ProviderProfilePage({super.key, required this.token});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProviderProfilePage> createState() => _ProviderProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProviderProfilePageState extends State<ProviderProfilePage> {
   List<Color> chipColors = const [
     Color.fromARGB(255, 107, 122, 237),
     Color.fromARGB(255, 184, 16, 4),
@@ -81,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   TextButton(
                     onPressed: (() {
-                      navigateToHome(context);
+                      navigateToProviderHome(context, widget.token);
                       // Navigator.pop(context);
                     }),
                     child: Row(

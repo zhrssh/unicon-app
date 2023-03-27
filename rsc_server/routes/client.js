@@ -21,6 +21,20 @@ router.get('/view?uuid=:uuid', async (req, res) => {
     }
 })
 
+// Gets user profile including avatar
+router.get('/profile', async (req, res) => {
+    try {
+        const client = await clientController.getClient(req.body.uuid)
+        res.setHeader("Content-Type", "image/jpeg")
+        res.setHeader("Content-Disposition", "inline")
+        res.sendFile(path.join(__dirname, `../${client.avatar}`))
+        res.json(client)
+        return res.status(200).end()
+    } catch (err) {
+        return res.status(err.code).send({ err: err.message })
+    }
+})
+
 // Registers new user client
 router.post("/register", async (req, res) => {
     try {

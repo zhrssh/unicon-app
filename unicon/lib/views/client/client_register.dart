@@ -12,20 +12,20 @@ import '../../constants/top_bottom_clippings.dart';
 
 void main() {
   runApp(const MaterialApp(
-    home: RegisterPage(data: <String, dynamic>{"test": "test"}),
+    home: ClientRegisterInfoPage(data: <String, dynamic>{"test": "test"}),
     debugShowCheckedModeBanner: false,
   ));
 }
 
-class RegisterPage extends StatefulWidget {
+class ClientRegisterInfoPage extends StatefulWidget {
   final Map<String, dynamic> data;
-  const RegisterPage({super.key, required this.data});
+  const ClientRegisterInfoPage({super.key, required this.data});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<ClientRegisterInfoPage> createState() => _ClientRegisterInfoPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _ClientRegisterInfoPageState extends State<ClientRegisterInfoPage> {
   bool termsAndConditions = false;
 
   // Controllers

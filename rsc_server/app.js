@@ -8,6 +8,10 @@ const db = require("./db/database") // Database.js
 const getDate = require("./utils/logs").getDate
 const auth = require("./services/auth")
 
+// Controllers
+const providerController = require("./controller/providerController")
+const clientController = require("./controller/clientController")
+
 // Routes
 const feed = require("./routes/feed")
 const projects = require("./routes/project")
@@ -42,9 +46,25 @@ db.connectDb(DATABASE_URL, DB_OPTIONS)
     })
 
 // Starting point of the server
-app.get('/api/', auth.verifyAccessToken, (req, res) => {
-    // If connected, proceed to login
-    res.status(200).send({ 'body': 'Hello, there!' })
+app.get('/api/', auth.verifyAccessToken, async (req, res) => {
+    // Get the uuid from token
+    const uuid = req.body.uuid;
+
+    // Check if either client or provider
+    let user;
+    user = await clientController.getClient(uuid)
+    if (user != null) {
+        res.status(200).send({ "accountType": user.accountType })
+        return
+    }
+
+    user = await providerController.getProvider(uuid)
+    if (user != null) {
+        res.status(200).send({ "accountType": user.accountType })
+        return
+    }
+
+    res.sendStatus(400)
 })
 
 // Routes
