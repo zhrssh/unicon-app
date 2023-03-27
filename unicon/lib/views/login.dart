@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -24,13 +25,22 @@ class _LoginPageState extends State<LoginPage> {
     _context = context;
   }
 
+  // For account log in
   late final TextEditingController _email;
   late final TextEditingController _password;
 
   final _formKeyEmail = GlobalKey<FormState>();
   final _formKeyPassword = GlobalKey<FormState>();
 
+  // For refresh token
+  AndroidOptions getAndroidOptions() =>
+      const AndroidOptions(encryptedSharedPreferences: true);
+  late final storage = FlutterSecureStorage(aOptions: getAndroidOptions());
+
+  // For http
   late http.Response response;
+
+  // For display password
   bool showPassword = true;
 
   @override
@@ -355,8 +365,12 @@ class _LoginPageState extends State<LoginPage> {
                             final body = jsonDecode(response.body);
                             final accessToken = body["accessToken"];
 
-                            // TODO: Store refreshToken somewhere in the device
-                            // final refreshToken = body["refreshToken"];
+                            // Store refreshToken somewhere in the device
+                            final refreshToken = body["refreshToken"];
+                            await storage.write(
+                              key: 'jwt',
+                              value: refreshToken,
+                            );
 
                             // Checks if the resource server is active
                             response = await checkRscServer(accessToken);
@@ -367,7 +381,25 @@ class _LoginPageState extends State<LoginPage> {
                             }
 
                             if (response.statusCode == 200) {
-                              navigateToHome(_context);
+                              // TODO: vvvvvv TEST IF WORKING vvvvvvv
+                              // Check if client or provider
+                              final doc = json.decode(response.body);
+                              final accountType = doc["accountType"];
+
+                              switch (accountType) {
+                                // Proceed to client home
+                                case "client":
+                                  navigateToClientHome(context, accessToken);
+                                  break;
+                                // Proceed to provider home
+                                case "provider":
+                                  navigateToProviderHome(context, accessToken);
+                                  break;
+                                default:
+                                  showLoginErrorSnackBar(
+                                      "We've encountered an unexpected error in the server. Please try again later.");
+                                  break;
+                              }
                             } else {
                               showLoginErrorSnackBar(
                                   "We've encountered an unexpected error in the server. Please try again later.");

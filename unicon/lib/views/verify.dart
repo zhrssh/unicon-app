@@ -202,7 +202,8 @@ class _VerifyPageState extends State<VerifyPage> {
                                   {"accessToken": jsonBody["accessToken"]});
 
                               if (widget.data["accountType"] == "client") {
-                                navigateToRegisterPage(context, widget.data);
+                                navigateToClientRegisterInfoPage(
+                                    context, widget.data);
                               }
 
                               if (widget.data["accountType"] == "provider") {

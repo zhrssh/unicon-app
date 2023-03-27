@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../constants/navigation_routes.dart';
 import '../../calendar.dart';
 import '../../location.dart';
-import '../../profile.dart';
 import 'client_dashboard.dart';
+import 'client_profile.dart';
 
 class ClientHome extends StatefulWidget {
-  const ClientHome({super.key});
+  final String token;
+  const ClientHome({super.key, required this.token});
 
   @override
   State<ClientHome> createState() => _ClientHomeState();
@@ -17,11 +18,11 @@ class _ClientHomeState extends State<ClientHome> {
   int currentTab = 0; // counter current tab
 
   // different views/bottomNavBar item
-  final List<Widget> screens = [
+  late final List<Widget> screens = [
     const ClientDashboard(),
     const CalendarPage(),
     const LocationPage(),
-    const ProfilePage(),
+    ClientProfilePage(token: widget.token),
   ];
 
   Widget currentScreen = const ClientDashboard(); // sets current view
@@ -99,7 +100,7 @@ class _ClientHomeState extends State<ClientHome> {
                 IconButton(
                   onPressed: (() {
                     setState(() {
-                      currentScreen = const ProfilePage();
+                      currentScreen = ClientProfilePage(token: widget.token);
                       currentTab = 3;
                     });
                   }),
