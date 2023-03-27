@@ -125,6 +125,8 @@ router.post("/register/company", async (req, res) => {
     }
 })
 
+// TODO : ADD THE REST OF THE IMAGE UPLOADS
+
 router.post("/register/company/id", (req, res) => {
     upload.single("id")(req, res, async (err) => {
         if (err) {
