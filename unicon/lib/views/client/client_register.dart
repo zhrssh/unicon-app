@@ -12,14 +12,17 @@ import '../../constants/top_bottom_clippings.dart';
 
 void main() {
   runApp(const MaterialApp(
-    home: ClientRegisterInfoPage(data: <String, dynamic>{"test": "test"}),
+    home: ClientRegisterInfoPage(
+        email: "", data: <String, dynamic>{"test": "test"}),
     debugShowCheckedModeBanner: false,
   ));
 }
 
 class ClientRegisterInfoPage extends StatefulWidget {
   final Map<String, dynamic> data;
-  const ClientRegisterInfoPage({super.key, required this.data});
+  final String email;
+  const ClientRegisterInfoPage(
+      {super.key, required this.email, required this.data});
 
   @override
   State<ClientRegisterInfoPage> createState() => _ClientRegisterInfoPageState();
@@ -51,6 +54,7 @@ class _ClientRegisterInfoPageState extends State<ClientRegisterInfoPage> {
 
   void _submitForm() async {
     Map<String, dynamic> userInfo = {
+      "email": widget.email,
       "name": {
         "firstName": _firstNameController.text,
         "lastName": _lastNameController.text,
