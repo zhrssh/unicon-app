@@ -203,11 +203,12 @@ class _VerifyPageState extends State<VerifyPage> {
 
                               if (widget.data["accountType"] == "client") {
                                 navigateToClientRegisterInfoPage(
-                                    context, widget.data);
+                                    context, widget.email, widget.data);
                               }
 
                               if (widget.data["accountType"] == "provider") {
-                                navigateToProviderRegType(context, widget.data);
+                                navigateToProviderRegType(
+                                    context, widget.email, widget.data);
                               }
 
                               clearText();

@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -33,9 +33,9 @@ class _LoginPageState extends State<LoginPage> {
   final _formKeyPassword = GlobalKey<FormState>();
 
   // For refresh token
-  AndroidOptions getAndroidOptions() =>
-      const AndroidOptions(encryptedSharedPreferences: true);
-  late final storage = FlutterSecureStorage(aOptions: getAndroidOptions());
+  // AndroidOptions getAndroidOptions() =>
+  //     const AndroidOptions(encryptedSharedPreferences: true);
+  // late final storage = FlutterSecureStorage(aOptions: getAndroidOptions());
 
   // For http
   late http.Response response;
@@ -366,11 +366,11 @@ class _LoginPageState extends State<LoginPage> {
                             final accessToken = body["accessToken"];
 
                             // Store refreshToken somewhere in the device
-                            final refreshToken = body["refreshToken"];
-                            await storage.write(
-                              key: 'jwt',
-                              value: refreshToken,
-                            );
+                            // final refreshToken = body["refreshToken"];
+                            // await storage.write(
+                            //   key: 'jwt',
+                            //   value: refreshToken,
+                            // );
 
                             // Checks if the resource server is active
                             response = await checkRscServer(accessToken);

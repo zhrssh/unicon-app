@@ -6,14 +6,15 @@ import '../../constants/top_bottom_clippings.dart';
 
 void main() {
   runApp(const MaterialApp(
-    home: ProviderRegType(data: {"test": "test"}),
+    home: ProviderRegType(email: "", data: {"test": "test"}),
     debugShowCheckedModeBanner: false,
   ));
 }
 
 class ProviderRegType extends StatefulWidget {
   final Map<String, dynamic> data;
-  const ProviderRegType({super.key, required this.data});
+  final String email;
+  const ProviderRegType({super.key, required this.email, required this.data});
 
   @override
   State<ProviderRegType> createState() => ProviderRegTypeState();
@@ -67,11 +68,12 @@ class ProviderRegTypeState extends State<ProviderRegType> {
               InkWell(
                 onTap: (() {
                   // Sets the account group to individual
-                  final Map<String, dynamic> accountGroup = {
+                  final Map<String, dynamic> dataToAdd = {
+                    "email": widget.email,
                     "accountGroup": "individual"
                   };
 
-                  widget.data.addAll(accountGroup);
+                  widget.data.addAll(dataToAdd);
 
                   Navigator.push(
                       context,
@@ -130,11 +132,12 @@ class ProviderRegTypeState extends State<ProviderRegType> {
           InkWell(
             onTap: () {
 // Sets the account group to individual
-              final Map<String, dynamic> accountGroup = {
+              final Map<String, dynamic> dataToAdd = {
+                "email": widget.email,
                 "accountGroup": "company"
               };
 
-              widget.data.addAll(accountGroup);
+              widget.data.addAll(dataToAdd);
 
               Navigator.push(
                   context,

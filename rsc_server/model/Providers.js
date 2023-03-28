@@ -86,6 +86,10 @@ const companySchema = new mongoose.Schema({
 })
 
 const providerSchema = new mongoose.Schema({
+    email: {
+        type: String,
+        required: true
+    },
     accountType: {
         type: String,
         default: "provider"
