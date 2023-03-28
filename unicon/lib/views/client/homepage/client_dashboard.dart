@@ -97,57 +97,63 @@ class _ClientDashboardState extends State<ClientDashboard> {
               vertical: 15.0,
               horizontal: 15.0,
             ),
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 50,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Published Projects",
-                        style: TextStyle(
-                          color: Color.fromARGB(200, 18, 13, 38),
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 50,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Published Projects",
+                          style: TextStyle(
+                            color: Color.fromARGB(200, 18, 13, 38),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          style: ButtonStyle(
-                            overlayColor: MaterialStateColor.resolveWith(
-                              (states) =>
-                                  const Color.fromARGB(100, 84, 122, 70),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            style: ButtonStyle(
+                              overlayColor: MaterialStateColor.resolveWith(
+                                (states) =>
+                                    const Color.fromARGB(100, 84, 122, 70),
+                              ),
+                            ),
+                            onPressed: () {
+                              // ignore: avoid_print
+                              print("See all button pressed.");
+                            },
+                            child: Row(
+                              children: [
+                                const Text(
+                                  "See All",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                                const SizedBox(width: 5),
+                                Image.asset("assets/icons/arrow_right.png"),
+                              ],
                             ),
                           ),
-                          onPressed: () {
-                            // ignore: avoid_print
-                            print("See all button pressed.");
-                          },
-                          child: Row(
-                            children: [
-                              const Text(
-                                "See All",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              Image.asset("assets/icons/arrow_right.png"),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 300,
-                  child: ProjectList(),
-                ),
-              ],
+                  SizedBox(
+                    height: 300,
+                    child: ProjectList(),
+                  ),
+                  SizedBox(
+                    height: 300,
+                    child: ProjectList(),
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -196,14 +202,21 @@ class SearchPageDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // List<String> list = ['Juan Dela Cruz', 'Lebron James', 'Ryza Mae Dizon'];
-    //building list of workers
-    List<Worker> displayWorkers = List.from(workersList);
+    List<Worker> displayWorkers = workersList.where((worker) {
+      // if query is empty, display all workers
+      if (query.isEmpty) {
+        return true;
+      }
+      // otherwise, check if worker name or job contains query
+      final name = worker.name?.toLowerCase() ?? '';
+      final job = worker.job?.toLowerCase() ?? '';
+      final queryLower = query.toLowerCase();
+      return name.contains(queryLower) || job.contains(queryLower);
+    }).toList();
 
     return ListView.builder(
       itemCount: displayWorkers.length,
       itemBuilder: (context, index) {
-        // final worker = ;
         return Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
           child: Column(
@@ -217,7 +230,6 @@ class SearchPageDelegate extends SearchDelegate {
                       child: Material(
                         child: Container(
                           height: 130,
-                          // width: 500,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(20),
@@ -247,39 +259,37 @@ class SearchPageDelegate extends SearchDelegate {
                       ),
                     ),
                     Positioned(
-                        top: 30,
-                        left: 150,
-                        child: SizedBox(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                displayWorkers[index].name!.toUpperCase(),
-                                style: const TextStyle(
-                                  color: Color.fromARGB(255, 84, 122, 70),
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 13,
-                                ),
+                      top: 30,
+                      left: 150,
+                      child: SizedBox(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              displayWorkers[index].name!.toUpperCase(),
+                              style: const TextStyle(
+                                color: Color.fromARGB(255, 84, 122, 70),
+                                fontWeight: FontWeight.w900,
+                                fontSize: 13,
                               ),
-                              Text(
-                                displayWorkers[index].job!,
-                                style: const TextStyle(
-                                  // color: Color.fromARGB(255, 84, 122, 70),
-                                  // fontWeight: FontWeight.w900,
-                                  fontSize: 20,
-                                ),
+                            ),
+                            Text(
+                              displayWorkers[index].job!,
+                              style: const TextStyle(
+                                fontSize: 20,
                               ),
-                              Text(
-                                displayWorkers[index].location!.toUpperCase(),
-                                style: const TextStyle(
-                                  color: Color.fromARGB(255, 84, 122, 70),
-                                  // fontWeight: FontWeight.w900,
-                                  fontSize: 12,
-                                ),
+                            ),
+                            Text(
+                              displayWorkers[index].location!.toUpperCase(),
+                              style: const TextStyle(
+                                color: Color.fromARGB(255, 84, 122, 70),
+                                fontSize: 12,
                               ),
-                            ],
-                          ),
-                        ))
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -287,51 +297,6 @@ class SearchPageDelegate extends SearchDelegate {
             ],
           ),
         );
-
-        // return Material(
-        //   borderRadius: BorderRadius.circular(80),
-        //   child: SizedBox(
-        //     // width: 200,
-        //     height: 150,
-        //     child: Stack(children: [
-        //       Card(
-        //         shape: RoundedRectangleBorder(
-        //             borderRadius: BorderRadius.circular(15)),
-        //         elevation: 5,
-        //         child: Padding(
-        //           padding: const EdgeInsets.all(15.0),
-        //           child: CircleAvatar(
-        //             radius: 80,
-        //             child: ClipRRect(
-        //               borderRadius: BorderRadius.circular(80),
-        //               child: Image.asset("assets/images/avatar1.jpg"),
-
-        //               // child: ListTile(
-        //               //   leading: CircleAvatar(
-        //               //     child: ClipRRect(
-        //               //       child: Image.asset("/assets/images/avatar1.jpg"),
-        //               //     ),
-        //               //   ),
-        //               //   title: Text(
-        //               //     displayWorkers[index].name!.toUpperCase(),
-        //               //     style: const TextStyle(
-        //               //       color: Color.fromARGB(255, 84, 122, 70),
-        //               //       fontWeight: FontWeight.w900,
-        //               //       fontSize: 12,
-        //               //       // fontFeatures:
-        //               //     ),
-        //               //   ),
-        //               //   onTap: () {
-        //               //     query = displayWorkers[index].name!;
-        //               //   },
-        //               // ),
-        //             ),
-        //           ),
-        //         ),
-        //       ),
-        //     ]),
-        //   ),
-        // );
       },
     );
   }

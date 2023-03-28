@@ -40,6 +40,7 @@ router.post("/register", async (req, res) => {
     try {
         // Client info
         const clientInfo = {
+            email: req.body.email,
             uuid: req.body.uuid,
             name: {
                 firstName: req.body.name.firstName,

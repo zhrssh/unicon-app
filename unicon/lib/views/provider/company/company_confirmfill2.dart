@@ -71,6 +71,7 @@ class _CompanyConfirmFill2State extends State<CompanyConfirmFill2> {
 
   void _submitForm() async {
     Map<String, dynamic> providerInfo = {
+      "email": widget.data["email"],
       "accountType": widget.data["accountType"],
       "accountGroup": widget.data["accountGroup"],
       "name": {

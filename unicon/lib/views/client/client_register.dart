@@ -131,6 +131,7 @@ class _ClientRegisterInfoPageState extends State<ClientRegisterInfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -338,7 +339,7 @@ class _ClientRegisterInfoPageState extends State<ClientRegisterInfoPage> {
                               if (pickeddate != null) {
                                 setState(() {
                                   _birthDateController.text =
-                                      DateFormat('yyyy-mm-dd')
+                                      DateFormat('yyyy-MM-dd')
                                           .format(pickeddate);
                                 });
                               }
@@ -479,21 +480,27 @@ class _ClientRegisterInfoPageState extends State<ClientRegisterInfoPage> {
                       padding: EdgeInsets.symmetric(
                     vertical: 5,
                   )),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Checkbox(
-                      side: const BorderSide(color: Colors.white, width: 2),
-                      value: termsAndConditions,
-                      onChanged: ((value) {
-                        setState(() {
-                          termsAndConditions = value!;
-                        });
-                      }),
-                    ),
-                    const Text(
-                      "I agree with the Terms and Conditions provided by Unicon.",
-                      style: TextStyle(color: Colors.white60),
-                    ),
-                  ]),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Checkbox(
+                        side: const BorderSide(color: Colors.white, width: 2),
+                        value: termsAndConditions,
+                        onChanged: ((value) {
+                          setState(() {
+                            termsAndConditions = value!;
+                          });
+                        }),
+                      ),
+                      const SizedBox(
+                        width: 250,
+                        child: Text(
+                          "I agree with the Terms and Conditions provided by Unicon.",
+                          style: TextStyle(color: Colors.white60),
+                        ),
+                      )
+                    ],
+                  ),
                   const Padding(
                       padding: EdgeInsets.symmetric(
                     vertical: 5,

@@ -72,6 +72,7 @@ class _IndividualConfirmFillState extends State<IndividualConfirmFill> {
 
   void _submitForm() async {
     Map<String, dynamic> userInfo = {
+      "email": widget.data["email"],
       "accountType": widget.data["accountType"],
       "accountGroup": widget.data["accountGroup"],
       "name": {

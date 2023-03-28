@@ -15,6 +15,10 @@ const nameSchema = new mongoose.Schema({
 })
 
 const profileSchema = new mongoose.Schema({
+    email: {
+        type: String,
+        required: true
+    },
     accountType: {
         type: String,
         default: "client"

@@ -17,11 +17,13 @@ import '../views/regtype.dart';
 import '../views/client/client_register.dart';
 
 ///////////////// REGISTRATION ///////////////////
-void navigateToClientRegisterInfoPage(context, Map<String, dynamic> data) {
+void navigateToClientRegisterInfoPage(
+    context, String email, Map<String, dynamic> data) {
   Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => ClientRegisterInfoPage(data: data)));
+          builder: (context) =>
+              ClientRegisterInfoPage(email: email, data: data)));
 }
 
 void navigateToResetPWPage(context) {
@@ -48,9 +50,12 @@ void navigateToRegTypePage(context) {
       context, MaterialPageRoute(builder: (context) => const RegTypePage()));
 }
 
-void navigateToProviderRegType(context, Map<String, dynamic> data) {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => ProviderRegType(data: data)));
+void navigateToProviderRegType(
+    context, String email, Map<String, dynamic> data) {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ProviderRegType(email: email, data: data)));
 }
 
 ///////////////// LOGIN ///////////////////
