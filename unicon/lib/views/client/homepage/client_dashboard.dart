@@ -1,21 +1,41 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:untitled/constants/navigation_routes.dart';
-import 'package:untitled/constants/published_projects.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+// import 'package:untitled/constants/navigation_routes.dart';
+import 'package:untitled/views/client/homepage/client_published_projects.dart';
 import 'package:untitled/views/worker_model.dart';
-import '../../../constants/navigation_drawer.dart';
+import '../client_navigation_drawer.dart';
+import '../client_navigation_routes.dart';
 import '/constants/projects_data.dart';
 // import 'package:untitled/views/calendar.dart';
 // import 'package:untitled/views/location.dart';
 // import 'package:untitled/views/profile.dart';
 
 class ClientDashboard extends StatefulWidget {
-  const ClientDashboard({super.key});
+  final String token;
+  const ClientDashboard({super.key, required this.token});
 
   @override
   State<ClientDashboard> createState() => _ClientDashboardState();
 }
 
 class _ClientDashboardState extends State<ClientDashboard> {
+  Future<http.Response> _getUserInfo() async {
+    final uri = Uri.parse('http://${dotenv.env["RSC_URL"]}/api/client/profile');
+    final http.Response response = await http.get(
+      uri,
+      headers: <String, String>{'Authorization': 'Bearer ${widget.token}'},
+    );
+
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      throw Exception('Failed to get user info');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // final double height = MediaQuery.of(context).size.height;
@@ -25,137 +45,176 @@ class _ClientDashboardState extends State<ClientDashboard> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: WillPopScope(
         onWillPop: () async => false,
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
-            ),
-            actions: <Widget>[
-              IconButton(
-                padding: EdgeInsets.only(
-                    right: 15 + MediaQuery.of(context).padding.right),
-                icon: SizedBox(
-                  height: 30,
-                  child: Image.asset('assets/icons/notification.png'),
-                ),
-                onPressed: () => navigateToNotification(context),
-              )
-            ],
-            title: Column(
-              children: const <Widget>[
-                Text('Current Location'),
-              ],
-            ),
-            centerTitle: true,
-            titleTextStyle: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-            ),
-            backgroundColor: const Color.fromARGB(255, 84, 122, 70),
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(50),
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: TextField(
-                  readOnly: true,
-                  cursorColor: Colors.white,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: Colors.white54,
+        child: FutureBuilder(
+          future: _getUserInfo(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const <Widget>[
+                    SizedBox(
+                      height: 200,
                     ),
-                    hintText: "Search for workers",
-                    hintStyle: TextStyle(color: Colors.white54),
-                  ),
-                  onTap: () {
-                    showSearch(
-                      context: context,
-                      delegate: SearchPageDelegate(),
-                    );
-                  },
+                    CircularProgressIndicator(),
+                  ],
                 ),
-              ),
-            ),
-          ),
-          backgroundColor: Colors.grey[50],
-          drawer: const CustomNavigationDrawer(),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 15.0,
-              horizontal: 15.0,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(
-                    height: 50,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Published Projects",
-                          style: TextStyle(
-                            color: Color.fromARGB(200, 18, 13, 38),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                          ),
+                  const SizedBox(
+                    height: 200,
+                  ),
+                  Text('${snapshot.error}'),
+                ],
+              ));
+            } else {
+              final response = snapshot.data as http.Response;
+              final user = json.decode(response.body);
+
+              return Scaffold(
+                resizeToAvoidBottomInset: false,
+                appBar: AppBar(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                  ),
+                  actions: <Widget>[
+                    IconButton(
+                      padding: EdgeInsets.only(
+                          right: 15 + MediaQuery.of(context).padding.right),
+                      icon: SizedBox(
+                        height: 30,
+                        child: Image.asset('assets/icons/notification.png'),
+                      ),
+                      onPressed: () => navigateToNotification(context),
+                    )
+                  ],
+                  title: Column(
+                    children: const <Widget>[
+                      Text('Current Location'),
+                    ],
+                  ),
+                  centerTitle: true,
+                  titleTextStyle: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  backgroundColor: const Color.fromARGB(255, 84, 122, 70),
+                  bottom: PreferredSize(
+                    preferredSize: const Size.fromHeight(50),
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: TextField(
+                        readOnly: true,
+                        cursorColor: Colors.white,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
                         ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            style: ButtonStyle(
-                              overlayColor: MaterialStateColor.resolveWith(
-                                (states) =>
-                                    const Color.fromARGB(100, 84, 122, 70),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: Colors.white54,
+                          ),
+                          hintText: "Search for workers",
+                          hintStyle: TextStyle(color: Colors.white54),
+                        ),
+                        onTap: () {
+                          showSearch(
+                            context: context,
+                            delegate: SearchPageDelegate(),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                backgroundColor: Colors.grey[50],
+                drawer: CustomNavigationDrawer(
+                    token: widget.token,
+                    email: user["email"],
+                    name:
+                        "${user["name"]["firstName"]} ${user["name"]["lastName"]}"), // TODO: Navigation Drawer, add email and name
+                body: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 15.0,
+                    horizontal: 15.0,
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(
+                          height: 50,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Published Projects",
+                                style: TextStyle(
+                                  color: Color.fromARGB(200, 18, 13, 38),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              // ignore: avoid_print
-                              print("See all button pressed.");
-                            },
-                            child: Row(
-                              children: [
-                                const Text(
-                                  "See All",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.black54,
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                    overlayColor:
+                                        MaterialStateColor.resolveWith(
+                                      (states) => const Color.fromARGB(
+                                          100, 84, 122, 70),
+                                    ),
+                                  ),
+                                  onPressed: () =>
+                                      navigateToClientCalendarPage(context),
+                                  child: Row(
+                                    children: [
+                                      const Text(
+                                        "See All",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          color: Colors.black54,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Image.asset(
+                                          "assets/icons/arrow_right.png"),
+                                    ],
                                   ),
                                 ),
-                                const SizedBox(width: 5),
-                                Image.asset("assets/icons/arrow_right.png"),
-                              ],
-                            ),
+                              )
+                            ],
                           ),
-                        )
+                        ),
+                        SizedBox(
+                          height: 440,
+                          child: ClientProjectList(),
+                        ),
+                        // SizedBox(
+                        //   height: 300,
+                        //   child: ProjectList(),
+                        // )
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 300,
-                    child: ProjectList(),
-                  ),
-                  SizedBox(
-                    height: 300,
-                    child: ProjectList(),
-                  )
-                ],
-              ),
-            ),
-          ),
+                ),
+              );
+            }
+          },
         ),
       ),
     );

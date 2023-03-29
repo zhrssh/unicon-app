@@ -1,14 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:untitled/constants/navigation_routes.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
 import '../../constants/top_bottom_clippings.dart';
+import 'client_navigation_routes.dart';
 
 void main() {
   runApp(const MaterialApp(

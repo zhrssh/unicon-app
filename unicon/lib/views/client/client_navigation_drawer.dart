@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'navigation_routes.dart';
-import 'top_bottom_clippings.dart';
+import 'package:untitled/views/client/chat/screens/chat_homepage.dart';
+import '../../constants/top_bottom_clippings.dart';
+import 'client_navigation_routes.dart';
 
 class CustomNavigationDrawer extends StatefulWidget {
   final String token;
@@ -135,14 +136,15 @@ class _CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
                   onTap: () =>
                       navigateToClientProfilePage(context, widget.token),
                 ),
+
                 ListTile(
-                  leading: SizedBox(
-                    height: 30,
-                    child: Image.asset('assets/icons/inbox.png'),
-                  ),
-                  title: const Text('Inbox'),
-                  onTap: () {},
-                ),
+                    leading: SizedBox(
+                      height: 30,
+                      child: Image.asset('assets/icons/inbox.png'),
+                    ),
+                    title: const Text('Inbox'),
+                    onTap: () =>
+                        navigateToClientChatPage(context, widget.token)),
                 ListTile(
                   leading: SizedBox(
                     height: 30,

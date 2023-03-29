@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/views/provider/company/publish_project.dart';
+import 'package:untitled/views/client/chat/screens/chat_homepage.dart';
+import 'package:untitled/views/client/views/publish_project.dart';
 import 'package:untitled/views/settingsPages/notifications.dart';
 import '../views/calendar.dart';
 import '../views/client/homepage/client_home.dart';
+import '../views/client/homepage/client_profile.dart';
+import '../views/client/views/client_calendar.dart';
 import '../views/dashboard.dart';
 import '../views/location.dart';
 import '../views/login.dart';
@@ -15,6 +18,7 @@ import '../views/signup_v2.dart';
 import '../views/verify.dart';
 import '../views/regtype.dart';
 import '../views/client/client_register.dart';
+import '../views/client/chat/screens/chatpage.dart';
 
 ///////////////// REGISTRATION ///////////////////
 void navigateToClientRegisterInfoPage(
@@ -71,31 +75,41 @@ void navigateToClientHome(context, String token) {
 }
 
 ///////////////// PROVIDER ///////////////////
-void navigateToProviderHome(context, String token) {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => ProviderHome(token: token)));
-}
+// void navigateToProviderHome(context, String token) {
+//   Navigator.push(context,
+//       MaterialPageRoute(builder: (context) => ProviderHome(token: token)));
+// }
 
-void navigateToDashboard(context) {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const Dashboard()));
-}
+// void navigateToDashboard(context) {
+//   Navigator.push(
+//       context, MaterialPageRoute(builder: (context) => const Dashboard()));
+// }
 
 void navigateToCalendarPage(context) {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => const CalendarPage()));
 }
 
-void navigateToLocationPage(context) {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const LocationPage()));
+void navigateToClientCalendarPage(context) {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => const ClientCalendarPage()));
 }
+
+// void navigateToLocationPage(context) {
+//   Navigator.push(
+//       context, MaterialPageRoute(builder: (context) => const ClientChatPage()));
+// }
 
 void navigateToProfilePage(context, String token) {
   Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => ProviderProfilePage(token: token)));
+}
+
+void navigateToClientProfilePage(context, String token) {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => ClientProfilePage(token: token)));
 }
 
 void navigateToPublishProjectPage(context) {
@@ -114,3 +128,9 @@ void navigateToNotificationSettingsPage(context) {
       MaterialPageRoute(
           builder: (context) => const NotificationSettingsPage()));
 }
+
+///////////////// CHAT SYSTEM ///////////////////
+// void navigateToClientChatPage(context) {
+//   Navigator.push(context,
+//       MaterialPageRoute(builder: (context) => const ClientChatHomePage()));
+// }

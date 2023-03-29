@@ -82,7 +82,7 @@ class _ProviderProfilePageState extends State<ProviderProfilePage> {
                 children: [
                   TextButton(
                     onPressed: (() {
-                      navigateToProviderHome(context, widget.token);
+                      // navigateToProviderHome(context, widget.token);
                       // Navigator.pop(context);
                     }),
                     child: Row(
