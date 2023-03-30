@@ -141,7 +141,8 @@ class _CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
                     child: Image.asset('assets/icons/inbox.png'),
                   ),
                   title: const Text('Inbox'),
-                  onTap: () {},
+                  onTap: () =>
+                      navigateToProviderChatPage(context, widget.token),
                 ),
                 ListTile(
                   leading: SizedBox(
@@ -149,15 +150,8 @@ class _CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
                     child: Image.asset('assets/icons/calendar.png'),
                   ),
                   title: const Text('Calendar'),
-                  // onTap: () => navigateToClientCalendarPage(context),
-                ),
-                ListTile(
-                  leading: SizedBox(
-                    height: 30,
-                    child: Image.asset('assets/icons/helpdesk.png'),
-                  ),
-                  title: const Text('Help Desk'),
-                  onTap: () {},
+                  onTap: () =>
+                      navigateToProviderCalendarPage(context, widget.token),
                 ),
                 ListTile(
                   leading: SizedBox(
@@ -167,22 +161,9 @@ class _CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
                   title: const Text('Settings'),
                   onTap: () => navigateToNotificationSettingsPage(context),
                 ),
-                // Place holder
                 // Container(
-                //   height: 50,
+                //   height: 300,
                 // ),
-                // const Divider(color: Colors.black38),
-                Container(
-                  height: 200,
-                ),
-                ListTile(
-                  leading: SizedBox(
-                    height: 30,
-                    child: Image.asset('assets/icons/faqs.png'),
-                  ),
-                  title: const Text('Helps & FAQS'),
-                  onTap: () {},
-                ),
                 ListTile(
                   leading: SizedBox(
                     height: 30,

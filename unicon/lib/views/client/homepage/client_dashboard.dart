@@ -184,7 +184,7 @@ class _ClientDashboardState extends State<ClientDashboard> {
                                     ),
                                   ),
                                   onPressed: () =>
-                                      navigateToClientCalendarPage(context),
+                                      navigateToClientCalendarPage(context, widget.token),
                                   child: Row(
                                     children: [
                                       const Text(

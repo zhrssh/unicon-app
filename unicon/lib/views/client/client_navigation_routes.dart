@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/views/client/chat/screens/chat_homepage.dart';
-import 'package:untitled/views/client/chat/screens/chatpage.dart';
+import 'package:untitled/views/client/chat_client/screens/chatpage.dart';
 import 'package:untitled/views/client/views/client_calendar.dart';
 import 'package:untitled/views/client/views/publish_project.dart';
 import 'package:untitled/views/settingsPages/notifications.dart';
@@ -60,9 +59,11 @@ void navigateToClientHome(context, String token) {
       MaterialPageRoute(builder: (context) => ClientHome(token: token)));
 }
 
-void navigateToClientCalendarPage(context) {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => const ClientCalendarPage()));
+void navigateToClientCalendarPage(context, String token) {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ClientCalendarPage(token: token)));
 }
 
 void navigateToClientProfilePage(context, String token) {

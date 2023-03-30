@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:untitled/views/client/views/client_calendar.dart';
 import '../../calendar.dart';
 import '../../location.dart';
-import '../chat/screens/chat_homepage.dart';
-import '../chat/screens/chatpage.dart';
+import '../chat_client/screens/chatpage.dart';
 import '../client_navigation_routes.dart';
 import 'client_dashboard.dart';
 import 'client_profile.dart';
@@ -73,7 +72,7 @@ class _ClientHomeState extends State<ClientHome> {
                 IconButton(
                   onPressed: (() {
                     setState(() {
-                      currentScreen = const ClientCalendarPage();
+                      currentScreen = ClientCalendarPage(token: widget.token);
                       currentTab = 1;
                     });
                   }),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/views/client/chat/screens/chat_homepage.dart';
 import '../../constants/top_bottom_clippings.dart';
 import 'client_navigation_routes.dart';
 
@@ -136,7 +135,6 @@ class _CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
                   onTap: () =>
                       navigateToClientProfilePage(context, widget.token),
                 ),
-
                 ListTile(
                     leading: SizedBox(
                       height: 30,
@@ -151,15 +149,8 @@ class _CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
                     child: Image.asset('assets/icons/calendar.png'),
                   ),
                   title: const Text('Calendar'),
-                  onTap: () => navigateToClientCalendarPage(context),
-                ),
-                ListTile(
-                  leading: SizedBox(
-                    height: 30,
-                    child: Image.asset('assets/icons/helpdesk.png'),
-                  ),
-                  title: const Text('Help Desk'),
-                  onTap: () {},
+                  onTap: () =>
+                      navigateToClientCalendarPage(context, widget.token),
                 ),
                 ListTile(
                   leading: SizedBox(
@@ -168,22 +159,6 @@ class _CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
                   ),
                   title: const Text('Settings'),
                   onTap: () => navigateToNotificationSettingsPage(context),
-                ),
-                // Place holder
-                // Container(
-                //   height: 50,
-                // ),
-                // const Divider(color: Colors.black38),
-                Container(
-                  height: 200,
-                ),
-                ListTile(
-                  leading: SizedBox(
-                    height: 30,
-                    child: Image.asset('assets/icons/faqs.png'),
-                  ),
-                  title: const Text('Helps & FAQS'),
-                  onTap: () {},
                 ),
                 ListTile(
                   leading: SizedBox(

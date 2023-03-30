@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:untitled/views/provider/chat_provider/screens/chatpage.dart';
 
 //import 'calendar.dart';
 import '../provider_navigation_routes.dart';
+import '../views/provider_calendar.dart';
 import 'provider_dashboard.dart';
 //import 'location.dart';
 import 'provider_profile.dart';
@@ -37,12 +40,6 @@ class _ProviderHomeState extends State<ProviderHome> {
         bucket: bucket,
         child: currentScreen,
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color.fromARGB(255, 84, 122, 70), // green bg
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         // shape: CircularNotchedRectangle(),
         notchMargin: 10,
@@ -70,7 +67,7 @@ class _ProviderHomeState extends State<ProviderHome> {
                 IconButton(
                   onPressed: (() {
                     setState(() {
-                      //currentScreen = CalendarPage();
+                      currentScreen = ProviderCalendarPage(token: widget.token);
                       currentTab = 1;
                     });
                   }),
@@ -85,12 +82,12 @@ class _ProviderHomeState extends State<ProviderHome> {
                 IconButton(
                   onPressed: (() {
                     setState(() {
-                      //currentScreen = LocationPage();
+                      currentScreen = ProviderChatPage(token: widget.token);
                       currentTab = 2;
                     });
                   }),
                   icon: Icon(
-                    Icons.location_pin,
+                    Icons.chat_rounded,
                     color: currentTab == 2
                         ? const Color.fromARGB(255, 84, 122, 70)
                         : Colors.grey[400],
@@ -100,7 +97,7 @@ class _ProviderHomeState extends State<ProviderHome> {
                 IconButton(
                   onPressed: (() {
                     setState(() {
-                      navigateToProfilePage(context, widget.token);
+                      currentScreen = ProviderProfilePage(token: widget.token);
                       currentTab = 3;
                     });
                   }),

@@ -45,7 +45,7 @@ class _ClientChatPageState extends State<ClientChatPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(
-              height: height * .05,
+              height: height * .075,
             ),
             SizedBox(
               child: Row(
