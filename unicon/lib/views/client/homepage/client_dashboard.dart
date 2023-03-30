@@ -1,5 +1,8 @@
 import 'dart:convert';
-
+import '../../workerProfiles/worker_profile1.dart';
+import '../../workerProfiles/worker_profile2.dart';
+import '../../workerProfiles/worker_profile3.dart';
+import '../../workerProfiles/worker_profile4.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -225,11 +228,11 @@ class _ClientDashboardState extends State<ClientDashboard> {
 class SearchPageDelegate extends SearchDelegate {
   static List<Worker> workersList = [
     Worker('Juan Dela Cruz', 'Painter', 'Quezon City'),
-    Worker('Albert Dela Rosa', 'Carpenter', 'Pasig City'),
     Worker('Wally Bayola', 'Carpenter', 'Quezon City'),
-    Worker('Rendon Labador', 'Pancit Canton', 'Pasig City'),
-    Worker('Andrew Tate', 'Cool-Kid', 'US of A'),
     Worker('Crisostomo Ibarra', 'Welder', 'Quezon City'),
+    Worker('Rendon Labador', 'Engineer', 'Pasig City'),
+    Worker('Andrew Tate', 'Cool-Kid', 'US of A'),
+    Worker('Albert Dela Rosa', 'Carpenter', 'Pasig City'),
   ];
 
   @override
@@ -262,6 +265,12 @@ class SearchPageDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    List<Widget> route = [
+      const WorkerProfilePage1(),
+      const WorkerProfilePage2(),
+      const WorkerProfilePage3(),
+      const WorkerProfilePage4(),
+    ];
     List<Worker> displayWorkers = workersList.where((worker) {
       // if query is empty, display all workers
       if (query.isEmpty) {
@@ -283,7 +292,8 @@ class SearchPageDelegate extends SearchDelegate {
             children: [
               const SizedBox(height: 10),
               InkWell(
-                onTap: (() {}),
+                onTap: (() => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => route[index]))),
                 child: Stack(
                   children: [
                     Positioned(
