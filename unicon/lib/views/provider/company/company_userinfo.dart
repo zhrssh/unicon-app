@@ -8,14 +8,15 @@ import '../../../constants/top_bottom_clippings.dart';
 
 void main() {
   runApp(const MaterialApp(
-    home: CompanyUserInfo(data: <String, dynamic>{"test": "test"}),
+    home: CompanyUserInfo(email: "", data: <String, dynamic>{"test": "test"}),
     debugShowCheckedModeBanner: false,
   ));
 }
 
 class CompanyUserInfo extends StatefulWidget {
+  final String email;
   final Map<String, dynamic> data;
-  const CompanyUserInfo({super.key, required this.data});
+  const CompanyUserInfo({super.key, required this.email, required this.data});
 
   @override
   State<CompanyUserInfo> createState() => _CompanyInfoState();
@@ -248,8 +249,8 @@ class _CompanyInfoState extends State<CompanyUserInfo> {
                               DateTime? pickeddate = await showDatePicker(
                                   context: context,
                                   initialDate: DateTime.now(),
-                                  firstDate: DateTime.now(),
-                                  lastDate: DateTime(1900));
+                                  firstDate: DateTime(1900),
+                                  lastDate: DateTime.now());
 
                               if (pickeddate != null) {
                                 setState(() {
@@ -363,51 +364,8 @@ class _CompanyInfoState extends State<CompanyUserInfo> {
                     style: ElevatedButton.styleFrom(
                         fixedSize: const Size(100, 35)),
                     onPressed: () {
-                      // Checks if the terms and conditions is checked
-                      if (termsAndConditions == false) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            behavior: SnackBarBehavior.floating,
-                            backgroundColor: Colors.transparent,
-                            elevation: 0,
-                            content: Container(
-                              padding: const EdgeInsets.all(16),
-                              height: 90,
-                              decoration: const BoxDecoration(
-                                color: Color(0xFFC72C41),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(20),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  Text(
-                                    "OH NO!",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  Text(
-                                    "You need to accept terms and conditions.",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                    ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-
-                        return;
-                      }
-
                       Map<String, dynamic> userInfo = {
+                        "email": widget.email,
                         "name": {
                           "firstName": _firstNameController.text,
                           "lastName": _lastNameController.text,

@@ -10,6 +10,7 @@ import '../views/dashboard.dart';
 import '../views/location.dart';
 import '../views/login.dart';
 import '../views/notifications_page.dart';
+import '../views/provider/homepage/provider_dashboard.dart';
 import '../views/provider/homepage/provider_profile.dart';
 import '../views/provider/homepage/provider_home.dart';
 import '../views/provider/provider_regtype.dart';
@@ -74,16 +75,16 @@ void navigateToClientHome(context, String token) {
       MaterialPageRoute(builder: (context) => ClientHome(token: token)));
 }
 
-///////////////// PROVIDER ///////////////////
-// void navigateToProviderHome(context, String token) {
-//   Navigator.push(context,
-//       MaterialPageRoute(builder: (context) => ProviderHome(token: token)));
-// }
+/////////////// PROVIDER ///////////////////
+void navigateToProviderHome(context, String token) {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => ProviderHome(token: token)));
+}
 
-// void navigateToDashboard(context) {
-//   Navigator.push(
-//       context, MaterialPageRoute(builder: (context) => const Dashboard()));
-// }
+void navigateToDashboard(context, String token) {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => ProviderDashboard(token: token)));
+}
 
 void navigateToCalendarPage(context) {
   Navigator.push(

@@ -385,7 +385,8 @@ class _LoginPageState extends State<LoginPage> {
                               // Check if client or provider
                               final doc = json.decode(response.body);
                               final accountType = doc["accountType"];
-
+                              print(accountType);
+                              // Navigator.pop(_context);
                               switch (accountType) {
                                 // Proceed to client home
                                 case "client":
@@ -393,7 +394,8 @@ class _LoginPageState extends State<LoginPage> {
                                   break;
                                 // Proceed to provider home
                                 case "provider":
-                                  // navigateToProviderHome(context, accessToken);
+                                  print(accountType);
+                                  navigateToProviderHome(context, accessToken);
                                   break;
                                 default:
                                   showLoginErrorSnackBar(

@@ -9,16 +9,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:untitled/services/upload.dart';
-import '../../../constants/navigation_routes.dart';
 import '../../../constants/top_bottom_clippings.dart';
 import 'package:http/http.dart' as http;
 
-void main() {
-  runApp(const MaterialApp(
-    home: IndividualConfirmFill(data: {"test": "test"}),
-    debugShowCheckedModeBanner: false,
-  ));
-}
+import '../provider_navigation_routes.dart';
 
 class IndividualConfirmFill extends StatefulWidget {
   final Map<String, dynamic> data;

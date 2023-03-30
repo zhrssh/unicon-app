@@ -8,13 +8,6 @@ import 'package:untitled/views/provider/company/company_confirmfill2.dart';
 import '../../../constants/top_bottom_clippings.dart';
 import 'package:http/http.dart' as http;
 
-void main() {
-  runApp(const MaterialApp(
-    home: CompanyConfirmFill(data: {"test": "test"}),
-    debugShowCheckedModeBanner: false,
-  ));
-}
-
 class CompanyConfirmFill extends StatefulWidget {
   final Map<String, dynamic> data;
   const CompanyConfirmFill({super.key, required this.data});
@@ -223,12 +216,28 @@ class _CompanyConfirmFillState extends State<CompanyConfirmFill> {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
                                 ),
-                                onPressed: () {},
-                                child: const Icon(
-                                  Icons.file_download_outlined,
-                                  size: 60,
-                                  color: Colors.black,
-                                ),
+                                onPressed: () async {
+                                  final file = await getImageFromCamera();
+                                  if (file == null) return;
+
+                                  setState(() {
+                                    photoVerification = file;
+                                    if (kDebugMode) {
+                                      print(
+                                          "Photo Verification: $photoVerification");
+                                    }
+                                  });
+                                },
+                                child: photoVerification == null
+                                    ? const Icon(
+                                        Icons.file_download_outlined,
+                                        size: 60,
+                                        color: Colors.black,
+                                      )
+                                    : Image.asset(
+                                        "assets/icons/check_icon.png",
+                                        height: 60,
+                                      ),
                               ),
                             ],
                           ),

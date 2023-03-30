@@ -101,8 +101,8 @@ class _ClientDashboardState extends State<ClientDashboard> {
                     )
                   ],
                   title: Column(
-                    children: const <Widget>[
-                      Text('Current Location'),
+                    children: <Widget>[
+                      Text("Hi, ${user["name"]["firstName"]}!"),
                     ],
                   ),
                   centerTitle: true,

@@ -25,6 +25,7 @@ router.post("/register/individual", async (req, res) => {
     try {
         // Provider info
         const providerInfo = {
+            email: req.body.email,
             accountType: req.body.accountType,
             accountGroup: req.body.accountGroup,
             uuid: req.body.uuid,
@@ -95,6 +96,7 @@ router.post("/register/company", async (req, res) => {
     try {
         // Provider info
         const providerInfo = {
+            email: req.body.email,
             accountType: req.body.accountType,
             accountGroup: req.body.accountGroup,
             uuid: req.body.uuid,

@@ -4,12 +4,12 @@ import 'package:untitled/views/provider/company/company_userinfo.dart';
 import 'package:untitled/views/provider/individual/individual_fillup.dart';
 import '../../constants/top_bottom_clippings.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    home: ProviderRegType(email: "", data: {"test": "test"}),
-    debugShowCheckedModeBanner: false,
-  ));
-}
+// void main() {
+//   runApp(const MaterialApp(
+//     home: ProviderRegType(email: "", data: {"test": "test"}),
+//     debugShowCheckedModeBanner: false,
+//   ));
+// }
 
 class ProviderRegType extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -69,7 +69,6 @@ class ProviderRegTypeState extends State<ProviderRegType> {
                 onTap: (() {
                   // Sets the account group to individual
                   final Map<String, dynamic> dataToAdd = {
-                    "email": widget.email,
                     "accountGroup": "individual"
                   };
 
@@ -79,6 +78,7 @@ class ProviderRegTypeState extends State<ProviderRegType> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => IndividualFillUp(
+                                email: widget.email,
                                 data: widget.data,
                               )));
                 }),
@@ -133,7 +133,6 @@ class ProviderRegTypeState extends State<ProviderRegType> {
             onTap: () {
 // Sets the account group to individual
               final Map<String, dynamic> dataToAdd = {
-                "email": widget.email,
                 "accountGroup": "company"
               };
 
@@ -142,8 +141,8 @@ class ProviderRegTypeState extends State<ProviderRegType> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          CompanyUserInfo(data: widget.data)));
+                      builder: (context) => CompanyUserInfo(
+                          email: widget.email, data: widget.data)));
             },
             child: Container(
               height: 112,
