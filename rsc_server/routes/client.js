@@ -17,7 +17,7 @@ router.get('/view?uuid=:uuid', async (req, res) => {
         res.json(client)
         return res.status(200).end()
     } catch (err) {
-        return res.status(err.code).send({ err: err.message })
+        return res.status(400).send({ err: err.message })
     }
 })
 
@@ -25,13 +25,9 @@ router.get('/view?uuid=:uuid', async (req, res) => {
 router.get('/profile', async (req, res) => {
     try {
         const client = await clientController.getClient(req.body.uuid)
-        res.setHeader("Content-Type", "image/jpeg")
-        res.setHeader("Content-Disposition", "inline")
-        res.sendFile(path.join(__dirname, `../${client.avatar}`))
-        res.json(client)
-        return res.status(200).end()
+        return res.status(200).send(client)
     } catch (err) {
-        return res.status(err.code).send({ err: err.message })
+        return res.status(400).send({ err: err.message })
     }
 })
 
@@ -58,7 +54,7 @@ router.post("/register", async (req, res) => {
 
         return res.sendStatus(200)
     } catch (err) {
-        return res.status(err.code).send({ err: err.message })
+        return res.status(400).send({ err: err.message })
     }
 })
 
@@ -74,7 +70,7 @@ router.post("/update", async (req, res) => {
             return res.sendStatus(401)
         }
     } catch (err) {
-        return res.status(err.code).send({ err: err.message })
+        return res.status(400).send({ err: err.message })
     }
 })
 

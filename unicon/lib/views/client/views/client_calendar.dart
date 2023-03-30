@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/constants/navigation_routes.dart';
-import 'calendar_model.dart';
+import '../models/client_calendar_model.dart';
 
-class CalendarPage extends StatefulWidget {
-  const CalendarPage({super.key});
+class ClientCalendarPage extends StatefulWidget {
+  const ClientCalendarPage({super.key});
 
   @override
-  State<CalendarPage> createState() => _CalendarPageState();
+  State<ClientCalendarPage> createState() => _ClientCalendarPageState();
 }
 
-class _CalendarPageState extends State<CalendarPage>
+class _ClientCalendarPageState extends State<ClientCalendarPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -31,44 +30,23 @@ class _CalendarPageState extends State<CalendarPage>
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 100,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: const BackButton(
+          color: Colors.black,
+        ),
+        leadingWidth: 30,
+        title: const Text("Calendar"),
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+        ),
+      ),
       body: Column(
         children: [
-          SizedBox(
-            height: height * .05,
-          ),
-          SizedBox(
-            child: Row(
-              children: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    //need fix on navigation
-                    //navigateToHome(context);
-                    // Navigator.pop(context);
-                  },
-                  child: Row(
-                    children: const [
-                      Icon(
-                        Icons.arrow_back,
-                        color: Colors.black,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "Calendar",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 15),
           Container(
             height: 45,
             width: 320,

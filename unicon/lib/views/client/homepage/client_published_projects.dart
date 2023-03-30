@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'projects_data.dart';
+import '../../../constants/projects_data.dart';
 
 // ignore: use_key_in_widget_constructors
-class ProjectList extends StatefulWidget {
+class ClientProjectList extends StatefulWidget {
   @override
-  State<ProjectList> createState() => _ProjectListState();
+  State<ClientProjectList> createState() => _ClientProjectListState();
 }
 
-class _ProjectListState extends State<ProjectList> {
+class _ClientProjectListState extends State<ClientProjectList> {
   List<ProjectCompany> projectLists = [
     ProjectCompany('card1.png', 'Wall Repainting (On Going)',
         'Juan Construction Co.', 'Quezon City, Philippines'),
@@ -35,8 +35,8 @@ class _ProjectListState extends State<ProjectList> {
               Positioned(
                 child: Material(
                   child: Container(
-                    height: 290,
-                    width: 270,
+                    height: 280,
+                    width: 400,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
@@ -56,7 +56,7 @@ class _ProjectListState extends State<ProjectList> {
                 left: 10,
                 top: 10,
                 height: 160,
-                width: 250,
+                width: 350,
                 child: Card(
                   elevation: 10.0,
                   shadowColor: Colors.grey.withOpacity(0.5),
@@ -155,8 +155,8 @@ class _ProjectListState extends State<ProjectList> {
     getProjectsData();
     return ListView.separated(
       itemCount: itemsData.length,
-      scrollDirection: Axis.horizontal,
-      separatorBuilder: (context, _) => const SizedBox(width: 10),
+      scrollDirection: Axis.vertical,
+      separatorBuilder: (context, _) => const SizedBox(height: 10),
       itemBuilder: (context, index) {
         return itemsData[index];
       },

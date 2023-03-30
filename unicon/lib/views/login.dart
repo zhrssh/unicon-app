@@ -393,7 +393,7 @@ class _LoginPageState extends State<LoginPage> {
                                   break;
                                 // Proceed to provider home
                                 case "provider":
-                                  navigateToProviderHome(context, accessToken);
+                                  // navigateToProviderHome(context, accessToken);
                                   break;
                                 default:
                                   showLoginErrorSnackBar(

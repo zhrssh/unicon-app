@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/chat/models/chatmessagemodel.dart';
 
-class ChatDetailPage extends StatefulWidget {
-  const ChatDetailPage({super.key});
+import '../models/chatmessagemodel.dart';
+
+class ClientChatDetailPage extends StatefulWidget {
+  const ClientChatDetailPage({super.key});
 
   @override
-  State<ChatDetailPage> createState() => _ChatDetailPageState();
+  State<ClientChatDetailPage> createState() => _ClientChatDetailPageState();
 }
 
-class _ChatDetailPageState extends State<ChatDetailPage> {
+class _ClientChatDetailPageState extends State<ClientChatDetailPage> {
   List<ChatMessage> messages = [
     ChatMessage(messageContent: "Hello, may I apply?", messageType: "sender"),
     ChatMessage(messageContent: "Yes, sure!", messageType: "receiver"),

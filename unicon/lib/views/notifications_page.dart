@@ -54,7 +54,13 @@ class _NotificationPageState extends State<NotificationPage> {
         'Juan Dela Cruz finished today\'s Task in Wall Repainting',
         '5 mins ago'),
     Notifications('assets/images/FindServices.png',
-        'Juan Dela Cruz timed in for Task Wall Repainting', '6 hrs ago'),
+        'Joshua Del Rosario timed in for Task Wall Repainting', '6 hrs ago'),
+    Notifications('assets/images/FindServices.png',
+        'John Doe timed in for Task Wall Repainting', '6 hrs ago'),
+    Notifications('assets/images/FindServices.png',
+        'Juan Dela Cruz timed out for Task Wall Repainting', '5 mins ago'),
+    Notifications('assets/images/FindServices.png',
+        'Sara Gomez wants to take your Job in Interior Design', '3 mins ago'),
   ];
 
   Widget buildNotifications(BuildContext context) {
@@ -75,59 +81,62 @@ class _NotificationPageState extends State<NotificationPage> {
     required String time,
   }) {
     double width = MediaQuery.of(context).size.width;
-    return InkWell(
-      onTap: () {},
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: const Offset(0, 3),
-            ),
-          ],
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        padding: const EdgeInsets.all(16.0),
-        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Row(
-          children: [
-            ClipOval(
-              child: Image.asset(
-                image,
-                height: 70,
-                width: 70,
+    return Expanded(
+      child: InkWell(
+        onTap: () {},
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: const Offset(0, 3),
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-            ),
-            SizedBox(
-              width: width * .45,
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 13.0,
-                  fontWeight: FontWeight.bold,
+            ],
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          padding: const EdgeInsets.all(16.0),
+          margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ClipOval(
+                child: Image.asset(
+                  image,
+                  height: 70,
+                  width: 70,
                 ),
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-            ),
-            SizedBox(
-              width: width * .10,
-              child: Text(
-                time,
-                style: const TextStyle(
-                  fontSize: 8.0,
-                  fontWeight: FontWeight.normal,
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+              ),
+              Expanded(
+                // width: width * .45,
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 13.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            )
-          ],
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+              ),
+              SizedBox(
+                // width: width * .10,
+                child: Text(
+                  time,
+                  style: const TextStyle(
+                    fontSize: 8.0,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

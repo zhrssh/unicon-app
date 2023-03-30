@@ -5,7 +5,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
-import 'package:untitled/constants/navigation_routes.dart';
 import '../../../actions/models.dart';
 
 class ClientProfilePage extends StatefulWidget {
@@ -31,7 +30,7 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
       _chipText; // text editing controller for tags
 
   final String _profileImage =
-      "assets/images/andrew tate.png"; // importing image
+      "assets/images/profile-placeholder.png"; // importing image
 
   // TODO: Check if user profile is working
 
@@ -78,68 +77,55 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      // appBar: AppBar(
-      //   toolbarHeight: 100,
-      //   elevation: 0,
-      //   backgroundColor: Colors.transparent,
-      //   leading: const BackButton(
-      //     color: Colors.black,
-      //   ),
-      //   leadingWidth: 30,
-      //   title: const Text("Profile"),
-      //   titleTextStyle: const TextStyle(
-      //     color: Colors.black,
-      //     fontWeight: FontWeight.bold,
-      //     fontSize: 20,
-      //   ),
-      // ),
+      appBar: AppBar(
+        toolbarHeight: 100,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: const BackButton(
+          color: Colors.black,
+        ),
+        leadingWidth: 30,
+        title: const Text("Profile"),
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+        ),
+      ),
       body: SingleChildScrollView(
         child: FutureBuilder(
           future: _getUserInfo(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
+              return Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const <Widget>[
+                    SizedBox(
+                      height: 200,
+                    ),
+                    CircularProgressIndicator(),
+                  ],
+                ),
+              );
             } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
+              return Center(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const SizedBox(
+                    height: 200,
+                  ),
+                  Text('${snapshot.error}'),
+                ],
+              ));
             } else {
               final response = snapshot.data as http.Response;
               final user = json.decode(response.body);
               return Column(
                 children: [
-                  SizedBox(
-                    height: height * .05,
-                  ),
-                  SizedBox(
-                    child: Row(
-                      children: [
-                        TextButton(
-                          onPressed: (() {
-                            navigateToClientHome(context, widget.token);
-                            // Navigator.pop(context);
-                          }),
-                          child: Row(
-                            children: const [
-                              Icon(
-                                Icons.arrow_back,
-                                color: Colors.black,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                "Profile",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
                   Center(
                     child: SizedBox(
                       // child: Padding(
@@ -166,19 +152,31 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
                             SizedBox(
                               height: height * .01,
                             ),
-                            Text(
-                              "${user['name']['firstName']} ${user['name']['lastName']}",
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w800,
+                            SizedBox(
+                              height: 60,
+                              child: Text(
+                                "${user['name']['firstName']} ${user['name']['lastName']}",
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                            )
+                            ),
+                            // Text(
+                            //   "${user['name']['lastName']}",
+                            //   style: const TextStyle(
+                            //     fontSize: 24,
+                            //     fontWeight: FontWeight.w800,
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
                     ),
                   ),
                   // ),
+
                   SizedBox(
                     // height: height * .25,
                     child: Padding(
@@ -224,7 +222,7 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
                             const SizedBox(
                               width: double.infinity,
                               child: Text(
-                                "Businessman | Etrepreneur | Philantropist",
+                                "Businessman | Entrepreneur | Philantropist",
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                   fontSize: 16,

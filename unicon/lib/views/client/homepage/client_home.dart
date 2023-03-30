@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-
-import '../../../constants/navigation_routes.dart';
+import 'package:untitled/views/client/views/client_calendar.dart';
 import '../../calendar.dart';
 import '../../location.dart';
+import '../chat/screens/chat_homepage.dart';
+import '../chat/screens/chatpage.dart';
+import '../client_navigation_routes.dart';
 import 'client_dashboard.dart';
 import 'client_profile.dart';
 
@@ -19,13 +21,14 @@ class _ClientHomeState extends State<ClientHome> {
 
   // different views/bottomNavBar item
   late final List<Widget> screens = [
-    const ClientDashboard(),
+    ClientDashboard(token: widget.token),
     const CalendarPage(),
     const LocationPage(),
     ClientProfilePage(token: widget.token),
   ];
 
-  Widget currentScreen = const ClientDashboard(); // sets current view
+  late Widget currentScreen =
+      ClientDashboard(token: widget.token); // sets current view
 
   final PageStorageBucket bucket = PageStorageBucket();
 
@@ -55,7 +58,7 @@ class _ClientHomeState extends State<ClientHome> {
                 IconButton(
                   onPressed: (() {
                     setState(() {
-                      currentScreen = const ClientDashboard();
+                      currentScreen = ClientDashboard(token: widget.token);
                       currentTab = 0;
                     });
                   }),
@@ -70,7 +73,7 @@ class _ClientHomeState extends State<ClientHome> {
                 IconButton(
                   onPressed: (() {
                     setState(() {
-                      currentScreen = const CalendarPage();
+                      currentScreen = const ClientCalendarPage();
                       currentTab = 1;
                     });
                   }),
@@ -85,12 +88,12 @@ class _ClientHomeState extends State<ClientHome> {
                 IconButton(
                   onPressed: (() {
                     setState(() {
-                      currentScreen = const LocationPage();
+                      currentScreen = ClientChatPage(token: widget.token);
                       currentTab = 2;
                     });
                   }),
                   icon: Icon(
-                    Icons.location_pin,
+                    Icons.chat_rounded,
                     color: currentTab == 2
                         ? const Color.fromARGB(255, 84, 122, 70)
                         : Colors.grey[400],
