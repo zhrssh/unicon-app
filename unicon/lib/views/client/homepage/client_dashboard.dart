@@ -144,10 +144,11 @@ class _ClientDashboardState extends State<ClientDashboard> {
                 ),
                 backgroundColor: Colors.grey[50],
                 drawer: CustomNavigationDrawer(
-                    token: widget.token,
-                    email: user["email"],
-                    name:
-                        "${user["name"]["firstName"]} ${user["name"]["lastName"]}"), // TODO: Navigation Drawer, add email and name
+                  token: widget.token,
+                  email: user["email"],
+                  name:
+                      "${user["name"]["firstName"]} ${user["name"]["lastName"]}",
+                ),
                 body: Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: 15.0,

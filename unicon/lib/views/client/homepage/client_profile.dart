@@ -32,8 +32,6 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
   final String _profileImage =
       "assets/images/profile-placeholder.png"; // importing image
 
-  // TODO: Check if user profile is working
-
   @override
   void initState() {
     // Get info from server

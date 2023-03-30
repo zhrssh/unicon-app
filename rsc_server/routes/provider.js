@@ -17,7 +17,7 @@ router.get('/view?uuid=:uuid', async (req, res) => {
         res.json(provider)
         return res.status(200).end()
     } catch (err) {
-        return res.status(err.code).send({ err: err.message })
+        return res.status(400).send({ err: err.message })
     }
 })
 
@@ -45,7 +45,7 @@ router.post("/register/individual", async (req, res) => {
 
         return res.sendStatus(200)
     } catch (err) {
-        return res.status(err.code).send({ err: err.message })
+        return res.status(400).send({ err: err.message })
     }
 })
 
@@ -121,7 +121,7 @@ router.post("/register/company", async (req, res) => {
 
         return res.sendStatus(200)
     } catch (err) {
-        return res.status(err.code).send({ err: err.message })
+        return res.status(400).send({ err: err.message })
     }
 })
 
@@ -167,6 +167,15 @@ router.post("/register/company/photo", (req, res) => {
     })
 })
 
+router.get("/profile", async (req, res) => {
+    try {
+        const provider = await providerController.getProvider(req.body.uuid)
+        return res.status(200).send(provider)
+    } catch (err) {
+        return res.status(400).send({ err: err.message })
+    }
+})
+
 // Updates user provider
 router.post("/profile/update", async (req, res) => {
     // Stores or update user provider
@@ -179,7 +188,7 @@ router.post("/profile/update", async (req, res) => {
             return res.sendStatus(401)
         }
     } catch (err) {
-        return res.status(err.code).send({ err: err.message })
+        return res.status(400).send({ err: err.message })
     }
 })
 
