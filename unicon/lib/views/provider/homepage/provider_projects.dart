@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import '../../../constants/projects_data.dart';
+import 'provider_projects_data.dart';
 
 // ignore: use_key_in_widget_constructors
-class ClientProjectList extends StatefulWidget {
+class ProviderProjectList extends StatefulWidget {
   @override
-  State<ClientProjectList> createState() => _ClientProjectListState();
+  State<ProviderProjectList> createState() => _ProviderProjectListState();
 }
 
-class _ClientProjectListState extends State<ClientProjectList> {
+class _ProviderProjectListState extends State<ProviderProjectList> {
   List<ProjectProvider> projectLists = [
-    ProjectProvider('card1.png', 'Wall Repainting (On Going)',
-        'Juan Construction Co.', 'Quezon City, Philippines'),
-    ProjectProvider('card2.jpg', '"Construction Worker',
-        'Juan Construction Co.', 'San Juan City, Philippines'),
-    ProjectProvider('card3.jpg', 'Carpenter', 'Juan Construction Co.',
-        'San Juan City, Philippines'),
-    ProjectProvider('card4.jpg', 'Welder', 'Juan Construction Co.',
-        'Marikina City, Philippines'),
+    ProjectProvider('card1.png', 'Wall Repainting', 'Quezon City, Philippines',
+        'John Morales'),
+    ProjectProvider(
+        'card2.jpg', '"Construction Worker', 'Marikina City', 'Juan Dela Cruz'),
+    ProjectProvider('card3.jpg', 'Carpenter', 'San Juan City, Philippines',
+        'Juan Dela Cruz'),
+    ProjectProvider(
+        'card4.jpg', 'Welder', 'Marikina City, Philippines', 'Jenica Mogatei'),
   ];
 
   List<ProjectProvider> displayProjects = [];
@@ -35,7 +35,7 @@ class _ClientProjectListState extends State<ClientProjectList> {
               Positioned(
                 child: Material(
                   child: Container(
-                    height: 280,
+                    height: 240,
                     width: 400,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -55,8 +55,8 @@ class _ClientProjectListState extends State<ClientProjectList> {
               Positioned(
                 left: 10,
                 top: 10,
-                height: 160,
-                width: 350,
+                height: 140,
+                width: 310,
                 child: Card(
                   elevation: 10.0,
                   shadowColor: Colors.grey.withOpacity(0.5),
@@ -78,7 +78,7 @@ class _ClientProjectListState extends State<ClientProjectList> {
                 ),
               ),
               Positioned(
-                top: 185,
+                top: 160,
                 left: 20,
                 child: SizedBox(
                   height: 100,
@@ -92,27 +92,6 @@ class _ClientProjectListState extends State<ClientProjectList> {
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Image.asset(
-                            'assets/icons/profileicons.png',
-                            height: 20,
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            project.company!,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Color.fromARGB(255, 63, 56, 221),
-                            ),
-                          ),
-                        ],
                       ),
                       const SizedBox(
                         height: 5,
@@ -130,8 +109,25 @@ class _ClientProjectListState extends State<ClientProjectList> {
                             project.location!,
                             style: const TextStyle(
                               fontSize: 14,
-                              color: Color.fromARGB(255, 43, 40, 73),
+                              color: Colors.black38,
                               fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            "Posted by: ${project.personPosted!}",
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Color.fromARGB(255, 43, 40, 73),
                             ),
                           ),
                         ],

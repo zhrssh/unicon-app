@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:untitled/views/provider/homepage/provider_projects.dart';
 
 import '../provider_navigation_drawer.dart';
-import '../../client/homepage/client_published_projects.dart';
 
 // import 'package:untitled/views/calendar.dart';
 // import 'package:untitled/views/location.dart';
@@ -194,7 +194,7 @@ class _ProviderDashboardState extends State<ProviderDashboard> {
                         ),
                         SizedBox(
                           height: 500,
-                          child: ClientProjectList(),
+                          child: ProviderProjectList(),
                         ),
                       ],
                     ),

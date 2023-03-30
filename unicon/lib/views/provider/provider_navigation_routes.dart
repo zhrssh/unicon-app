@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/views/provider/views/provider_calendar.dart';
 
 import '../login.dart';
 import '../notifications_page.dart';
 import '../settingsPages/notifications.dart';
+import 'chat_provider/screens/chatpage.dart';
 import 'homepage/provider_home.dart';
 import 'homepage/provider_profile.dart';
 // import 'package:untitled/views/client/chat/screens/chat_homepage.dart';
@@ -91,10 +93,12 @@ void navigateToProviderHome(context, String token) {
 // //       context, MaterialPageRoute(builder: (context) => const Dashboard()));
 // // }
 
-// void navigateToCalendarPage(context) {
-//   Navigator.push(
-//       context, MaterialPageRoute(builder: (context) => const CalendarPage()));
-// }
+void navigateToProviderCalendarPage(context, String token) {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ProviderCalendarPage(token: token)));
+}
 
 // void navigateToClientCalendarPage(context) {
 //   Navigator.push(context,
@@ -136,7 +140,7 @@ void navigateToNotificationSettingsPage(context) {
 }
 
 // ///////////////// CHAT SYSTEM ///////////////////
-// // void navigateToClientChatPage(context) {
-// //   Navigator.push(context,
-// //       MaterialPageRoute(builder: (context) => const ClientChatHomePage()));
-// // }
+void navigateToProviderChatPage(context, String token) {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => ProviderChatPage(token: token)));
+}

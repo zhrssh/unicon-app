@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import '../../../actions/models.dart';
+import '../provider_navigation_routes.dart';
 
 class ProviderProfilePage extends StatefulWidget {
   final String token;
@@ -73,21 +74,6 @@ class _ProviderProfilePageState extends State<ProviderProfilePage> {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 100,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: const BackButton(
-          color: Colors.black,
-        ),
-        leadingWidth: 30,
-        title: const Text("Profile"),
-        titleTextStyle: const TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-        ),
-      ),
       body: SingleChildScrollView(
         child: FutureBuilder(
           future: _getUserInfo(),
@@ -122,6 +108,40 @@ class _ProviderProfilePageState extends State<ProviderProfilePage> {
               final user = json.decode(response.body);
               return Column(
                 children: [
+                  SizedBox(
+                    height: height * .075,
+                  ),
+                  SizedBox(
+                    child: Row(
+                      children: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            navigateToProviderHome(context, widget.token);
+                            // Navigator.pop(context);
+                          },
+                          child: Row(
+                            children: const [
+                              Icon(
+                                Icons.arrow_back,
+                                color: Colors.black,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                "Profile",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Center(
                     child: SizedBox(
                       // child: Padding(

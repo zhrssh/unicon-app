@@ -272,8 +272,8 @@ Widget _buildProjects({
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
           ),
-          SizedBox(
-            width: 250,
+          Expanded(
+            // width: 250,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -338,8 +338,8 @@ Widget _buildReviews({
             ),
           ),
           const SizedBox(width: 20),
-          SizedBox(
-            width: 200,
+          Expanded(
+            // width: 200,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

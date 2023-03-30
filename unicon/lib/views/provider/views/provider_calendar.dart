@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import '../client_navigation_routes.dart';
-import '../models/client_calendar_model.dart';
+import '../models/provider_calendar_model.dart';
+import '../provider_navigation_routes.dart';
 
-class ClientCalendarPage extends StatefulWidget {
+class ProviderCalendarPage extends StatefulWidget {
   final String token;
-  const ClientCalendarPage({super.key, required this.token});
+  const ProviderCalendarPage({super.key, required this.token});
 
   @override
-  State<ClientCalendarPage> createState() => _ClientCalendarPageState();
+  State<ProviderCalendarPage> createState() => _ProviderCalendarPageState();
 }
 
-class _ClientCalendarPageState extends State<ClientCalendarPage>
+class _ProviderCalendarPageState extends State<ProviderCalendarPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -32,6 +32,21 @@ class _ClientCalendarPageState extends State<ClientCalendarPage>
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      // appBar: AppBar(
+      //   toolbarHeight: 100,
+      //   elevation: 0,
+      //   backgroundColor: Colors.transparent,
+      //   leading: const BackButton(
+      //     color: Colors.black,
+      //   ),
+      //   leadingWidth: 30,
+      //   title: const Text("Calendar"),
+      //   titleTextStyle: const TextStyle(
+      //     color: Colors.black,
+      //     fontWeight: FontWeight.bold,
+      //     fontSize: 20,
+      //   ),
+      // ),
       body: Column(
         children: [
           SizedBox(
@@ -42,7 +57,7 @@ class _ClientCalendarPageState extends State<ClientCalendarPage>
               children: <Widget>[
                 TextButton(
                   onPressed: () {
-                    navigateToClientHome(context, widget.token);
+                    navigateToProviderHome(context, widget.token);
                     // Navigator.pop(context);
                   },
                   child: Row(
@@ -67,6 +82,9 @@ class _ClientCalendarPageState extends State<ClientCalendarPage>
                 ),
               ],
             ),
+          ),
+          const SizedBox(
+            height: 20,
           ),
           Container(
             height: 45,
