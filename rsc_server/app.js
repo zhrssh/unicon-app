@@ -52,17 +52,23 @@ app.get('/api/', auth.verifyAccessToken, async (req, res) => {
 
     // Check if either client or provider
     let user;
-    user = await clientController.getClient(uuid)
-    if (user != null) {
-        res.status(200).send({ "accountType": user.accountType })
-        return
-    }
+    try {
+        user = await clientController.getClient(uuid)
+        if (user != null) {
+            res.status(200).send({ "accountType": user.accountType })
+            return
+        }
+    } catch (_) { }
 
-    user = await providerController.getProvider(uuid)
-    if (user != null) {
-        res.status(200).send({ "accountType": user.accountType })
-        return
-    }
+    try {
+        user = await providerController.getProvider(uuid)
+        if (user != null) {
+            res.status(200).send({ "accountType": user.accountType })
+            return
+        }
+    } catch (_) { }
+
+
 
     res.sendStatus(400)
 })

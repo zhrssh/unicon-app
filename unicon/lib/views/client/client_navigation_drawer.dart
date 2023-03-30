@@ -190,7 +190,7 @@ class _CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
                     height: 30,
                     child: Image.asset('assets/icons/signout.png'),
                   ),
-                  title: const Text('Signout'),
+                  title: const Text('Log Out'),
                   onTap: () {
                     navigateToLoginPage(context);
                   },

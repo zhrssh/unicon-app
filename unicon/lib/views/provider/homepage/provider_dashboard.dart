@@ -4,22 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../constants/navigation_drawer.dart';
+import '../provider_navigation_drawer.dart';
 import '../../client/homepage/client_published_projects.dart';
 
 // import 'package:untitled/views/calendar.dart';
 // import 'package:untitled/views/location.dart';
 // import 'package:untitled/views/profile.dart';
 
-class Dashboard extends StatefulWidget {
+class ProviderDashboard extends StatefulWidget {
   final String token;
-  const Dashboard({super.key, required this.token});
+  const ProviderDashboard({super.key, required this.token});
 
   @override
-  State<Dashboard> createState() => _DashboardState();
+  State<ProviderDashboard> createState() => _ProviderDashboardState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _ProviderDashboardState extends State<ProviderDashboard> {
   Future<http.Response> _getUserInfo() async {
     final uri =
         Uri.parse('http://${dotenv.env["RSC_URL"]}/api/provider/profile');
@@ -97,8 +97,8 @@ class _DashboardState extends State<Dashboard> {
                     )
                   ],
                   title: Column(
-                    children: const <Widget>[
-                      Text('Current Location'),
+                    children: <Widget>[
+                      Text("Hi, ${user["name"]["firstName"]}!"),
                     ],
                   ),
                   centerTitle: true,

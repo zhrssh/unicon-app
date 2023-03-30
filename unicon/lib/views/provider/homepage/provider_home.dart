@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 
 //import 'calendar.dart';
+import '../provider_navigation_routes.dart';
 import 'provider_dashboard.dart';
 //import 'location.dart';
 import 'provider_profile.dart';
-
-void main() {
-  runApp(const MaterialApp(
-    home: ProviderHome(token: ""),
-    debugShowCheckedModeBanner: false,
-  ));
-}
 
 class ProviderHome extends StatefulWidget {
   final String token;
@@ -25,14 +19,14 @@ class _ProviderHomeState extends State<ProviderHome> {
 
   // different views/bottomNavBar item
   late final List<Widget> screens = [
-    Dashboard(token: widget.token),
+    ProviderDashboard(token: widget.token),
     //CalendarPage(),
     //LocationPage(),
     ProviderProfilePage(token: widget.token)
   ];
 
   late Widget currentScreen =
-      Dashboard(token: widget.token); // sets current view
+      ProviderDashboard(token: widget.token); // sets current view
 
   final PageStorageBucket bucket = PageStorageBucket();
 
@@ -61,7 +55,7 @@ class _ProviderHomeState extends State<ProviderHome> {
                 IconButton(
                   onPressed: (() {
                     setState(() {
-                      currentScreen = Dashboard(token: widget.token);
+                      currentScreen = ProviderDashboard(token: widget.token);
                       currentTab = 0;
                     });
                   }),
@@ -106,7 +100,7 @@ class _ProviderHomeState extends State<ProviderHome> {
                 IconButton(
                   onPressed: (() {
                     setState(() {
-                      //currentScreen = ProfilePage();
+                      navigateToProfilePage(context, widget.token);
                       currentTab = 3;
                     });
                   }),

@@ -51,13 +51,6 @@ const profileSchema = new mongoose.Schema({
         type: String,
         default: null
     },
-    interests: [{
-        type: String
-    }],
-    projects: [{
-        type: mongoose.Schema.Types.ObjectId,
-        unique: true
-    }]
 })
 
 const Client = mongoose.model("client", profileSchema)

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'navigation_routes.dart';
-import 'top_bottom_clippings.dart';
+// import '../../constants/navigation_routes.dart';
+import '../../constants/top_bottom_clippings.dart';
+import 'provider_navigation_routes.dart';
 
 class CustomNavigationDrawer extends StatefulWidget {
   final String token;
@@ -132,8 +133,7 @@ class _CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
                     child: Image.asset('assets/icons/profile.png'),
                   ),
                   title: const Text('My Profile'),
-                  onTap: () =>
-                      navigateToClientProfilePage(context, widget.token),
+                  onTap: () => navigateToProfilePage(context, widget.token),
                 ),
                 ListTile(
                   leading: SizedBox(
@@ -149,7 +149,7 @@ class _CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
                     child: Image.asset('assets/icons/calendar.png'),
                   ),
                   title: const Text('Calendar'),
-                  onTap: () => navigateToClientCalendarPage(context),
+                  // onTap: () => navigateToClientCalendarPage(context),
                 ),
                 ListTile(
                   leading: SizedBox(
@@ -188,7 +188,7 @@ class _CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
                     height: 30,
                     child: Image.asset('assets/icons/signout.png'),
                   ),
-                  title: const Text('Signout'),
+                  title: const Text('Log Out'),
                   onTap: () {
                     navigateToLoginPage(context);
                   },

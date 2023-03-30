@@ -3,13 +3,6 @@ import 'package:untitled/views/provider/company/company_confirmfill.dart';
 import '../../../constants/top_bottom_clippings.dart';
 import 'package:http/http.dart' as http;
 
-void main() {
-  runApp(const MaterialApp(
-    home: CompanyFillUp(data: {"test": "test"}),
-    debugShowCheckedModeBanner: false,
-  ));
-}
-
 class CompanyFillUp extends StatefulWidget {
   final Map<String, dynamic> data;
   const CompanyFillUp({super.key, required this.data});
@@ -228,14 +221,14 @@ class _CompanyFillUpState extends State<CompanyFillUp> {
                                 filled: true,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(),
-                                hintText: "Line of work",
+                                hintText: "Line of Work",
                                 hintStyle: TextStyle(
                                   color: Colors.grey,
                                 ),
                               ),
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter your line of work';
+                                  return 'Please enter your Line of Work';
                                 }
                                 return null;
                               },

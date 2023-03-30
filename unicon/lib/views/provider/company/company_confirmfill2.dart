@@ -9,16 +9,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:untitled/services/upload.dart';
-import '../../../constants/navigation_routes.dart';
 import '../../../constants/top_bottom_clippings.dart';
 import 'package:http/http.dart' as http;
 
-void main() {
-  runApp(const MaterialApp(
-    home: CompanyConfirmFill2(data: {"Test": "Test"}, files: {"Test": null}),
-    debugShowCheckedModeBanner: false,
-  ));
-}
+import '../provider_navigation_routes.dart';
 
 class CompanyConfirmFill2 extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -70,6 +64,7 @@ class _CompanyConfirmFill2State extends State<CompanyConfirmFill2> {
   }
 
   void _submitForm() async {
+    print('pressed');
     Map<String, dynamic> providerInfo = {
       "email": widget.data["email"],
       "accountType": widget.data["accountType"],
@@ -85,8 +80,8 @@ class _CompanyConfirmFill2State extends State<CompanyConfirmFill2> {
       "companyInfo": {
         "registeredName": widget.data["companyInfo"]["registeredName"],
         "location": widget.data["companyInfo"]["location"],
-        "address": widget.data["address"],
-        "lineOfWork": widget.data["lineOfWork"]
+        "address": widget.data["companyInfo"]["address"],
+        "lineOfWork": widget.data["companyInfo"]["lineOfWork"]
       }
     };
 
@@ -324,9 +319,11 @@ class _CompanyConfirmFill2State extends State<CompanyConfirmFill2> {
                               Icons.file_download_outlined,
                               color: Colors.black,
                             ),
-                            label: const Text(
-                              "Attach File (PCAB License)",
-                              style: TextStyle(color: Colors.grey),
+                            label: Text(
+                              pcab == null
+                                  ? "Attach File (PCAB License)"
+                                  : "Ready to upload!",
+                              style: const TextStyle(color: Colors.grey),
                             ),
                             style: TextButton.styleFrom(
                                 backgroundColor: Colors.white,
@@ -349,9 +346,11 @@ class _CompanyConfirmFill2State extends State<CompanyConfirmFill2> {
                               Icons.file_download_outlined,
                               color: Colors.black,
                             ),
-                            label: const Text(
-                              "Attach File (DTI Permit)",
-                              style: TextStyle(color: Colors.grey),
+                            label: Text(
+                              dti == null
+                                  ? "Attach File (DTI Permit)"
+                                  : "Ready to upload!",
+                              style: const TextStyle(color: Colors.grey),
                             ),
                             style: TextButton.styleFrom(
                                 backgroundColor: Colors.white,
@@ -374,15 +373,17 @@ class _CompanyConfirmFill2State extends State<CompanyConfirmFill2> {
                               Icons.file_download_outlined,
                               color: Colors.black,
                             ),
-                            label: const Text(
-                              "Attach File (BIR Clearance)",
-                              style: TextStyle(color: Colors.grey),
+                            label: Text(
+                              bir == null
+                                  ? "Attach File (BIR Clearance)"
+                                  : "Ready to upload!",
+                              style: const TextStyle(color: Colors.grey),
                             ),
                             style: TextButton.styleFrom(
                                 backgroundColor: Colors.white,
                                 fixedSize: const Size(300, 45),
                                 alignment: Alignment.centerLeft),
-                          )
+                          ),
                         ],
                       ),
                       const Padding(
@@ -413,7 +414,7 @@ class _CompanyConfirmFill2State extends State<CompanyConfirmFill2> {
                           ),
                         ),
                         onPressed: () =>
-                            _submitForm, //navigate to provider/company homepage
+                            _submitForm(), //navigate to provider/company homepage
                         child: const Text(
                           'Submit',
                           style: TextStyle(fontSize: 18),

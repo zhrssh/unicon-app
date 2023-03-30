@@ -6,16 +6,17 @@ import 'package:untitled/views/provider/individual/individual_confirmfill.dart';
 
 import '../../../constants/top_bottom_clippings.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    home: IndividualFillUp(data: <String, dynamic>{"test": "test"}),
-    debugShowCheckedModeBanner: false,
-  ));
-}
+// void main() {
+//   runApp(const MaterialApp(
+//     home: IndividualFillUp(email: "", data: <String, dynamic>{"test": "test"}),
+//     debugShowCheckedModeBanner: false,
+//   ));
+// }
 
 class IndividualFillUp extends StatefulWidget {
+  final String email;
   final Map<String, dynamic> data;
-  const IndividualFillUp({super.key, required this.data});
+  const IndividualFillUp({super.key, required this.email, required this.data});
 
   @override
   State<IndividualFillUp> createState() => _IndividualFillUpState();
@@ -248,8 +249,8 @@ class _IndividualFillUpState extends State<IndividualFillUp> {
                               DateTime? pickeddate = await showDatePicker(
                                   context: context,
                                   initialDate: DateTime.now(),
-                                  firstDate: DateTime.now(),
-                                  lastDate: DateTime(1900));
+                                  firstDate: DateTime(1900),
+                                  lastDate: DateTime.now());
 
                               if (pickeddate != null) {
                                 setState(() {
@@ -430,6 +431,7 @@ class _IndividualFillUpState extends State<IndividualFillUp> {
                       }
 
                       Map<String, dynamic> userInfo = {
+                        "email": widget.email,
                         "name": {
                           "firstName": _firstNameController.text,
                           "lastName": _lastNameController.text,
