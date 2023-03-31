@@ -55,7 +55,7 @@ class _ProviderProfilePageState extends State<ProviderProfilePage> {
 
   Future<http.Response> _getUserInfo() async {
     final uri =
-        Uri.parse('http://${dotenv.env["RSC_URL"]}/api/provider/profile');
+        Uri.parse('https://${dotenv.env["RSC_URL"]}/api/provider/profile');
     final http.Response response = await http.get(
       uri,
       headers: <String, String>{'Authorization': 'Bearer ${widget.token}'},

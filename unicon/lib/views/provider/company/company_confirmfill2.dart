@@ -50,7 +50,7 @@ class _CompanyConfirmFill2State extends State<CompanyConfirmFill2> {
   Future<http.Response> register(
       String accountType, String accessToken, Map<String, dynamic> data) async {
     final uri = Uri.parse(
-        "http://${dotenv.env["RSC_URL"]}/api/$accountType/register/company");
+        "https://${dotenv.env["RSC_URL"]}/api/$accountType/register/company");
     final response = await http.post(
       uri,
       headers: <String, String>{

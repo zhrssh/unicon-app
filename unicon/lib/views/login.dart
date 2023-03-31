@@ -104,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
   // Logins to the server
   Future<http.Response> login(email, password) async {
     // int _loginChecker;
-    final uri = Uri.parse('http://${dotenv.env["AUTH_URL"]}/login');
+    final uri = Uri.parse('https://${dotenv.env["AUTH_URL"]}/login');
     late final http.Response response;
 
     try {
@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
 
   // Checks if the resource server is active
   Future<http.Response> checkRscServer(accessToken) async {
-    final uri = Uri.parse("http://${dotenv.env["RSC_URL"]}/api");
+    final uri = Uri.parse("https://${dotenv.env["RSC_URL"]}/api");
     late final http.Response response;
 
     try {

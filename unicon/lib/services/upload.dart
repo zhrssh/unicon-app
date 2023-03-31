@@ -10,7 +10,7 @@ Future<http.StreamedResponse> uploadImage(
     String accessToken, File? file, String path, String fieldname) async {
   final request = http.MultipartRequest(
     "POST",
-    Uri.parse("http://${dotenv.env["RSC_URL"]}/api/$path"),
+    Uri.parse("https://${dotenv.env["RSC_URL"]}/api/$path"),
   );
 
   final lastIndex = file!.path.lastIndexOf('.');
@@ -54,7 +54,7 @@ Future<http.StreamedResponse?> uploadImageMultiple(
 ) async {
   final request = http.MultipartRequest(
     "POST",
-    Uri.parse("http://${dotenv.env["RSC_URL"]}/api/$path"),
+    Uri.parse("https://${dotenv.env["RSC_URL"]}/api/$path"),
   );
 
   final length = files.length;

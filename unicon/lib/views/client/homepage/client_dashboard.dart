@@ -26,7 +26,8 @@ class ClientDashboard extends StatefulWidget {
 
 class _ClientDashboardState extends State<ClientDashboard> {
   Future<http.Response> _getUserInfo() async {
-    final uri = Uri.parse('http://${dotenv.env["RSC_URL"]}/api/client/profile');
+    final uri =
+        Uri.parse('https://${dotenv.env["RSC_URL"]}/api/client/profile');
     final http.Response response = await http.get(
       uri,
       headers: <String, String>{'Authorization': 'Bearer ${widget.token}'},
@@ -183,8 +184,8 @@ class _ClientDashboardState extends State<ClientDashboard> {
                                           100, 84, 122, 70),
                                     ),
                                   ),
-                                  onPressed: () =>
-                                      navigateToClientCalendarPage(context, widget.token),
+                                  onPressed: () => navigateToClientCalendarPage(
+                                      context, widget.token),
                                   child: Row(
                                     children: [
                                       const Text(

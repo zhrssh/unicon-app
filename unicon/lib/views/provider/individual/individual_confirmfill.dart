@@ -175,7 +175,7 @@ class _IndividualConfirmFillState extends State<IndividualConfirmFill> {
   Future<http.Response> register(
       String accountType, String accessToken, Map<String, dynamic> data) async {
     final uri = Uri.parse(
-        "http://${dotenv.env["RSC_URL"]}/api/$accountType/register/individual");
+        "https://${dotenv.env["RSC_URL"]}/api/$accountType/register/individual");
     final response = await http.post(
       uri,
       headers: <String, String>{

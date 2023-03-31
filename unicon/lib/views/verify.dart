@@ -45,7 +45,7 @@ class _VerifyPageState extends State<VerifyPage> {
   Future<http.Response> verification(uuid, verificationCode) async {
     // int _loginChecker;
     String url =
-        "http://${dotenv.env["AUTH_URL"]}/register/verify/$uuid/$verificationCode";
+        "https://${dotenv.env["AUTH_URL"]}/register/verify/$uuid/$verificationCode";
     final uri = Uri.parse(url);
     final response = await http.get(
       uri,
@@ -291,7 +291,7 @@ class _VerifyPageState extends State<VerifyPage> {
                           onTap: () async {
                             final http.Response response = await http.post(
                               Uri.parse(
-                                  "http://${dotenv.env["AUTH_URL"]}/register/verify/resend"),
+                                  "https://${dotenv.env["AUTH_URL"]}/register/verify/resend"),
                               headers: <String, String>{
                                 'Content-Type':
                                     'application/json; charset=UTF-8',

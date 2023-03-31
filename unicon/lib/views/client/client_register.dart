@@ -117,7 +117,7 @@ class _ClientRegisterInfoPageState extends State<ClientRegisterInfoPage> {
   Future<http.Response> register(
       String accountType, String accessToken, Map<String, dynamic> data) async {
     final uri =
-        Uri.parse("http://${dotenv.env["RSC_URL"]}/api/$accountType/register");
+        Uri.parse("https://${dotenv.env["RSC_URL"]}/api/$accountType/register");
     final response = await http.post(
       uri,
       headers: <String, String>{

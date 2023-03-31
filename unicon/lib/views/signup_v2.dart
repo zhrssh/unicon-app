@@ -35,7 +35,7 @@ class _SignupPageState extends State<SignupPage> {
 
   Future<http.Response> register(email, password) async {
     // int _loginChecker;
-    final uri = Uri.parse('http://${dotenv.env["AUTH_URL"]}/register');
+    final uri = Uri.parse('https://${dotenv.env["AUTH_URL"]}/register');
     final response = await http.post(
       uri,
       headers: <String, String>{
